@@ -291,6 +291,7 @@ class Report extends CI_Controller {
         
         $error_query = $this->gemstone_model->getGemstoneError();
         $error = array();
+        $table = array();
         $i = 0;
         
         if ($all>0) {
@@ -298,6 +299,17 @@ class Report extends CI_Controller {
                 $query = $this->report_model->getErrorAll($loop->name);
                 foreach($query as $loop2) {
                     $error[$i] = array("id" => $loop->id, "name" => $loop->name, "count" => $loop2->count);
+                }
+                $query = $this->report_model->getErrorAll_barcode($loop->name);
+                foreach($query as $loop2) {
+                    $table[] = array("barcodeid" => $loop2->barcodeid,
+                                       "supname" => $loop2->supname,
+                                       "number" => $loop2->number,
+                                       "lot" => $loop2->lot,
+                                       "no" => $loop2->no,
+                                       "gemtype" => $loop2->gemtype,
+                                       "errordetail" => $loop2->errordetail
+                                      );
                 }
                 $i++;
             }
@@ -319,6 +331,17 @@ class Report extends CI_Controller {
                 foreach($query as $loop2) {
                     $error[$i] = array("id" => $loop->id, "name" => $loop->name, "count" => $loop2->count);
                 }
+                $query = $this->report_model->getErrorBetween_barcode($loop->name, $start, $end);
+                foreach($query as $loop2) {
+                    $table[] = array("barcodeid" => $loop2->barcodeid,
+                                       "supname" => $loop2->supname,
+                                       "number" => $loop2->number,
+                                       "lot" => $loop2->lot,
+                                       "no" => $loop2->no,
+                                       "gemtype" => $loop2->gemtype,
+                                       "errordetail" => $loop2->errordetail
+                                      );
+                }
                 $i++;
             }
             
@@ -327,6 +350,7 @@ class Report extends CI_Controller {
         }
         
         $data['error'] = $error;
+        $data['table'] = $table;
         $data['title'] = "Cien|Gemstone Tracking System - Show Errors";
 		$this->load->view('report/showerror_graph',$data);
     }

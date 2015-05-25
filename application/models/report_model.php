@@ -132,6 +132,35 @@ Class Report_model extends CI_Model
     $query = $this->db->get();		
 	return $query->result();
  }
+    
+ function getErrorAll_barcode($error)
+ {
+    $this->db->select("gemstone_barcode.id as barcodeid, gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone_type.name as gemtype, gemstone.size_out as gemsize, no, gemstone_qc.detail as errordetail");
+    $this->db->from('gemstone_qc');
+    $this->db->join('gemstone_barcode', 'gemstone_qc.barcode=gemstone_barcode.id', 'left');
+    $this->db->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left');
+    $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
+    $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
+    $this->db->where('gemstone_qc.status', 2);
+    $this->db->like('gemstone_qc.detail', $error);
+    $query = $this->db->get();
+	return $query->result();
+ }
+
+ function getErrorBetween_barcode($error, $start, $end)
+ {
+    $this->db->select("gemstone_barcode.id as barcodeid, gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone_type.name as gemtype, gemstone.size_out as gemsize, no, gemstone_qc.detail as errordetail");
+    $this->db->from('gemstone_qc');
+    $this->db->join('gemstone_barcode', 'gemstone_qc.barcode=gemstone_barcode.id', 'left');
+    $this->db->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left');
+    $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
+    $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
+    $this->db->where('gemstone_qc.status', 2);
+    $this->db->like('gemstone_qc.detail', $error);
+    $this->db->where("gemstone_qc.dateadd between '".$start."' AND '".$end."'", NULL, FALSE);
+    $query = $this->db->get();
+	return $query->result();
+ }
 
 }
 ?>

@@ -59,7 +59,15 @@
                                 </thead>
                                 
 								<tbody>
-
+                                    <?php  foreach($table as $loop) { ?>
+                                    <tr>
+                                        <td><?php echo $loop['barcodeid']; ?></td>
+                                        <td><?php echo $loop['supname'].$loop['lot']."-".$loop['number']."#".$loop['no']; ?></td>
+                                        <td><?php echo $loop['gemtype']; ?></td>
+                                        <td><?php echo $loop['errordetail']; ?></td>
+                                        <td><div class="tooltip-demo"><a href="<?php echo site_url("gemstone/showdetail_barcode/".$loop['barcodeid']); ?>" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a></div></td>
+                                    </tr>
+                                    <?php } ?>
 								</tbody>
                                 
 							</table>
@@ -111,7 +119,7 @@
 <script type="text/javascript">
 $(document).ready(function()
 {    
-    /*
+    
     var oTable = $('#tablebarcode').dataTable
         ({
             "bJQueryUI": false,
@@ -119,7 +127,6 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "bDeferRender": true,
-            'sAjaxSource'    : '<?php echo site_url("report/ajaxGetAllBarcodeError_graph"); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {
                     "dataType": 'json',
@@ -131,7 +138,7 @@ $(document).ready(function()
                 });
             }
         });
-    */
+    
     $('#fancyboxall').fancybox({ 
     'width': '85%',
     'height': '100%', 
