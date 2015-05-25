@@ -1,0 +1,9 @@
+body {
+	font-family: garuda;
+	font-size: 16px;
+}
+@page {
+    margin-left: 0.8cm;
+    margin-right: 0.8cm;
+    margin-top: 1cm;
+}

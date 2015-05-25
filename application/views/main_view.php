@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+<?php $this->load->view('header_view'); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>plugins/fancybox/jquery.fancybox.css" >
+<link href="<?php echo base_url(); ?>plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>plugins/datepicker/datepicker3.css" >
+<style type="text/css">
+.datepicker {z-index: 1151 !important;}
+</style>
+</head>
+
+<body class="skin-blue">
+	<div class="wrapper">
+	<?php $this->load->view('menu'); ?>
+	
+	
+	
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Dashboard
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+          </ol>
+        </section>
+
+        <!-- Main content -->
+          	<section class="content">
+
+            
+<?php 
+    
+    $dataset_seven = array();
+    foreach($sevenday as $loop) {
+        //echo $loop['date']."/".$loop['in']."/".$loop['outgood']."/".$loop['outfail']."<br>";
+        $dataset_seven[] = array($loop['date'], $loop['in'], $loop['outgood'], $loop['outfail']);
+    }
+
+    //print_r($dataset_seven);
+
+    $dataset1 = array();
+    $dataset_type = array();
+
+    $sum = 0;
+    foreach($gem_array as $loop) { 
+        /*
+        switch ($loop->typename) {
+            case 'Ruby': $color = '#FF0000'; break;
+            case 'Blue': $color = '#58ACFA'; break;
+            case 'Green': $color = '#31B404'; break;
+            case 'Yellow': $color = '#F4FA58'; break;
+            case 'Orange': $color = '#FE9A2E'; break;
+            case 'Purple': $color = '#AC58FA'; break;
+            case 'Pink': $color = '#F781D8'; break;
+            case 'Light Blue': $color = '#CEE3F6'; break;
+            case 'Bangacha': $color = '#31B404'; break;
+        }
+        $dataset_type[] = array('label' => $loop->typename, 'data' => $loop->count, 'color' => $color );
+        */
+        $dataset_type[] = array($loop->typename, $loop->count);
+
+        $sum += $loop->count;
+    }
+    foreach($station_array as $loop) { 
+        switch ($loop->number) {
+            case 5: $station = "บล็อกรูปร่าง"; break;
+            case 3: $station = "หน้ากระดาน"; break;
+            case 4: $station = "ติดแชล็ก"; break;
+            case 6: $station = "เจียหน้า"; break;
+            case 7: $station = "กลับติดก้นแชล็ก"; break;
+            case 8: $station = "บล็อกก้น"; break;
+            case 9: $station = "เจียก้น"; break;
+            case 11: $station = "QC หน้า"; break;
+            case 12: $station = "QC หลัง"; break;
+            case 16: $station = "ส่วนกลาง"; break;
+        }
+        $dataset1[] = array($station, $loop->count);
+    }
+
+if ($colorgraph>0) {
+    $dataset_color = array();
+    $sumcolor = 0;
+    foreach($process_array as $loop2) {
+        $x = 0;
+        foreach($color as $loop) {
+            if ($loop2->name == $loop->processname) {
+                $dataset_color[] = array($loop->processname, $loop->count, $loop->processid);
+                $x++;
+                $sumcolor += $loop->count;
+            }
+        }
+        if ($x<1) $dataset_color[] = array($loop2->name, 0, $loop2->id);
+    }
+}else{
+    $dataset_color = array();
+}
+
+
+?>
+        <div class="box-body">
+            <div class="row">
+                <section class="col-md-6 connectedSortable">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                              <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                  เลือก <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_1" data-toggle="tab">แยกตามสีในโรงงาน</a></li>
+                        <!--
+                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_2" data-toggle="tab">จำนวนเข้า-ออกแต่ละวัน</a></li>
+                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                                  <li role="presentation" class="divider"></li>
+                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                        -->
+                                </ul>
+                              </li>
+                              <li class="pull-right header">จำนวนของในโรงงานทั้งหมด <u><?php echo $sum; ?></u> ชิ้น</li>
+                            </ul>
+                            <div class="tab-content">
+                              <div class="tab-pane active" id="tab_1">
+                                <div id="bar-type" style="height: 300px;"></div>
+                                  <hr>
+                                <button type="button" class="btn btn-danger" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> &nbsp;&nbsp; <b>แสดงบาร์โค้ดในโรงงาน</b> </button>
+                              </div><!-- /.tab-pane -->
+                              <div class="tab-pane" id="tab_2">
+                                The European languages are members of the same family. Their separate existence is a myth.
+                                For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
+                                in their grammar, their pronunciation and their most common words. Everyone realizes why a
+                                new common language would be desirable: one could refuse to pay expensive translators. To
+                                achieve this, it would be necessary to have uniform grammar, pronunciation and more common
+                                words. If several languages coalesce, the grammar of the resulting language is more simple
+                                and regular than that of the individual languages.
+                              </div><!-- /.tab-pane -->
+                            </div><!-- /.tab-content -->
+                          </div><!-- nav-tabs-custom -->
+                        </section>
+                
+                <div class="col-md-3">
+                <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">จำนวนของในแต่ละ Station</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                  <div class="box-body">
+                  <div class="table-responsive">
+                    <table class="table no-margin">
+                      <thead>
+                        <tr>
+                          <th>สถานี</th>
+                          <th>จำนวน</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                    <?php
+
+                        $sum = 0;
+                        foreach($station_array as $loop) { 
+                            echo "<tr><td>";
+                            switch ($loop->number) {
+                                case 5: echo "บล็อกรูปร่าง"; break;
+                                case 3: echo "หน้ากระดาน"; break;
+                                case 4: echo "ติดแชล็ก"; break;
+                                case 6: echo "เจียหน้า"; break;
+                                case 7: echo "กลับติดก้นแชล็ก"; break;
+                                case 8: echo "บล็อกก้น"; break;
+                                case 9: echo "เจียก้น"; break;
+                                case 12: echo "QC หน้า"; break;
+                                case 13: echo "QC ก้น"; break;
+                                case 16: echo "ส่วนกลาง"; break;
+                            }
+                            echo "</td><td>";
+                                echo "<a href='".site_url('report/allBarcode_factory_task/'.$loop->number)."'>";
+                                echo $loop->count;
+                                echo "</a>";
+                                
+                            echo "</td></tr>";
+                            $sum += $loop->count;
+                        }
+                        //echo "<tr><th>รวมทั้งหมด</th><th>".$sum."</th></tr>";
+                    ?>
+                      </tbody>
+                    </table>
+                  </div><!-- /.table-responsive -->
+                </div><!-- /.box-body -->
+              </div>
+                </div> 
+                        
+            </div>  <!-- /div row -->
+                
+                </div>
+            <div class="row">
+            <?php if ($colorgraph > 0) { ?>
+            
+            <div class="col-md-3">
+                <div class="box box-primary" id="bar-color">
+                <div class="box-header with-border">
+                    เลือกสี <select onChange="window.location.href=this.value" class="form-control">
+
+                <?php
+                    $newline = 0;
+                    foreach($gem_array as $loop) { 
+                        //echo '&nbsp;&nbsp;&nbsp;<a href="'. site_url("main/index/".$loop->typeid).'#bar-color"><span>'.$loop->typename.'</span></a>&nbsp;&nbsp;&nbsp;|';
+                        if ($colorgraph==$loop->typeid) { 
+                            $colorname = $loop->typename;
+                            echo "<option value='".site_url("main/index/".$loop->typeid."#bar-color")."' selected>".$loop->typename."</option>";
+                        } else echo "<option value='".site_url("main/index/".$loop->typeid."#bar-color")."'>".$loop->typename."</option>";
+                        $newline++;
+                        //if ($newline % 3 == 0) echo "<br>";
+                    }
+                                  
+                ?></select><br>
+                  <h3 class="box-title">แสดงประเภทงานสี <?php echo $colorname; ?></h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                  <div class="box-body">
+<?php
+    for ($i=0; $i<count($dataset_color); $i++) {
+?>
+    <div class="progress-group">
+        <span class="progress-text"><a href="<?php echo site_url('report/allBarcode_factory_processcolor/'.$colorgraph.'/'.$dataset_color[$i][2]); ?>"><?php echo $dataset_color[$i][0]; ?></a></span>
+        <span class="progress-number"><?php echo "<b>".$dataset_color[$i][1]."</b> / ".$sumcolor; ?></span>
+        <div class="progress sm">
+            <div class="progress-bar progress-bar-blue" style="width: <?php echo $dataset_color[$i][1]*100/$sumcolor; ?>%"></div>
+        </div>
+    </div><!-- /.progress-group -->
+<?php           
+    }
+?>                      
+                </div><!-- /.box-body -->
+              </div>
+                </div> 
+                        
+            </div>  <!-- /div row -->
+            
+            <?php } ?>
+                <div class="col-md-6">
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                             <h3 class="box-title">แสดงของเข้า-ออก 7 วันล่าสุด</h3>
+                        </div>
+                        <div class="box-body chart-responsive">
+                            <div class="chart" id="bar-seven" style="height: 300px;"></div>
+                        </div>
+                        <div class="box-footer">
+                            <a data-toggle="modal" data-target="#myModal" class="btn btn-danger" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="" data-backdrop="static" data-keyboard="false">QC ไม่ผ่าน</a>
+                        </div>
+                        
+                        <!-- datepicker modal-->
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						
+						  <div class="modal-dialog modal-md">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">	                 	
+										<strong>เลือกช่วงวันที่ต้องการ</strong> 
+									</h4>
+								</div>            <!-- /modal-header -->
+								<div class="modal-body">
+									<form class="form-inline" role="form" action="<?php echo site_url("report/viewErrorBetween"); ?>" method="POST" target="_blank">
+									<div class="form-group">
+										<label for="">เริ่ม: </label>
+										<input type="text" class="form-control" id="startdate" name="startdate" />
+									</div>
+									<div class="form-group">
+										<label for=""> สิ้นสุด :</label>
+										<input type="text" class="form-control" id="enddate" name="enddate" />
+									</div>
+										
+								</div>            <!-- /modal-body -->
+							
+								<div class="modal-footer">
+                                    <a class="btn btn-success" href="<?php echo site_url("report/viewErrorBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a></button>
+										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
+										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
+								</div> 	
+								</form>								
+							</div>
+						</div>
+					</div>
+						
+                    </div>
+                    <!-- close modal -->
+                    </div>
+                </div>
+                </div>
+            </div>  <!-- div body -->
+        </section>
+          
+          
+          
+      </div>
+	</div>
+
+<?php $this->load->view('js_footer'); ?>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.pie.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.barnumbers.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/fancybox/jquery.fancybox.js"></script>
+<script src="<?php echo base_url(); ?>plugins/morris/raphael-min.js"></script>
+<script src="<?php echo base_url(); ?>plugins/morris/morris.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="<?php echo base_url(); ?>plugins/datepicker/bootstrap-datepicker-thai.js"></script>
+<script src="<?php echo base_url(); ?>plugins/datepicker/locales/bootstrap-datepicker.th.js"></script>
+<script type="text/javascript">
+
+      $(function () {
+        "use strict";
+        var bar_type = {
+          data: <?php echo json_encode($dataset_type); ?>,
+          color: "#FF0000"
+        };
+        $.plot("#bar-type", [bar_type], {
+          grid: {
+            borderWidth: 1,
+            borderColor: "#f3f3f3",
+            tickColor: "#f3f3f3"
+          },
+          bars: {
+              show: true,
+              showNumbers: true,
+              barWidth: 0.4,
+              align: "center",
+              numbers : {
+                    yAlign: function(y) { return y+50; }
+                }
+          },
+          xaxis: {
+            mode: "categories",
+            tickLength: 0
+          }
+          
+        });
+          
+        //BAR CHART
+        var bar = new Morris.Bar({
+          element: 'bar-seven',
+          resize: true,
+          data: [
+            {y: <?php echo json_encode($dataset_seven[6][0]); ?>, a: <?php echo json_encode($dataset_seven[6][1]); ?>, b: <?php echo json_encode($dataset_seven[6][2]); ?>, c: <?php echo json_encode($dataset_seven[6][3]); ?>},
+            {y: <?php echo json_encode($dataset_seven[5][0]); ?>, a: <?php echo json_encode($dataset_seven[5][1]); ?>, b: <?php echo json_encode($dataset_seven[5][2]); ?>, c: <?php echo json_encode($dataset_seven[5][3]); ?>},
+            {y: <?php echo json_encode($dataset_seven[4][0]); ?>, a: <?php echo json_encode($dataset_seven[4][1]); ?>, b: <?php echo json_encode($dataset_seven[4][2]); ?>, c: <?php echo json_encode($dataset_seven[4][3]); ?>},
+            {y: <?php echo json_encode($dataset_seven[3][0]); ?>, a: <?php echo json_encode($dataset_seven[3][1]); ?>, b: <?php echo json_encode($dataset_seven[3][2]); ?>, c: <?php echo json_encode($dataset_seven[3][3]); ?>},
+            {y: <?php echo json_encode($dataset_seven[2][0]); ?>, a: <?php echo json_encode($dataset_seven[2][1]); ?>, b: <?php echo json_encode($dataset_seven[2][2]); ?>, c: <?php echo json_encode($dataset_seven[2][3]); ?>},
+            {y: <?php echo json_encode($dataset_seven[1][0]); ?>, a: <?php echo json_encode($dataset_seven[1][1]); ?>, b: <?php echo json_encode($dataset_seven[1][2]); ?>, c: <?php echo json_encode($dataset_seven[1][3]); ?>},
+            {y: <?php echo json_encode($dataset_seven[0][0]); ?>, a: <?php echo json_encode($dataset_seven[0][1]); ?>, b: <?php echo json_encode($dataset_seven[0][2]); ?>, c: <?php echo json_encode($dataset_seven[0][3]); ?>}
+          ],
+          barColors: ['#00a65a', '#5555FF','#FF0000'],
+          xkey: 'y',
+          ykeys: ['a', 'b', 'c'],
+          labels: ['ของเข้า', 'QC ผ่าน', 'QC ไม่ผ่าน'],
+          hideHover: 'auto',
+          xLabelAngle: 30
+        });
+          
+        /*  
+        var bar_color = {
+          data: <?php echo json_encode($dataset_color); ?>,
+          color: "#0000FF"
+        };
+        $.plot("#bar-color", [bar_color], {
+          grid: {
+            borderWidth: 1,
+            borderColor: "#f3f3f3",
+            tickColor: "#f3f3f3"
+          },
+          bars: {
+              show: true,
+              showNumbers: true,
+              barWidth: 0.4,
+              align: "center",
+              numbers : {
+                    yAlign: function(y) { return y+40; }
+                }
+          },
+          xaxis: {
+            mode: "categories",
+            tickLength: 0
+          }
+          
+        });
+        */
+
+    });
+    
+$(document).ready(function()
+{
+    get_datepicker("#startdate");
+    get_datepicker("#enddate");
+    
+    $('#fancyboxall').fancybox({ 
+    'width': '60%',
+    'height': '60%', 
+    'autoScale':false,
+    'transitionIn':'none', 
+    'transitionOut':'none', 
+    'type':'iframe'}); 
+});
+
+function get_datepicker(id)
+{
+
+	$(id).datepicker({ language:'th-th',format:'dd/mm/yyyy'
+		    });
+
+}
+    // tooltip demo
+    $('.tooltip-demo').tooltip({
+        selector: "[rel=tooltip]",
+        container: "body"
+    })
+</script>
+</body>
+</html>
