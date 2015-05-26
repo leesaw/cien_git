@@ -102,10 +102,10 @@ Class Report_model extends CI_Model
     $result = array();
     foreach ($day as $loop) {
         $where = "DATE(dateadd) = '".$loop."'";
-        $query = $this->db->query("select aa.date as d,aa.cc as ac,bb.cc as bc, ee.cc as ec from (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=1 and ".$where.") as aa, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=2 and ".$where.") as bb, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(sum(amount),0) as cc FROM gemstone where ".$where.") as ee");
+        $query = $this->db->query("select aa.date as d,aa.cc as ac,bb.cc as bc, ee.cc as ec, ff.cc as fc from (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=1 and ".$where.") as aa, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=2 and ".$where.") as bb, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=4 and ".$where.") as ff, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(sum(amount),0) as cc FROM gemstone where ".$where.") as ee");
         foreach ($query->result() as $row)
         {
-           $result[] = array("date" => $row->d, "in" => $row->ec, "outgood" => $row->ac, "outfail" => $row->bc);
+           $result[] = array("date" => $row->d, "in" => $row->ec, "outgood" => $row->ac, "outfail" => $row->bc, "outreturn" => $row->fc);
         }
     }
      
@@ -117,8 +117,8 @@ Class Report_model extends CI_Model
     $this->db->select('count(*) as count');
     $this->db->from('gemstone_qc');
     $this->db->where('status', 2);
-    $this->db->like('detail', $error);
-    $this->db->where("dateadd between '".$start."' AND '".$end."'", NULL, FALSE);
+    $this->db->like('detail', $error, 'after');
+    $this->db->where("dateadd between '".$start." 00:00:00' AND '".$end." 23:59:59'", NULL, FALSE);
     $query = $this->db->get();		
 	return $query->result(); 
  }
@@ -128,7 +128,7 @@ Class Report_model extends CI_Model
     $this->db->select('count(*) as count');
     $this->db->from('gemstone_qc');
     $this->db->where('status', 2);
-    $this->db->like('detail', $error);
+    $this->db->like('detail', $error, 'after');
     $query = $this->db->get();		
 	return $query->result();
  }
@@ -142,7 +142,7 @@ Class Report_model extends CI_Model
     $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
     $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
     $this->db->where('gemstone_qc.status', 2);
-    $this->db->like('gemstone_qc.detail', $error);
+    $this->db->like('gemstone_qc.detail', $error, 'after');
     $query = $this->db->get();
 	return $query->result();
  }
@@ -156,8 +156,23 @@ Class Report_model extends CI_Model
     $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
     $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
     $this->db->where('gemstone_qc.status', 2);
-    $this->db->like('gemstone_qc.detail', $error);
-    $this->db->where("gemstone_qc.dateadd between '".$start."' AND '".$end."'", NULL, FALSE);
+    $this->db->like('gemstone_qc.detail', $error, 'after');
+    $this->db->where("gemstone_qc.dateadd between '".$start." 00:00:00' AND '".$end." 23:59:59'", NULL, FALSE);
+    $query = $this->db->get();
+	return $query->result();
+ }
+    
+ function getAllParcel_factory()
+ {
+    $this->db->select('gemstone.id as gemid, supplier.name as supname, number, lot, color, gemstone_type.name as gemtype, gemstone.size_out as size_out, size_in, carat, amount, gemstone.dateadd as dateadd, min(no) as _min, max(no) as _max, process_type.name as process_name, process_detail, count(gemstone_barcode.id) as waiting');
+    $this->db->from('gemstone');
+    $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
+    $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
+    $this->db->join('gemstone_barcode', 'gemstone_barcode.gemstone_id=gemstone.id', 'left');
+    $this->db->join('process_type', 'process_type.id = gemstone.process_type', 'left');
+    $this->db->group_by('gemstone.id');
+    $this->db->where('disable',0);
+    $this->db->where("(pass =0 OR pass =3)", NULL, FALSE);
     $query = $this->db->get();
 	return $query->result();
  }

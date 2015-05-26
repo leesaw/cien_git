@@ -549,11 +549,10 @@ Class Gemstone_model extends CI_Model
     
  function getCountQC($id,$status)
  {
-	$this->db->select("gemstone_qc.id");
-	$this->db->from('gemstone_qc');	
-    $this->db->join('gemstone_barcode','gemstone_barcode.id=gemstone_qc.barcode','left');
+	$this->db->select("gemstone_barcode.id");
+    $this->db->from('gemstone_barcode');
     $this->db->join('gemstone','gemstone.id=gemstone_barcode.gemstone_id','left');
-	$this->db->where('gemstone_qc.status', $status);
+	$this->db->where('gemstone_barcode.pass', $status);
     $this->db->where('gemstone.id',$id);
 	$query = $this->db->get();		
 	return $query->num_rows();

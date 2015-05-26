@@ -1064,6 +1064,7 @@ class Gemstone extends CI_Controller {
         
         $data['qc_ok'] = $this->gemstone_model->getCountQC($id,1);
         $data['qc_not'] = $this->gemstone_model->getCountQC($id,2);
+        $data['qc_return'] = $this->gemstone_model->getCountQC($id,4);
         
         $query = $this->gemstone_model->getNumberRange($id);
         foreach ($query as $loop) { $data['minno'] = $loop->_min; $data['maxno'] = $loop->_max; }
@@ -1095,6 +1096,7 @@ class Gemstone extends CI_Controller {
         
         $data['qc_ok'] = $this->gemstone_model->getCountQC($id,1);
         $data['qc_not'] = $this->gemstone_model->getCountQC($id,2);
+        $data['qc_return'] = $this->gemstone_model->getCountQC($id,4);
         
         $query = $this->gemstone_model->getNumberRange($id);
         foreach ($query as $loop) { $data['minno'] = $loop->_min; $data['maxno'] = $loop->_max; }

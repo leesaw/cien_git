@@ -36,7 +36,7 @@
     $dataset_seven = array();
     foreach($sevenday as $loop) {
         //echo $loop['date']."/".$loop['in']."/".$loop['outgood']."/".$loop['outfail']."<br>";
-        $dataset_seven[] = array($loop['date'], $loop['in'], $loop['outgood'], $loop['outfail']);
+        $dataset_seven[] = array($loop['date'], $loop['in'], $loop['outgood'], $loop['outfail'], $loop['outreturn']);
     }
 
     //print_r($dataset_seven);
@@ -125,7 +125,8 @@ if ($colorgraph>0) {
                               <div class="tab-pane active" id="tab_1">
                                 <div id="bar-type" style="height: 300px;"></div>
                                   <hr>
-                                <button type="button" class="btn btn-danger" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> &nbsp;&nbsp; <b>แสดงบาร์โค้ดในโรงงาน</b> </button>
+                                <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> &nbsp;&nbsp; แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;
+                                <button type="button" class="btn bg-navy" onClick="window.location.href='<?php echo site_url("report/allParcel_factory"); ?>'"> <i class="fa fa-archive"></i> &nbsp;&nbsp; แสดงชุดวัตถุดิบในโรงงาน </button>
                               </div><!-- /.tab-pane -->
                               <div class="tab-pane" id="tab_2">
                                 The European languages are members of the same family. Their separate existence is a myth.
@@ -247,7 +248,8 @@ if ($colorgraph>0) {
                             <div class="chart" id="bar-seven" style="height: 300px;"></div>
                         </div>
                         <div class="box-footer">
-                            <a data-toggle="modal" data-target="#myModal" class="btn btn-danger" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="" data-backdrop="static" data-keyboard="false">QC ไม่ผ่าน</a>
+                            <a data-toggle="modal" data-target="#myModal" class="btn btn-danger" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="" data-backdrop="static" data-keyboard="false"><i class="fa fa-bar-chart"></i> แสดงเหตุผล QC ไม่ผ่าน</a> &nbsp;&nbsp;
+                            <a class="btn bg-purple" href="<?php echo site_url("report/allBarcode_return"); ?>"><i class="fa fa-table"></i> แสดงวัตถุดิบไม่เหมาะสม</a>
                         </div>
                         
                         <!-- datepicker modal-->
@@ -275,7 +277,7 @@ if ($colorgraph>0) {
 								</div>            <!-- /modal-body -->
 							
 								<div class="modal-footer">
-                                    <a class="btn btn-success" href="<?php echo site_url("report/viewErrorBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a></button>
+                                    <a class="btn btn-success pull-left" href="<?php echo site_url("report/viewErrorBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a></button>
 										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
 										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
 								</div> 	
@@ -329,7 +331,7 @@ if ($colorgraph>0) {
               barWidth: 0.4,
               align: "center",
               numbers : {
-                    yAlign: function(y) { return y+50; }
+                    yAlign: function(y) { return y+100; }
                 }
           },
           xaxis: {
@@ -344,49 +346,22 @@ if ($colorgraph>0) {
           element: 'bar-seven',
           resize: true,
           data: [
-            {y: <?php echo json_encode($dataset_seven[6][0]); ?>, a: <?php echo json_encode($dataset_seven[6][1]); ?>, b: <?php echo json_encode($dataset_seven[6][2]); ?>, c: <?php echo json_encode($dataset_seven[6][3]); ?>},
-            {y: <?php echo json_encode($dataset_seven[5][0]); ?>, a: <?php echo json_encode($dataset_seven[5][1]); ?>, b: <?php echo json_encode($dataset_seven[5][2]); ?>, c: <?php echo json_encode($dataset_seven[5][3]); ?>},
-            {y: <?php echo json_encode($dataset_seven[4][0]); ?>, a: <?php echo json_encode($dataset_seven[4][1]); ?>, b: <?php echo json_encode($dataset_seven[4][2]); ?>, c: <?php echo json_encode($dataset_seven[4][3]); ?>},
-            {y: <?php echo json_encode($dataset_seven[3][0]); ?>, a: <?php echo json_encode($dataset_seven[3][1]); ?>, b: <?php echo json_encode($dataset_seven[3][2]); ?>, c: <?php echo json_encode($dataset_seven[3][3]); ?>},
-            {y: <?php echo json_encode($dataset_seven[2][0]); ?>, a: <?php echo json_encode($dataset_seven[2][1]); ?>, b: <?php echo json_encode($dataset_seven[2][2]); ?>, c: <?php echo json_encode($dataset_seven[2][3]); ?>},
-            {y: <?php echo json_encode($dataset_seven[1][0]); ?>, a: <?php echo json_encode($dataset_seven[1][1]); ?>, b: <?php echo json_encode($dataset_seven[1][2]); ?>, c: <?php echo json_encode($dataset_seven[1][3]); ?>},
-            {y: <?php echo json_encode($dataset_seven[0][0]); ?>, a: <?php echo json_encode($dataset_seven[0][1]); ?>, b: <?php echo json_encode($dataset_seven[0][2]); ?>, c: <?php echo json_encode($dataset_seven[0][3]); ?>}
+            {y: <?php echo json_encode($dataset_seven[6][0]); ?>, a: <?php echo json_encode($dataset_seven[6][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[6][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[6][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[6][4], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[5][0]); ?>, a: <?php echo json_encode($dataset_seven[5][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[5][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[5][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[5][4], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[4][0]); ?>, a: <?php echo json_encode($dataset_seven[4][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[4][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[4][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[4][4], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[3][0]); ?>, a: <?php echo json_encode($dataset_seven[3][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[3][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[3][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[3][4], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[2][0]); ?>, a: <?php echo json_encode($dataset_seven[2][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[2][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[2][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[2][4], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[1][0]); ?>, a: <?php echo json_encode($dataset_seven[1][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[1][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[1][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[1][4], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[0][0]); ?>, a: <?php echo json_encode($dataset_seven[0][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[0][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[0][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[0][4], JSON_NUMERIC_CHECK); ?>}
           ],
-          barColors: ['#00a65a', '#5555FF','#FF0000'],
+          barColors: ['#00a65a', '#5555FF','#FF0000', '#AC58FA'],
           xkey: 'y',
-          ykeys: ['a', 'b', 'c'],
-          labels: ['ของเข้า', 'QC ผ่าน', 'QC ไม่ผ่าน'],
+          ykeys: ['a', 'b', 'c', 'd'],
+          labels: ['ของเข้า', 'QC ผ่าน', 'QC ไม่ผ่าน', 'วัตถุดิบไม่เหมาะสม'],
           hideHover: 'auto',
           xLabelAngle: 30
         });
           
-        /*  
-        var bar_color = {
-          data: <?php echo json_encode($dataset_color); ?>,
-          color: "#0000FF"
-        };
-        $.plot("#bar-color", [bar_color], {
-          grid: {
-            borderWidth: 1,
-            borderColor: "#f3f3f3",
-            tickColor: "#f3f3f3"
-          },
-          bars: {
-              show: true,
-              showNumbers: true,
-              barWidth: 0.4,
-              align: "center",
-              numbers : {
-                    yAlign: function(y) { return y+40; }
-                }
-          },
-          xaxis: {
-            mode: "categories",
-            tickLength: 0
-          }
-          
-        });
-        */
 
     });
     

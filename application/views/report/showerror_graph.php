@@ -36,6 +36,8 @@
                         </div>
                     </div>
                 </div>
+        </div>
+        <div class="row">
             <div class="col-md-8">
                 <div class="box box-danger">
 
@@ -43,7 +45,7 @@
         <div class="box-body">
             
         <div class="row">
-			<div class="col-xs-10">
+			<div class="col-xs-12">
                 <div class="panel panel-default">
 					<div class="panel-heading"></div>
                     <div class="panel-body">
@@ -53,8 +55,8 @@
                                         <th width="150">Barcode</th>
                                         <th>เลขที่ ลำดับ</th>
                                         <th>ชนิด</th>
-                                        <th width="150">สาเหตุ</th>
-										<th width="100"> </th>
+                                        <th width="300">สาเหตุ</th>
+										<th width="50"> </th>
                                     </tr>
                                 </thead>
                                 

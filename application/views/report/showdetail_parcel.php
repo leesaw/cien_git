@@ -127,27 +127,33 @@
                 </div>
             </div>
         <div class="row">
-                    <div class="col-sm-3 col-xs-4 bg-blue">
+                    <div class="col-sm-2 col-xs-3 bg-blue">
                       <div class="description-block border-right">
                         <h3 class="description-header"><?php echo $amount; ?> เม็ด</h3>
                         <span class="description-text">ส่งเข้าโรงงาน</span>
                       </div><!-- /.description-block -->
                     </div><!-- /.col -->
-                    <div class="col-sm-3 col-xs-4 bg-green">
+                    <div class="col-sm-2 col-xs-3 bg-green">
                       <div class="description-block border-right">
                         <h3 class="description-header"><?php echo $qc_ok; ?> เม็ด</h3>
                         <span class="description-text">รับจากโรงงาน (ใช้ได้)</span>
                       </div><!-- /.description-block -->
                     </div><!-- /.col -->
-                    <div class="col-sm-3 col-xs-4 bg-red">
+                    <div class="col-sm-2 col-xs-3 bg-red">
                       <div class="description-block border-right">
                         <h3 class="description-header"><?php echo $qc_not; ?> เม็ด</h3>
                         <span class="description-text">จำนวนที่ใช้ไม่ได้</span>
                       </div><!-- /.description-block -->
                     </div><!-- /.col -->
-                    <div class="col-sm-3 col-xs-4 bg-purple">
+                    <div class="col-sm-2 col-xs-3 bg-purple">
+                      <div class="description-block border-right">
+                        <h3 class="description-header"><?php echo $qc_return; ?> เม็ด</h3>
+                        <span class="description-text">จำนวนที่วัตถุดิบไม่เหมาะสม</span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-2 col-xs-3 bg-orange">
                       <div class="description-block">
-                        <h3 class="description-header"><?php echo $amount-$qc_ok-$qc_not; ?> เม็ด</h3>
+                        <h3 class="description-header"><?php echo $amount-$qc_ok-$qc_not-$qc_return; ?> เม็ด</h3>
                         <span class="description-text">จำนวนที่เหลือ</span>
                       </div><!-- /.description-block -->
                     </div>

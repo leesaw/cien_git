@@ -47,6 +47,14 @@
 
 
 						</div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                    <div class="form-group">
+                                        <a href="<?php echo site_url("gemstone/qctemp/4"); ?>"><button type="button" class="btn bg-purple btn-lg btn-block"><b>วัตถุดิบไม่เหมาะสม</b> </button></a>
+                                    </div>
+                            </div> 
+                        </div>
 					</div>
                     <div class="box-footer">
                         

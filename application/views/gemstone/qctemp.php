@@ -18,6 +18,7 @@
                                     case 1: $process = "ผ่าน (OK)"; break;
                                     case 2: $process = "ไม่ผ่าน (Not Pass)"; break;
                                     case 3: $process = "ซ่อม"; break;
+                                    case 4: $process = "วัตถุดิบไม่เหมาะสม"; break;
                                     default: $process = "";
                                   }
                                 echo $process;
@@ -74,7 +75,7 @@
                                     
 								?>
 									<td><?php echo $i; ?></td>
-									<<td><?php echo $loop->tbarcode."-".$loop->supname.$loop->lot."-".$loop->number."(#".$loop->no.")"." ".$loop->typename; ?></td>
+									<td><?php echo $loop->tbarcode."-".$loop->supname.$loop->lot."-".$loop->number."(#".$loop->no.")"." ".$loop->typename; ?></td>
 									<td width="50">
 									<button type="button" class="btnDelete btn btn-danger btn-xs" onclick="del_confirm(<?php echo $loop->tempid; ?>,<?php echo $taskid; ?>)" data-title="Delete" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล"><span class="glyphicon glyphicon-remove"></span></button>
 									</td>
@@ -136,6 +137,16 @@
                                 <input type="text" class="form-control" name="detail" id="detail" value="<?php echo set_value('lot'); ?>">
                             </div>
                         </div>
+                    </div> 
+                <?php }else if ($taskid==4) { ?>  
+                    <div class="row">
+                        <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>รายละเอียด</label>
+                                        <form method="post" action="<?php echo site_url('gemstone/saveTemptoQC/'.$taskid); ?>" onSubmit="return chk_error()">
+                                        <input type="text" class="form-control" name="detail" id="detail" value="">
+                                    </div>
+				        </div>
                     </div> 
                 <?php } ?>
 					</div>

@@ -35,6 +35,26 @@ class Report extends CI_Controller {
 		$this->load->view('report/allparcel',$data);
     }
     
+    function allParcel_factory()
+    {
+        $query = $this->gemstone_model->getGemstoneType();
+		if($query){
+			$data['type_array'] =  $query;
+		}else{
+			$data['type_array'] = array();
+		}
+        
+        $query = $this->report_model->getAllParcel_factory();
+		if($query){
+			$data['parcel_array'] =  $query;
+		}else{
+			$data['parcel_array'] = array();
+		}
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Show Parcel";
+		$this->load->view('report/allparcel_factory',$data);
+    }
+    
     function allparcel_color()
     {
         $color = $this->uri->segment(3);
@@ -85,6 +105,7 @@ class Report extends CI_Controller {
         
         $data['qc_ok'] = $this->gemstone_model->getCountQC($id,1);
         $data['qc_not'] = $this->gemstone_model->getCountQC($id,2);
+        $data['qc_return'] = $this->gemstone_model->getCountQC($id,4);
         
         $query = $this->gemstone_model->getNumberRange($id);
         foreach ($query as $loop) { $data['minno'] = $loop->_min; $data['maxno'] = $loop->_max; }
@@ -164,6 +185,30 @@ class Report extends CI_Controller {
         ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
         ->where('disable',0)
         ->where('(pass=0 OR pass=3)')
+		->edit_column("bid",'<div class="tooltip-demo">
+	<a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
+	</div>',"bid");
+		/* ->edit_column("bid",'<div class="tooltip-demo">
+	<a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
+	<a href="'.site_url("gemstone/printbarcode_one/$1").'" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="tooltip" data-target="#edit" data-placement="top" rel="tooltip" title="Print"><span class="glyphicon glyphicon-print"></span></a>
+	</div>',"bid"); */
+
+        
+		echo $this->datatables->generate(); 
+	}
+    
+    function ajaxGetAllBarcodeReturn()
+	{
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone.dateadd as gemdate, gemstone_qc.detail as gemdetail, gemstone_barcode.id as bid", FALSE)
+		->from('gemstone_barcode')
+        ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
+        ->join('supplier', 'gemstone.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
+        ->join('gemstone_qc', 'gemstone_qc.barcode=gemstone_barcode.id', 'left')
+        ->where('disable',0)
+        ->where('pass', 4)
 		->edit_column("bid",'<div class="tooltip-demo">
 	<a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
 	</div>',"bid");
@@ -353,5 +398,10 @@ class Report extends CI_Controller {
         $data['table'] = $table;
         $data['title'] = "Cien|Gemstone Tracking System - Show Errors";
 		$this->load->view('report/showerror_graph',$data);
+    }
+    
+    function allBarcode_return() {
+        $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
+		$this->load->view('report/allbarcode_return',$data);
     }
 }
