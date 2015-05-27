@@ -65,7 +65,7 @@
             <?php if (($this->session->userdata('sessstatus') == 4) || ($this->session->userdata('sessstatus') == 1)) { ?>
             <li>
               <a href="<?php echo site_url("purchase/addgems"); ?>">
-                <i class="fa fa-file-text-o"></i> <span>Add Parcel Detail</span>
+                <i class="fa fa-file-text-o"></i> <span>Add Stone Detail</span>
               </a>
             </li>
             <li>

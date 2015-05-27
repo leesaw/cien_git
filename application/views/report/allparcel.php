@@ -160,6 +160,8 @@
 <script src="<?php echo base_url(); ?>plugins/fancybox/jquery.fancybox.js"></script>
 <script type="text/javascript">
 $(function() {
+    $('#tablebarcode').dataTable();
+    
     $("#datepicker").datepicker( {
         format: "mm-yyyy",
         viewMode: "months", 
@@ -168,9 +170,7 @@ $(function() {
 });
 $(document).ready(function()
 {
-    $("#tablebarcode").dataTable( {
-
-    } );
+    
     
     $('#fancyboxall').fancybox({ 
     'width': '85%',

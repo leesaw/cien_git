@@ -46,7 +46,7 @@ Class Report_model extends CI_Model
  function getAllStationInFactory()
  {
     $query = $this->db->query('select * from (    
-    select 16 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2!=1 and pass !=1 and pass!=2 and disable=0
+    select 16 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2!=1 and (pass=0 or pass=3) and disable=0
     union all
     select 4,count(task4) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task4=1 and pass=0 and disable=0
     union all
