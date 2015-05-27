@@ -2,6 +2,25 @@
 <html>
 <head>
 <?php $this->load->view('header_view'); ?>
+<style type='text/css'>
+    #top,
+	#bottom {
+		position: fixed;
+		left: 0;
+		right: 0;
+		height: 50%;
+	}
+	
+	#top {
+		top: 0;
+		background-color: orange;
+	}
+	
+	#bottom {
+		bottom: 0;
+		background-color: green;
+	}
+</style>
 </head>
 
 <body>
@@ -24,11 +43,19 @@
             }
         }
 ?>
-<div class='barcodecell' align="center"><barcode code='<?php echo $barcode_print; ?>' type="C39" size="1" text='1' height="1" class='barcode' /></div>
+<div id="top">
+	
+<div class='barcodecell' align="left"><barcode code='<?php echo $barcode_print; ?>' type="C39" size="1" text='1' height="1" class='barcode' /></div>
 <table border="1">
 
 </table>
+</div>
+<div id="bottom">
+<div class='barcodecell' align="left"><barcode code='<?php echo $barcode_print; ?>' type="C39" size="1" text='1' height="1" class='barcode' /></div>
+<table border="1">
 
+</table>
+</div>
 <?php $this->load->view('js_footer2'); ?>
 
 <script src="<?php echo base_url(); ?>plugins/jquery-barcode.min.js"></script>
