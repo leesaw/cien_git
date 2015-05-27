@@ -221,7 +221,7 @@ class Purchase extends CI_Controller {
         $label = $this->uri->segment(4);
 		
 		$this->load->library('mpdf/mpdf');                
-        $mpdf = new mPDF('th','A4','','' , 1 , 0 , 3 , 0 , 0 , 0); 
+        $mpdf = new mPDF('th','A4'); 
 		$stylesheet = file_get_contents('application/libraries/mpdf/css/style.css');
 
 		$query = $this->gemstone_model->getGemstone($id);
