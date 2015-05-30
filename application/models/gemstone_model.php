@@ -558,5 +558,20 @@ Class Gemstone_model extends CI_Model
 	return $query->num_rows();
  }
     
+ function checkProcessName($name)
+ {
+    $this->db->select("id");
+	$this->db->from('process_type');		
+	$this->db->where('name', $name);
+	$query = $this->db->get();		
+	return $query->num_rows();
+ }
+    
+ function addProcess($process=NULL)
+ {		
+	$this->db->insert('process_type', $process);
+	return $this->db->insert_id();			
+ }
+    
 }
 ?>

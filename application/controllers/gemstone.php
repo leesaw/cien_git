@@ -1157,4 +1157,19 @@ class Gemstone extends CI_Controller {
         $data['title'] = "Cien|Gemstone Tracking System - Show Barcode Detail";
 		$this->load->view('gemstone/showdetail_barcode',$data);
     }
+    
+    function addNewProcesstype()
+    {
+        $name = $this->input->post('process');
+        //return false;
+        $count = $this->gemstone_model->checkProcessName($name);
+        //return false;
+        if ($count<=0) {
+            $process = array('name' => $name);
+            $query = $this->gemstone_model->addProcess($process);
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
 }

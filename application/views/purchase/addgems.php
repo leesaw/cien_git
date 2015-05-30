@@ -111,7 +111,7 @@
                         <div class="row">    
                             <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>ประเภทงาน *</label>
+                                        <label>ประเภทงาน *</label> <button type="button" class="btn btn-primary btn-xs" onClick="add_processtype();"> <i class="fa fa-plus"></i> เพิ่มประเภทงาน</button>
                                         <select class="form-control" name="process_id" id="process_id">
 										<?php 	if(is_array($process_array)) {
 												foreach($process_array as $loop){

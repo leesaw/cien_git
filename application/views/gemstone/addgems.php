@@ -34,7 +34,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Supplier *</label> <button type="button" class="btn btn-success btn-xs" onClick="add_supplier();"> <i class="fa fa-plus"></i> เพิ่ม Supplier</button>
+                                        <label>Supplier *</label> <button type="button" class="btn btn-primary btn-xs" onClick="add_supplier();"> <i class="fa fa-plus"></i> เพิ่ม Supplier</button>
                                         <select class="form-control" name="supplierid" id="supplierid">
 										<?php 	if(is_array($supplier_array)) {
 												foreach($supplier_array as $loop){
@@ -111,7 +111,7 @@
                         <div class="row">    
                             <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>ประเภทงาน *</label>
+                                        <label>ประเภทงาน *</label> <button type="button" class="btn btn-success btn-xs" onClick="add_processtype();"> <i class="fa fa-plus"></i> เพิ่มประเภทงาน</button>
                                         <select class="form-control" name="process_id" id="process_id">
 										<?php 	if(is_array($process_array)) {
 												foreach($process_array as $loop){
@@ -220,6 +220,25 @@
                             'url' : '<?php echo site_url('suppliers/addNewSupplier'); ?>',
                             'type':'post',
                             'data': { supplier:name },
+                            'success' : function(data){
+                                window.location.reload();
+                            }
+                        }); 
+
+                }else if (result =="") {
+                    alert('ไม่สามารถเพิ่มข้อมูลได้');
+                }
+            });
+        }
+        
+        function add_processtype() {
+            bootbox.prompt("ป้อนชื่อประเภทงานใหม่", function(result) {       
+                if (result != null && result !="") {                                                                        
+                    var name = result;
+                    $.ajax({
+                            'url' : '<?php echo site_url('gemstone/addNewProcesstype'); ?>',
+                            'type':'post',
+                            'data': { process:name },
                             'success' : function(data){
                                 window.location.reload();
                             }
