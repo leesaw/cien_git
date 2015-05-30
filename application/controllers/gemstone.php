@@ -12,8 +12,6 @@ class Gemstone extends CI_Controller {
 	function index()
 	{
 
-		
-	 
 	}
 		
 	function addgems()
