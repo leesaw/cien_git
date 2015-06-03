@@ -4,13 +4,36 @@
 <?php $this->load->view('header_view'); ?>
 <link href="<?php echo base_url(); ?>plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>plugins/fancybox/jquery.fancybox.css" >
+<link href="<?php echo base_url(); ?>plugins/morris/morris.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="skin-blue">
 	<div class="wrapper">
 	<?php $this->load->view('menu'); ?>
-    <?php $url = site_url("gemstone/deletegem"); ?>
+
+<?php 
+    $dataset_color = array();
+    $num = 0;
+
+    foreach($gemtype as $alltype) {
+        $checkcolor = 0;
+        foreach($countcolor as $loop) {
+            if ($alltype->id == $loop->typeid) { 
+                $checkcolor++;
+                $dataset_color[] = array($loop->typename, $loop->count);
+                break;
+            }
+        }
+        if($checkcolor==0) {
+            $dataset_color[] = array($alltype->name, 0);
+        }
+        $num++;
+    }
+print_r($dataset_color);
+?>
 	
+        
+        
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -38,6 +61,16 @@
     </section>
 	
 	<section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-body chart-responsive">
+                            <div class="chart" id="bar-color" style="height: 300px;"></div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+        </div>
 		<div class="row">
             <div class="col-lg-12">
                 <div class="box box-danger">
@@ -114,6 +147,13 @@
 <script src="<?php echo base_url(); ?>plugins/datatables/dataTables.bootstrap.js"></script>
 <script src="<?php echo base_url(); ?>plugins/bootbox.min.js"></script>
 <script src="<?php echo base_url(); ?>plugins/fancybox/jquery.fancybox.js"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.pie.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.barnumbers.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/morris/raphael-min.js"></script>
+<script src="<?php echo base_url(); ?>plugins/morris/morris.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function()
 {    
@@ -144,20 +184,35 @@ $(document).ready(function()
     'transitionIn':'none', 
     'transitionOut':'none', 
     'type':'iframe'}); 
+    
+    var bar_type = {
+          data: <?php echo json_encode($dataset_color); ?>,
+          color: "#0174DF"
+        };
+        $.plot("#bar-color", [bar_type], {
+          grid: {
+            borderWidth: 1,
+            borderColor: "#f3f3f3",
+            tickColor: "#f3f3f3"
+          },
+          bars: {
+              show: true,
+              showNumbers: true,
+              barWidth: 0.4,
+              align: "center",
+              numbers : {
+                    yAlign: function(y) { return y+0; }
+                }
+          },
+          xaxis: {
+            mode: "categories",
+            tickLength: 0
+          }
+          
+        });
+    
 });
     
-function del_confirm(val1) {
-	bootbox.confirm("ต้องการลบข้อมูลที่เลือกไว้ใช่หรือไม่ ?", function(result) {
-				var currentForm = this;
-				var myurl = <?php echo json_encode($url); ?>;
-            	if (result) {
-				
-					window.location.replace(myurl+"/"+val1);
-				}
-
-		});
-
-}
 
 
 $(".alert").alert();

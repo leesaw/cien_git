@@ -72,8 +72,8 @@
             <?php } ?>
             <?php if ($this->session->userdata('sessstatus') <= 2) { ?>
             <li>
-              <a href="<?php echo site_url("gemstone/addgems"); ?>">
-                <i class="fa fa-file-text-o"></i> <span>สร้างบาร์โค้ด</span>
+              <a href="<?php echo site_url("purchase/createbarcode");  //echo site_url("gemstone/addgems"); ?>">
+                <i class="fa fa-file-text-o"></i> <span>พิมพ์บาร์โค้ด</span>
               </a>
             </li>
             <li>
@@ -81,13 +81,6 @@
                 <i class="fa fa-refresh"></i> <span>เบิก/คืนของ</span>
               </a>
             </li>
-            <!--
-            <li>
-              <a href="<?php echo site_url("gemstone/showparcel"); ?>">
-                <i class="fa fa-bars"></i> <span>ห่อทั้งหมด</span>
-              </a>
-            </li>
-            -->
             <li>
               <a href="<?php echo site_url("gemstone/qcgems"); ?>">
                 <i class="fa fa-check-square-o"></i> <span>QC ออกจากโรงงาน</span>

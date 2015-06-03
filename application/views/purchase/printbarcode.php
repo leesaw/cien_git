@@ -38,6 +38,8 @@
                 $carat = $loop->carat;
                 $process_name = $loop->process_name;
                 $process_detail = $loop->process_detail;
+                $phpdate = strtotime($loop->gemdate);
+                $date = date( 'j M Y', $phpdate );
             }
         }
 ?>
@@ -47,7 +49,7 @@
 
 <hr>
 <table>
-    <tr><td width="200">Supplier/Lot : <?php echo $supplier.$lot; ?></td><td width="150">Number : <?php echo $number; ?></td><td width="150">Quantity : <?php echo $amount; ?></td><td width="150">Carat : <?php echo $carat; ?></td>
+    <tr><td width="200">Supplier/Lot : <?php echo $supplier.$lot."-".$number; ?></td><td width="180">Date : <?php echo $date; ?></td><td width="120">Quantity : <?php echo $amount; ?></td><td width="120">Carat : <?php echo $carat; ?></td>
     </tr>
 </table>
 <table>    
@@ -71,7 +73,7 @@
 
 <hr>
 <table>
-    <tr><td width="200">Supplier/Lot : <?php echo $supplier.$lot; ?></td><td width="150">Number : <?php echo $number; ?></td><td width="150">Quantity : <?php echo $amount; ?></td><td width="150">Carat : <?php echo $carat; ?></td>
+    <tr><td width="200">Supplier/Lot : <?php echo $supplier.$lot."-".$number; ?></td><td width="180">Date : <?php echo $date; ?></td><td width="120">Quantity : <?php echo $amount; ?></td><td width="120">Carat : <?php echo $carat; ?></td>
     </tr>
 </table>
 <table>    

@@ -24,6 +24,11 @@
                 $carat = $loop->carat;
                 $process_name = $loop->process_name;
                 $process_detail = $loop->process_detail;
+                
+                $phpdate = strtotime($loop->gemdate);
+                $date = date( 'j M Y', $phpdate );
+                
+                $creatid = $loop->gemid;
             }
         }
     ?>
@@ -42,13 +47,8 @@
 		<div class="row">
             <div class="col-lg-8">
                 <div class="box box-primary">
-                    <div class="box-header"><h4 class="box-title"> Barcode : <?php echo $barcode_print; ?></h4></div>
+                    <div class="box-header"><h4 class="box-title"> Barcode : <?php echo $barcode_print; ?> &nbsp; &nbsp; &nbsp; &nbsp; Date : <?php echo $date; ?></h4></div>
                     <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div id="bcTarget"></div>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-3">
                                     <div class="form-group has-success">
@@ -116,9 +116,15 @@
                         </div>
                     </div>
                     <div class="box-footer">
+                <?php if ($gid > 0) { ?>
                     <button type="button" class="btn btn-lg btn-primary" onClick="sendPrinter()"><i class="fa fa-print"></i> &nbsp; Print<br><h5>พิมพ์ใบส่งโรงงาน</h5></button>
                     &nbsp; &nbsp; &nbsp; &nbsp; 
                     <a href="<?php echo site_url("purchase/deleteparcel/".$gid); ?>"><button type="button" class="btn btn-lg btn-danger"> ลบข้อมูลนี้ </button></a>
+                <?php }else{ ?>
+                    <button type="button" class="btn btn-lg btn-success" onClick="sendPrinter_inparcel()"><i class="fa fa-print"></i> &nbsp; พิมพ์ Barcode ทั้งหมด</button>
+                    &nbsp; &nbsp; &nbsp; &nbsp; 
+                    <a href="<?php echo site_url("purchase/createbarcode"); ?>"><button type="button" class="btn btn-lg btn-danger"> ยกเลิก </button></a>
+                <?php } ?>
                     </div>
                 </div> 
 					
@@ -138,6 +144,10 @@ $(document).ready(function() {
 });
 function sendPrinter() {
 	window.open("<?php echo site_url("purchase/printbarcode/".$gid."/".$barcode_print); ?>");
+}
+    
+function sendPrinter_inparcel() {
+	window.open("<?php echo site_url("purchase/printbarcode_inparcel/".$creatid); ?>");
 }
 
 </script>

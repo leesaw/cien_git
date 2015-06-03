@@ -71,6 +71,64 @@ Class Report_model extends CI_Model
     //    select 10,count(task10) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task10=1 and pass=0 and disable=0 union all select 14,count(pass) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  pass=1 and disable=0 union all select 15,count(pass) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  pass=2 and disable=0 union all
  }
     
+ function getCountColorStation($task)
+ {
+    switch($task) {
+            case '16' : $column = "(task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2!=1)"; break;
+            case '3' : $column = "(task3=1)"; break;
+            case '4' : $column = "(task4=1)"; break;
+            case '5' : $column = "(task5=1)"; break;
+            case '6' : $column = "(task6=1)"; break;
+            case '7' : $column = "(task7=1)"; break;
+            case '8' : $column = "(task8=1)"; break;
+            case '9' : $column = "(task9=1)"; break;
+            case '10' : $column = "(task10=1)"; break;
+            case '12' : $column = "(qc1=1)"; break;
+            case '13' : $column = "(qc2=1)"; break;
+    } 
+     
+    $this->db->select("gemstone_type.id as typeid, gemstone_type.name as typename, count(*) as count");
+    $this->db->from("gemstone_barcode");
+    $this->db->join("gemstone", "gemstone.id = gemstone_barcode.gemstone_id", "left");
+    $this->db->join("gemstone_type", "gemstone_type.id=gemstone.type", "left");
+    $this->db->group_by('gemstone.type');
+    $this->db->where('disable',0);
+    $this->db->where('(pass=0 OR pass=3)');
+    $this->db->where($column);
+    $query = $this->db->get();		
+	return $query->result();
+ }
+    
+ function getCountStation_colorProcess($color,$process,$task)
+ {
+    switch($task) {
+            case '16' : $column = "(task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2!=1)"; break;
+            case '3' : $column = "(task3=1)"; break;
+            case '4' : $column = "(task4=1)"; break;
+            case '5' : $column = "(task5=1)"; break;
+            case '6' : $column = "(task6=1)"; break;
+            case '7' : $column = "(task7=1)"; break;
+            case '8' : $column = "(task8=1)"; break;
+            case '9' : $column = "(task9=1)"; break;
+            case '10' : $column = "(task10=1)"; break;
+            case '12' : $column = "(qc1=1)"; break;
+            case '13' : $column = "(qc2=1)"; break;
+    } 
+     
+    $this->db->select("count(*) as count");
+    $this->db->from("gemstone_barcode");
+    $this->db->join("gemstone", "gemstone.id = gemstone_barcode.gemstone_id", "left");
+    $this->db->join("gemstone_type", "gemstone_type.id=gemstone.type", "left");
+    $this->db->group_by('gemstone.type');
+    $this->db->where('disable',0);
+    $this->db->where('(pass=0 OR pass=3)');
+    $this->db->where('gemstone.type',$color);
+    $this->db->where('gemstone.process_type',$process);
+    $this->db->where($column);
+    $query = $this->db->get();		
+	return $query->result();
+ }
+    
  function getAllGemstone_factory(){
     $this->db->select("gemstone_barcode.id as barcodeid, gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone_type.name as gemtype, gemstone.size_out as gemsize, no");
 	$this->db->order_by("gemstone.dateadd", "desc");

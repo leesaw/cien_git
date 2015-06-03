@@ -52,7 +52,7 @@
 							</div>
                             <div class="col-md-3">
                                     <div class="form-group">
-                                            <label>จำนวน *</label>
+                                            <label>Quantity *</label>
                                             <input type="text" class="form-control" name="amount" id="amount" value="<?php echo set_value('amount'); ?>">
                                     </div>
 							</div>

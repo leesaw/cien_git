@@ -153,15 +153,29 @@ class Report extends CI_Controller {
     
     function allBarcode_factory_task()
     {
-        $data['task'] = $this->uri->segment(3);
+        $task = $this->uri->segment(3);
+        
+        $query = $this->report_model->getCountColorStation($task);
+        $data['countcolor'] = $query;
+        
+        $query = $this->gemstone_model->getGemstoneType();
+        $data['gemtype'] = $query;
+        
+        $data['task'] = $task;
         $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
 		$this->load->view('report/allbarcode_factory_task',$data);
     }
     
     function allBarcode_factory_processcolor()
     {
-        $data['color'] = $this->uri->segment(3);
-        $data['process'] = $this->uri->segment(4);
+        $color = $this->uri->segment(3);
+        $process = $this->uri->segment(4);
+        
+        $data['color'] = $color;
+        $data['process'] = $process;
+        
+        $query = $this->report_model->getCountStation_colorProcess($color, $process);
+        $data['station_array'] = $query;
         
         $query = $this->gemstone_model->getProcessType();
         $data['process_array'] = $query;

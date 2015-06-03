@@ -86,12 +86,25 @@ Class Gemstone_model extends CI_Model
     
  function getGemstone($id)
  {
-    $this->db->select("gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone_type.name as gemtype, gemstone.size_out as gemsize, size_in, amount, carat, process_type.name as process_name, process_detail");
+    $this->db->select("gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone.datefactory as datefactory, gemstone_type.name as gemtype, gemstone.size_out as gemsize, size_in, amount, carat, process_type.name as process_name, process_detail");
     $this->db->from("gemstone");
     $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
     $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
     $this->db->join('process_type', 'gemstone.process_type=process_type.id','left');
     $this->db->where("gemstone.id", $id);
+    $this->db->where('disable', 0);
+    $query = $this->db->get();		
+	return $query->result();
+ }
+    
+ function getGemstone_frombarcode($barcode)
+ {
+    $this->db->select("gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone_type.name as gemtype, gemstone.size_out as gemsize, size_in, amount, carat, process_type.name as process_name, process_detail");
+    $this->db->from("gemstone");
+    $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
+    $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
+    $this->db->join('process_type', 'gemstone.process_type=process_type.id','left');
+    $this->db->where("gemstone.barcode", $barcode);
     $this->db->where('disable', 0);
     $query = $this->db->get();		
 	return $query->result();
@@ -481,7 +494,7 @@ Class Gemstone_model extends CI_Model
 	$this->db->delete('gemstone_barcode'); 
  }
     
-  function delParcel($id=NULL)
+ function delParcel($id=NULL)
  {
 	$gem = array('disable'=>1);
     $this->db->where('id',$id);
@@ -521,7 +534,7 @@ Class Gemstone_model extends CI_Model
     
  function getAllBarcode($gemid)
  {
-    $this->db->select('gemstone_barcode.id as gemid, no, supplier.name as supname, gemstone_type.name as typename, lot, number, gemstone.dateadd as _dateadd, no, task3, task4, task5, task6, task7, task8, task9, task10, qc1, qc2, edit, pass, process_type.name as process_name, process_detail, gemstone.process_type as ptype');
+    $this->db->select('gemstone_barcode.id as gemid, no, supplier.name as supname, gemstone_type.name as typename, lot, number, gemstone.datefactory as _dateadd, no, task3, task4, task5, task6, task7, task8, task9, task10, qc1, qc2, edit, pass, process_type.name as process_name, process_detail, gemstone.process_type as ptype');
     $this->db->from('gemstone_barcode');
     $this->db->join('gemstone','gemstone.id = gemstone_barcode.gemstone_id','left');
     $this->db->join('supplier', 'supplier.id = gemstone.supplier', 'left');
@@ -571,6 +584,14 @@ Class Gemstone_model extends CI_Model
  {		
 	$this->db->insert('process_type', $process);
 	return $this->db->insert_id();			
+ }
+    
+ function edit_datefactory($edit=NULL)
+ {
+    $this->db->where('id', $edit['id']);
+	unset($edit['id']);
+	$query = $this->db->update('gemstone', $edit); 	
+	return $query;
  }
     
 }

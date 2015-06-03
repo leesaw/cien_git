@@ -138,7 +138,7 @@ class Purchase extends CI_Controller {
             $result = $this->gemstone_model->addGemstone($gemstone);
             $gemid = $this->db->insert_id();
             
-            /*
+            
             // add all barcode of gemtone parcel
             $no++;
             $i = 0;
@@ -154,7 +154,7 @@ class Purchase extends CI_Controller {
             }
         
             $this->gemstone_model->addGemstone_barcode_array($barcode_array);
-            */
+            
             if ($result){
                 redirect('purchase/print_stone_barcode/'.$gemid);
             }else{
@@ -238,5 +238,60 @@ class Purchase extends CI_Controller {
 		//$mpdf->WriteHTML($stylesheet,1);
         $mpdf->WriteHTML($this->load->view("purchase/printbarcode", $data, TRUE));
         $mpdf->Output();
+    }
+    
+    function printbarcode_inparcel()
+    {
+        $id = $this->uri->segment(3);
+        $datetime = date('Y-m-d H:i:s');
+        
+        $query = $this->gemstone_model->getGemstone($id);
+        if($query){
+            foreach($query as $loop) { 
+                if($loop->datefactory < 1) {
+                    $datefactory = array("id" => $id, "datefactory" => $datetime);
+                    $this->gemstone_model->edit_datefactory($datefactory);
+                }
+            }
+		}
+        
+        
+        
+        $this->load->library('mpdf/mpdf');                
+        $mpdf = new mPDF('th','A6','','' , 1 , 0 , 3 , 0 , 0 , 0); 
+		$stylesheet = file_get_contents('application/libraries/mpdf/css/stylebarcode.css');
+
+		$query = $this->gemstone_model->getAllBarcode($id);
+        if($query){
+			$data['barcode_array'] =  $query;
+		}else{
+			$data['barcode_array'] = array();
+		}
+        
+		//echo $html;
+        $mpdf->SetJS('this.print();');
+		//$mpdf->WriteHTML($stylesheet,1);
+        $mpdf->WriteHTML($this->load->view("gemstone/printbarcode", $data, TRUE));
+        $mpdf->Output();
+    }
+    
+    function createbarcode()
+    {  
+		$data['title'] = "Cien|Gemstone Tracking System - Create Barcode";
+		$this->load->view('purchase/createbarcode',$data);
+    }
+    
+    function add_gemstone_barcode()
+    {
+        $barcode = $this->input->post('barcode');
+        $query = $this->gemstone_model->getGemstone_frombarcode($barcode);
+        if($query){
+			$data['barcode_array'] =  $query;
+		}else{
+			$data['barcode_array'] = array();
+		}
+        $data['gid'] = 0;
+        $data['title'] = "Cien|Gemstone Tracking System - View Barcode";
+		$this->load->view('purchase/showbarcode',$data);
     }
 }
