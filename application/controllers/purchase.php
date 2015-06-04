@@ -100,7 +100,7 @@ class Purchase extends CI_Controller {
             $last_number = 0;
             //$temp = $this->gemstone_model->getNumber($supplier_id, $lot);
             
-            $temp = $this->gemstone_model->getNumber_month($start, $end, $type_id);
+            $temp = $this->gemstone_model->getNumber_month_purchase($start, $end, $type_id);
             foreach ($temp as $loop) {
                 $last_number = $loop->_count;
                 $no = $loop->_sum;
@@ -128,10 +128,11 @@ class Purchase extends CI_Controller {
                 'amount' => $amount,
                 'size_in' => $sizein,
 				'size_out' => $sizeout_id,
-				'dateadd' => $datetime,
+				'datepurchase' => $datetime,
                 'barcode' => $barcode,
                 'process_type' => $process_type,
-                'process_detail' => $process_detail
+                'process_detail' => $process_detail,
+                'disable' => 2  // not in factory
                 
 			);
             
@@ -193,7 +194,7 @@ class Purchase extends CI_Controller {
     
     function print_stone_barcode() {
         $id = $this->uri->segment(3);
-        $query = $this->gemstone_model->getGemstone($id);
+        $query = $this->gemstone_model->getGemstone_purchase($id);
         if($query){
 			$data['barcode_array'] =  $query;
 		}else{
@@ -224,7 +225,7 @@ class Purchase extends CI_Controller {
         $mpdf = new mPDF('th','A4'); 
 		$stylesheet = file_get_contents('application/libraries/mpdf/css/style.css');
 
-		$query = $this->gemstone_model->getGemstone($id);
+		$query = $this->gemstone_model->getGemstone_purchase($id);
         if($query){
 			$data['barcode_array'] =  $query;
 		}else{
@@ -245,12 +246,12 @@ class Purchase extends CI_Controller {
         $id = $this->uri->segment(3);
         $datetime = date('Y-m-d H:i:s');
         
-        $query = $this->gemstone_model->getGemstone($id);
+        $query = $this->gemstone_model->getGemstone_purchase($id);
         if($query){
             foreach($query as $loop) { 
-                if($loop->datefactory < 1) {
-                    $datefactory = array("id" => $id, "datefactory" => $datetime);
-                    $this->gemstone_model->edit_datefactory($datefactory);
+                if($loop->gemdate < 1) {
+                    $dateadd = array("id" => $id, "dateadd" => $datetime, "disable" => 0);
+                    $this->gemstone_model->edit_datefactory($dateadd);
                 }
             }
 		}

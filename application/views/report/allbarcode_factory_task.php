@@ -29,7 +29,6 @@
         }
         $num++;
     }
-print_r($dataset_color);
 ?>
 	
         
@@ -72,7 +71,7 @@ print_r($dataset_color);
                 </div>
         </div>
 		<div class="row">
-            <div class="col-lg-12">
+            <div class="col-md-12">
                 <div class="box box-danger">
 
                         
@@ -89,6 +88,7 @@ print_r($dataset_color);
                                         <th width="150">Barcode</th>
                                         <th>เลขที่ ลำดับ</th>
                                         <th>ชนิด</th>
+                                        <th>ประเภทงาน</th>
                                         <th>ผู้เบิก</th>
                                         <th>วันที่เบิก</th>
 										<th width="100">Manage</th>

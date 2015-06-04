@@ -89,7 +89,7 @@
             <?php } ?>
             <li>
               <a href="<?php echo site_url("report/allparcel"); ?>">
-                <i class="fa fa-th"></i> <span>ชุดวัตถุดิบทั้งหมด</span>
+                <i class="fa fa-th"></i> <span>ชุดวัตถุดิบทั้งหมดในโรงงาน</span>
               </a>
             </li>
             <li>

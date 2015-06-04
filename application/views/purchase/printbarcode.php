@@ -38,7 +38,7 @@
                 $carat = $loop->carat;
                 $process_name = $loop->process_name;
                 $process_detail = $loop->process_detail;
-                $phpdate = strtotime($loop->gemdate);
+                $phpdate = strtotime($loop->datepurchase);
                 $date = date( 'j M Y', $phpdate );
             }
         }
@@ -55,15 +55,13 @@
 <table>    
     <tr><td width="200" height="40">Type : <?php echo $gemtype; ?></td><td width="225">Size in : <?php echo $size_in ?></td><td width="225">Size out : <?php echo $size_out; ?></td>
     </tr>
-    <tr><td>ประเภทงาน : <?php echo $process_name; ?></td><td colspan="2">รายละเอียด : <?php echo $process_detail; ?></td></tr>
+    <tr><td>Category : <?php echo $process_name; ?></td><td colspan="2">Detail : <?php echo $process_detail; ?></td></tr>
 </table>
 <hr><br><br><br>
 <table style="text-align:center">
     <tr><td width="350" height="40" >...............................................</td><td width="350" style="text-align:center">...............................................</td></tr>
-    <tr><td height="40">( ณรงค์กช  คมภาสกร )</td><td>( ฝ่ายจัดซื้อ )</td></tr>
-    <tr><td height="30">&nbsp; </td><td>&nbsp; </td></tr>
-    <tr><td height="40">...............................................</td><td>&nbsp; </td></tr>
-    <tr><td height="40">( ฝ่ายโรงงาน )</td><td>&nbsp; </td></tr>
+    <tr><td height="40">( ฝ่ายจัดซื้อ )<br>( ธวัชชัย / ณัฐกานต์ )</td><td>( ฝ่ายโรงงาน )<br>( ประทานพร / กัลยาณี )</td></tr>
+
 </table>
 </div>
 <div id="bottom">
@@ -79,15 +77,13 @@
 <table>    
     <tr><td width="200" height="40">Type : <?php echo $gemtype; ?></td><td width="225">Size in : <?php echo $size_in ?></td><td width="225">Size out : <?php echo $size_out; ?></td>
     </tr>
-    <tr><td>ประเภทงาน : <?php echo $process_name; ?></td><td colspan="2">รายละเอียด : <?php echo $process_detail; ?></td></tr>
+    <tr><td>Category : <?php echo $process_name; ?></td><td colspan="2">Detail : <?php echo $process_detail; ?></td></tr>
 </table>
 <hr><br><br><br>
 <table style="text-align:center">
     <tr><td width="350" height="40" >...............................................</td><td width="350" style="text-align:center">...............................................</td></tr>
-    <tr><td height="40">( ณรงค์กช  คมภาสกร )</td><td>( ฝ่ายจัดซื้อ )</td></tr>
-    <tr><td height="30">&nbsp; </td><td>&nbsp; </td></tr>
-    <tr><td height="40">...............................................</td><td>&nbsp; </td></tr>
-    <tr><td height="40">( ฝ่ายโรงงาน )</td><td>&nbsp; </td></tr>
+    <tr><td height="40">( ฝ่ายจัดซื้อ )<br>( ธวัชชัย / ณัฐกานต์ )</td><td>( ฝ่ายโรงงาน )<br>( ประทานพร / กัลยาณี )</td></tr>
+
 </table>
 </div>
 <?php $this->load->view('js_footer2'); ?>

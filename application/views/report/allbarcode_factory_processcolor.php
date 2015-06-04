@@ -9,7 +9,16 @@
 <body class="skin-blue">
 	<div class="wrapper">
 	<?php $this->load->view('menu'); ?>
-    <?php $url = site_url("gemstone/deletegem"); ?>
+
+<?php
+$dataset_station = array();
+
+for($i=0; $i<count($station_array); $i++) {
+    foreach($station_array[$i] as $loop) {
+        $dataset_station[] = array($loop->one,$loop->count);
+    }
+}
+?>
 	
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -31,8 +40,18 @@
     </section>
 	
 	<section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-body chart-responsive">
+                            <div class="chart" id="bar-station" style="height: 300px;"></div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+        </div>
 		<div class="row">
-            <div class="col-lg-12">
+            <div class="col-md-12">
                 <div class="box box-danger">
 
                         
@@ -106,6 +125,11 @@
 <script src="<?php echo base_url(); ?>plugins/datatables/dataTables.bootstrap.js"></script>
 <script src="<?php echo base_url(); ?>plugins/bootbox.min.js"></script>
 <script src="<?php echo base_url(); ?>plugins/fancybox/jquery.fancybox.js"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.pie.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.barnumbers.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function()
 {    
@@ -136,20 +160,34 @@ $(document).ready(function()
     'transitionIn':'none', 
     'transitionOut':'none', 
     'type':'iframe'}); 
+    
+    var bar_type = {
+          data: <?php echo json_encode($dataset_station); ?>,
+          color: "#81F781"
+        };
+        $.plot("#bar-station", [bar_type], {
+          grid: {
+            borderWidth: 1,
+            borderColor: "#f3f3f3",
+            tickColor: "#f3f3f3"
+          },
+          bars: {
+              show: true,
+              showNumbers: true,
+              barWidth: 0.4,
+              align: "center",
+              numbers : {
+                    yAlign: function(y) { return y+0; }
+                }
+          },
+          xaxis: {
+            mode: "categories",
+            tickLength: 10
+          }
+          
+        });
 });
     
-function del_confirm(val1) {
-	bootbox.confirm("ต้องการลบข้อมูลที่เลือกไว้ใช่หรือไม่ ?", function(result) {
-				var currentForm = this;
-				var myurl = <?php echo json_encode($url); ?>;
-            	if (result) {
-				
-					window.location.replace(myurl+"/"+val1);
-				}
-
-		});
-
-}
 
 
 $(".alert").alert();

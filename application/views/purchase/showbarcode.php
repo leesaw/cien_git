@@ -25,7 +25,7 @@
                 $process_name = $loop->process_name;
                 $process_detail = $loop->process_detail;
                 
-                $phpdate = strtotime($loop->gemdate);
+                $phpdate = strtotime($loop->datepurchase);
                 $date = date( 'j M Y', $phpdate );
                 
                 $creatid = $loop->gemid;
