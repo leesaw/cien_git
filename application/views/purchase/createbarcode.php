@@ -75,16 +75,6 @@
 $(".alert").alert();
 window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
 
-        function chk_add_worker()
-		{
-			var worker_name=$('#worker_name').val();
-			if(worker_name==0){
-				alert('กรุณาสแกนผู้เบิกของ');
-				$('#worker_name').focus();
-				return false;
-			}
-		}
-
 </script>
 </body>
 </html>

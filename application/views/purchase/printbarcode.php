@@ -53,9 +53,9 @@
     </tr>
 </table>
 <table>    
-    <tr><td width="200" height="40">Type : <?php echo $gemtype; ?></td><td width="225">Size in : <?php echo $size_in ?></td><td width="225">Size out : <?php echo $size_out; ?></td>
+    <tr><td width="200" height="40">Type : <?php echo $gemtype; ?></td><td width="225">Size-in : <?php echo $size_in ?></td><td width="225">Size-out : <?php echo $size_out; ?></td>
     </tr>
-    <tr><td>Category : <?php echo $process_name; ?></td><td colspan="2">Detail : <?php echo $process_detail; ?></td></tr>
+    <tr><td>Task Category : <?php echo $process_name; ?></td><td colspan="2">Detail : <?php echo $process_detail; ?></td></tr>
 </table>
 <hr><br><br><br>
 <table style="text-align:center">
@@ -75,9 +75,9 @@
     </tr>
 </table>
 <table>    
-    <tr><td width="200" height="40">Type : <?php echo $gemtype; ?></td><td width="225">Size in : <?php echo $size_in ?></td><td width="225">Size out : <?php echo $size_out; ?></td>
+    <tr><td width="200" height="40">Type : <?php echo $gemtype; ?></td><td width="225">Size-in : <?php echo $size_in ?></td><td width="225">Size-out : <?php echo $size_out; ?></td>
     </tr>
-    <tr><td>Category : <?php echo $process_name; ?></td><td colspan="2">Detail : <?php echo $process_detail; ?></td></tr>
+    <tr><td>Task Category : <?php echo $process_name; ?></td><td colspan="2">Detail : <?php echo $process_detail; ?></td></tr>
 </table>
 <hr><br><br><br>
 <table style="text-align:center">

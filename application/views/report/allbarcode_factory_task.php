@@ -201,12 +201,12 @@ $(document).ready(function()
               barWidth: 0.4,
               align: "center",
               numbers : {
-                    yAlign: function(y) { return y+0; }
+                    yAlign: function(y) { return y/2; }
                 }
           },
           xaxis: {
             mode: "categories",
-            tickLength: 0
+            tickLength: 10
           }
           
         });

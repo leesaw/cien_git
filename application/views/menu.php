@@ -65,7 +65,12 @@
             <?php if (($this->session->userdata('sessstatus') == 4) || ($this->session->userdata('sessstatus') == 1)) { ?>
             <li>
               <a href="<?php echo site_url("purchase/addgems"); ?>">
-                <i class="fa fa-file-text-o"></i> <span>Add Stone Detail</span>
+                <i class="fa fa-file-text-o"></i> <span>Add new stone detail</span>
+              </a>
+            </li>
+            <li>
+              <a href="<?php echo site_url("purchase/allgems"); ?>">
+                <i class="fa fa-th"></i> <span>Show stone detail</span>
               </a>
             </li>
             <li>
@@ -87,6 +92,7 @@
               </a>
             </li>
             <?php } ?>
+            <?php if ($this->session->userdata('sessstatus') != 4) { ?>
             <li>
               <a href="<?php echo site_url("report/allparcel"); ?>">
                 <i class="fa fa-th"></i> <span>ชุดวัตถุดิบทั้งหมดในโรงงาน</span>
@@ -97,7 +103,7 @@
                 <i class="fa fa-barcode"></i> <span>บาร์โค้ดทั้งหมด</span>
               </a>
             </li>
-
+            <?php } ?>
           </ul>
         </section>
         <!-- /.sidebar -->

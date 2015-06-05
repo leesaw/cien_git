@@ -117,6 +117,10 @@ class Purchase extends CI_Controller {
             //$barcode = $supplier_barcode . $lot . $type_barcode . $color_barcode . $sizeout_barcode . $current;
             $barcode = $month_barcode.$year_barcode.$type_barcode.$new_number_barcode;
         
+            $checkbarcode = $this->gemstone_model->checkBarcode_purchase($barcode);
+        
+        if ($checkbarcode ==0 ) {
+        
         // lot from supplier , number from counting
             $gemstone = array(
 				'supplier' => $supplier_id,
@@ -161,6 +165,10 @@ class Purchase extends CI_Controller {
             }else{
                 $this->session->set_flashdata('showresult', 'fail');
             }
+            
+        }else{
+            $this->session->set_flashdata('showresult', 'fail');
+        }
 
 		
             $this->load->model('supplier','',TRUE);
@@ -249,7 +257,7 @@ class Purchase extends CI_Controller {
         $query = $this->gemstone_model->getGemstone_purchase($id);
         if($query){
             foreach($query as $loop) { 
-                if($loop->gemdate < 1) {
+                if(($loop->gemdate < 1) || ($loop->disable == 2)) {
                     $dateadd = array("id" => $id, "dateadd" => $datetime, "disable" => 0);
                     $this->gemstone_model->edit_datefactory($dateadd);
                 }
@@ -285,14 +293,46 @@ class Purchase extends CI_Controller {
     function add_gemstone_barcode()
     {
         $barcode = $this->input->post('barcode');
-        $query = $this->gemstone_model->getGemstone_frombarcode($barcode);
-        if($query){
-			$data['barcode_array'] =  $query;
+        
+        $checkbarcode = $this->gemstone_model->checkBarcode_purchase($barcode);
+        
+        if ($checkbarcode > 0) {
+            $query = $this->gemstone_model->getGemstone_frombarcode($barcode);
+            if($query){
+                $data['barcode_array'] =  $query;
+            }else{
+                $data['barcode_array'] = array();
+            }
+            $data['gid'] = 0;
+            $data['title'] = "Cien|Gemstone Tracking System - View Barcode";
+            $this->load->view('purchase/showbarcode',$data);
+        }else{
+            $this->session->set_flashdata('showresult', 'fail1');
+            $data['title'] = "Cien|Gemstone Tracking System - Create Barcode";
+            redirect('purchase/createbarcode', 'refresh');
+		    //$this->load->view('purchase/createbarcode',$data);
+        }
+    }
+    
+    function allgems()
+    {
+        
+        $query = $this->gemstone_model->getAllParcel_purchase();
+		if($query){
+			$data['parcel_array'] =  $query;
 		}else{
-			$data['barcode_array'] = array();
+			$data['parcel_array'] = array();
 		}
-        $data['gid'] = 0;
-        $data['title'] = "Cien|Gemstone Tracking System - View Barcode";
-		$this->load->view('purchase/showbarcode',$data);
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Show Parcel";
+		$this->load->view('purchase/allgems',$data);
+    }
+    
+    function deletegem()
+    {
+        $id = $this->uri->segment(3);
+
+		$result = $this->gemstone_model->delParcel($id);
+		redirect('purchase/allgems', 'refresh');
     }
 }

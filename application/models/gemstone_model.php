@@ -84,6 +84,21 @@ Class Gemstone_model extends CI_Model
 	return $query->result();
  }
     
+ function getAllParcel_purchase()
+ {
+    $this->db->select('gemstone.id as gemid, supplier.name as supname, number, lot, color, gemstone_type.name as gemtype, gemstone.size_out as size_out, size_in, carat, amount, gemstone.datepurchase as dateadd, min(no) as _min, max(no) as _max, process_type.name as process_name, process_detail, gemstone.barcode as barcode');
+    $this->db->from('gemstone');
+    $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
+    $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
+    $this->db->join('gemstone_barcode', 'gemstone_barcode.gemstone_id=gemstone.id', 'left');
+    $this->db->join('process_type', 'process_type.id = gemstone.process_type', 'left');
+    $this->db->group_by('gemstone.id');
+    //$this->db->join('gemstone_size', 'gemstone_size.id=gemstone.size_out','left');
+    $this->db->where('disable',2);
+    $query = $this->db->get();
+	return $query->result();
+ }
+    
  function getGemstone($id)
  {
     $this->db->select("gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone.datepurchase as datepurchase, gemstone_type.name as gemtype, gemstone.size_out as gemsize, size_in, amount, carat, process_type.name as process_name, process_detail");
@@ -99,7 +114,7 @@ Class Gemstone_model extends CI_Model
     
  function getGemstone_purchase($id)
  {
-    $this->db->select("gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone.datepurchase as datepurchase, gemstone_type.name as gemtype, gemstone.size_out as gemsize, size_in, amount, carat, process_type.name as process_name, process_detail");
+    $this->db->select("gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone.datepurchase as datepurchase, gemstone_type.name as gemtype, gemstone.size_out as gemsize, size_in, amount, carat, process_type.name as process_name, process_detail, disable");
     $this->db->from("gemstone");
     $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
     $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
@@ -118,7 +133,7 @@ Class Gemstone_model extends CI_Model
     $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
     $this->db->join('process_type', 'gemstone.process_type=process_type.id','left');
     $this->db->where("gemstone.barcode", $barcode);
-    $this->db->where('disable', 2);
+    $this->db->where('disable != ', 1);
     $query = $this->db->get();		
 	return $query->result();
  }
@@ -519,6 +534,12 @@ Class Gemstone_model extends CI_Model
 	$this->db->delete('gemstone_barcode'); 
  }
     
+ function delGemstone($id=NULL)
+ {
+	$this->db->where('id', $id);
+	$this->db->delete('gemstone'); 
+ }
+    
  function delParcel($id=NULL)
  {
 	$gem = array('disable'=>1);
@@ -617,6 +638,16 @@ Class Gemstone_model extends CI_Model
 	unset($edit['id']);
 	$query = $this->db->update('gemstone', $edit); 	
 	return $query;
+ }
+    
+ function checkBarcode_purchase($barcode=NULL)
+ {
+    $this->db->select("id");
+	$this->db->from('gemstone');		
+	$this->db->where('barcode', $barcode);
+    $this->db->where('disable != ', 1);
+	$query = $this->db->get();		
+	return $query->num_rows();
  }
     
 }
