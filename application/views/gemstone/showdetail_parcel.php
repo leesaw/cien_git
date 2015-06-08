@@ -156,6 +156,7 @@
                                         <th width="60" style="text-align:center">เจียรก้น</th>
                                         <th width="60" style="text-align:center">QC หน้า</th>
                                         <th width="60" style="text-align:center">QC ก้น</th>
+                                        <th width="60" style="text-align:center">ส่งโคราช</th>
                                     </tr>
                                 </thead>
 								<tbody>

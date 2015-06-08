@@ -135,7 +135,7 @@
                                 <thead>
                                     <tr>
                                         <th width="60" rowspan="2" style="text-align:center">ลำดับ</th>
-                                        <th colspan="9" style="text-align:center">ขั้นตอน</th>
+                                        <th colspan="10" style="text-align:center">ขั้นตอน</th>
                                         <th rowspan="2" width="60" style="text-align:center">ออกจากโรงงาน</th>
                                     </tr>
                                     <tr>
@@ -148,6 +148,7 @@
                                         <th width="60" style="text-align:center">บล็อกก้น</th>
                                         <th width="60" style="text-align:center">เจียรก้น</th>
                                         <th width="60" style="text-align:center">QC ก้น</th>
+                                        <th width="60" style="text-align:center">ส่งโคราช</th>
                                     </tr>
                                 </thead>
 								<tbody>
@@ -164,6 +165,7 @@
                                     <td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewtask_number/".$loop->gemid."/8");  ?>"><?php echo check_task($loop->task8);  ?></a></td>
                                     <td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewtask_number/".$loop->gemid."/9");  ?>"><?php echo check_task($loop->task9);  ?></a></td>
                                     <td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewtask_number/".$loop->gemid."/13");  ?>"><?php echo check_task($loop->qc2);  ?></a></td>
+                                    <td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewtask_number/".$loop->gemid."/10");  ?>"><?php echo check_task($loop->task10);  ?></a></td>
                                     <td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewqc_number/".$loop->gemid);  ?>"><?php echo check_out($loop->pass);  ?></td>
 									</tr>
 								<?php } }?>
