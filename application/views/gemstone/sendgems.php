@@ -76,19 +76,6 @@
                                         <a href="<?php echo site_url("gemstone/sendgems_task_temp/9"); ?>"><button type="button" class="btn btn-danger btn-lg btn-block">  <b>9. เจียก้น</b>  </button></a>
                                     </div>
                             </div>
-                            <!--
-                            <div class="col-md-6">
-                                    <div class="form-group">
-                                        <a href="<?php echo site_url("gemstone/sendgems_task_temp/10"); ?>"><button type="button" class="btn btn-primary btn-lg btn-block">  <b>10. เช็คขนาดเครื่องมือ</b>  </button></a>
-                                    </div>
-                            </div>
-                            
-                            <div class="col-md-10">
-                                    <div class="form-group">
-                                        <a href="<?php echo site_url("gemstone/sendgems_task_temp/11"); ?>"><button type="button" class="btn bg-purple btn-lg btn-block"> <b>ตรวจ QA</b></button></a>
-                                    </div>
-							</div>
-                            -->
 
 						</div>
 					</div>
@@ -104,6 +91,14 @@
                                         <a href="<?php echo site_url("gemstone/sendgems_task_temp/13"); ?>"><button type="button" class="btn btn-warning btn-lg btn-block"> <b>QC ก้น</b></button></a>
                                     </div>
 				            </div>
+                        </div>
+                        <hr><br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                    <div class="form-group">
+                                        <a href="<?php echo site_url("gemstone/sendgems_task_temp/10"); ?>"><button type="button" class="btn btn-primary btn-lg btn-block">  <span class="glyphicon glyphicon-send"></span><br><b>ส่งไปโคราช</b>  </button></a>
+                                    </div>
+                            </div>
                         </div>
                     </div>
                 </div>

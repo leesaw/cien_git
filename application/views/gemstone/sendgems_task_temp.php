@@ -24,7 +24,7 @@
                                     case 7: $process = "กลับติดก้นแชล็ก"; break;
                                     case 8: $process = "บล็อกก้น"; break;
                                     case 9: $process = "เจียก้น"; break;
-                                    case 10: $process = "เช็คขนาดเครื่องมือ"; break;
+                                    case 10: $process = "ส่งไปโคราช"; break;
                                     case 11: $process = "ตรวจ QA"; break;
                                     case 12: $process = "QC หน้า"; break;
                                     case 13: $process = "QC ก้น"; break;
