@@ -35,6 +35,9 @@ class Main extends CI_Controller {
             $query = $this->report_model->getAllStationInFactory();
             $data['station_array'] = $query;
             
+            $query = $this->report_model->getAllStationInFactory_edit();
+            $data['edit_array'] = $query;
+            
             $query = $this->gemstone_model->getProcessType();
             $data['process_array'] = $query;
             

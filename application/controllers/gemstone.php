@@ -324,6 +324,7 @@ class Gemstone extends CI_Controller {
 			$row = $this->gemstone_model->checkBarcode($barcodeid);
             $query = $this->gemstone_model->getBarcode($barcodeid);
             $center = $this->gemstone_model->checkBarcode_center($barcodeid);
+            $insystem = $this->gemstone_model->checkBarcode_out($barcodeid);
             
             foreach ($query as $loop) {
                 $barcode = $loop->gemsbarcode;
@@ -356,26 +357,31 @@ class Gemstone extends CI_Controller {
                     redirect(current_url());
                 }else{
                     if ($center ==0) {
-                        // get max tempid and increment for new tempid
-                        $result = $this->gemstone_model->getTempID();
-                        foreach ($result as $loop)
-                        {
-                            $tempid = $loop->tempid;
+                        if ($insystem >0) {
+                            // get max tempid and increment for new tempid
+                            $result = $this->gemstone_model->getTempID();
+                            foreach ($result as $loop)
+                            {
+                                $tempid = $loop->tempid;
+                            }
+                            $tempid++;
+
+                            $datetime = date('Y-m-d H:i:s');
+
+                            $barcode = array(
+                                'barcode' => $barcodeid,
+                                'tempid' => $tempid,
+                                'status' => $status,
+                                'dateadd' => $datetime,
+                                'worker' => $workerid,
+                                'userid' => $this->session->userdata('sessid')
+                            );
+                            $result2 = $this->gemstone_model->addBarcodeTemp($barcode);
+                            redirect(current_url());
+                        }else{
+                            $this->session->set_flashdata('showresult', 'fail5');
+                            redirect(current_url());
                         }
-                        $tempid++;
-
-                        $datetime = date('Y-m-d H:i:s');
-
-                        $barcode = array(
-                            'barcode' => $barcodeid,
-                            'tempid' => $tempid,
-                            'status' => $status,
-                            'dateadd' => $datetime,
-                            'worker' => $workerid,
-                            'userid' => $this->session->userdata('sessid')
-                        );
-                        $result2 = $this->gemstone_model->addBarcodeTemp($barcode);
-                        redirect(current_url());
                     }else{
                         $this->session->set_flashdata('showresult', 'fail4');
                         redirect(current_url());

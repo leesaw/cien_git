@@ -48,6 +48,7 @@
                           else if ($this->session->flashdata('showresult') == 'fail2') echo '<div class="alert-message alert alert-danger"> Barcode ซ้ำ</div>';
                           else if ($this->session->flashdata('showresult') == 'fail3') echo '<div class="alert-message alert alert-danger"> กรุณาสแกนผู้เบิกของ</div>';
                           else if ($this->session->flashdata('showresult') == 'fail4') echo '<div class="alert-message alert alert-danger"> Barcode นี้ยังไม่ได้รับคืน</div>';
+                          else if ($this->session->flashdata('showresult') == 'fail5') echo '<div class="alert-message alert alert-danger"> Barcode นี้ออกจากโรงงานแล้ว</div>';
 					
 					?>
 					<div class="box-header">

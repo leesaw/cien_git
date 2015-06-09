@@ -65,13 +65,45 @@ Class Report_model extends CI_Model
     select 9,count(task9) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task9=1 and pass=0 and disable=0
     union all
     select 13,count(qc2) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  qc2=1 and pass=0 and disable=0
+    union all
+    select 10,count(task10) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task10=1 and pass=0 and disable=0
     ) s');
     return $query->result();
      
     //    select 10,count(task10) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task10=1 and pass=0 and disable=0 union all select 14,count(pass) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  pass=1 and disable=0 union all select 15,count(pass) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  pass=2 and disable=0 union all
  }
     
- function getCountColorStation($task)
+ function getAllStationInFactory_edit()
+ {
+    $query = $this->db->query('select * from (    
+    select 16 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2!=1 and pass=3 and disable=0
+    union all
+    select 4,count(task4) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task4=1 and pass=3 and disable=0
+    union all
+    select 5,count(task5) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task5=1 and pass=3 and disable=0
+    union all
+    select 3,count(task3) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task3=1 and pass=3 and disable=0
+    union all
+    select 6,count(task6) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task6=1 and pass=3 and disable=0
+    union all
+    select 12,count(qc1) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and qc1=1 and pass=3 and disable=0
+    union all
+    select 7,count(task7) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task7=1 and pass=3 and disable=0
+    union all
+    select 8,count(task8) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task8=1 and pass=3 and disable=0
+    union all
+    select 9,count(task9) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task9=1 and pass=3 and disable=0
+    union all
+    select 13,count(qc2) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  qc2=1 and pass=3 and disable=0
+    union all
+    select 10,count(task10) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task10=1 and pass=3 and disable=0
+    ) s');
+    return $query->result();
+     
+    //    select 10,count(task10) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task10=1 and pass=0 and disable=0 union all select 14,count(pass) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  pass=1 and disable=0 union all select 15,count(pass) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  pass=2 and disable=0 union all
+ }
+    
+ function getCountColorStation($task, $status)
  {
     switch($task) {
             case '16' : $column = "(task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2!=1)"; break;
@@ -93,7 +125,8 @@ Class Report_model extends CI_Model
     $this->db->join("gemstone_type", "gemstone_type.id=gemstone.type", "left");
     $this->db->group_by('gemstone.type');
     $this->db->where('disable',0);
-    $this->db->where('(pass=0 OR pass=3)');
+    if ($status==0) $this->db->where('(pass=0 OR pass=3)');
+    else if ($status==1) $this->db->where('(pass=3)');
     $this->db->where($column);
     $query = $this->db->get();		
 	return $query->result();
@@ -232,6 +265,11 @@ Class Report_model extends CI_Model
     $this->db->where("(pass =0 OR pass =3)", NULL, FALSE);
     $query = $this->db->get();
 	return $query->result();
+ }
+    
+ function getAllGemstone_editing()
+ {
+    
  }
 
 }

@@ -103,6 +103,11 @@
                 <i class="fa fa-barcode"></i> <span>บาร์โค้ดทั้งหมด</span>
               </a>
             </li>
+            <li>
+              <a href="<?php echo site_url("report/showgems_edit"); ?>">
+                <i class="fa fa-exclamation-triangle"></i> <span>บาร์โค้ดที่ต้องซ่อม</span>
+              </a>
+            </li>
             <?php } ?>
           </ul>
         </section>

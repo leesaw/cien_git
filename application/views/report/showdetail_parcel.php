@@ -197,7 +197,7 @@
                                     <td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewtask_number/".$loop->gemid."/8");  ?>"><?php echo check_task($loop->task8);  ?></a></td>
                                     <td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewtask_number/".$loop->gemid."/9");  ?>"><?php echo check_task($loop->task9);  ?></a></td>
                                     <td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewtask_number/".$loop->gemid."/13");  ?>"><?php echo check_task($loop->qc2);  ?></a></td>
-                                    <td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewtask_number/".$loop->gemid."/10");  ?>"><?php echo check_task($loop->task10);  ?></a></td>
+                                    <td><?php if ($loop->task10>0) { ?><a id="fancyboxall" href="<?php echo site_url("gemstone/viewtask_number/".$loop->gemid."/10");  ?>"><?php echo check_task($loop->task10);  ?></a><?php }else{ echo ""; } ?></td>
                                     <td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewqc_number/".$loop->gemid);  ?>"><?php echo check_out($loop->pass);  ?></a></td>
 									</tr>
 								<?php } }?>

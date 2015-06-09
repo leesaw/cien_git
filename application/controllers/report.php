@@ -155,7 +155,7 @@ class Report extends CI_Controller {
     {
         $task = $this->uri->segment(3);
         
-        $query = $this->report_model->getCountColorStation($task);
+        $query = $this->report_model->getCountColorStation($task,0);
         $data['countcolor'] = $query;
         
         $query = $this->gemstone_model->getGemstoneType();
@@ -164,6 +164,21 @@ class Report extends CI_Controller {
         $data['task'] = $task;
         $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
 		$this->load->view('report/allbarcode_factory_task',$data);
+    }
+    
+    function allBarcode_factory_task_edit()
+    {
+        $task = $this->uri->segment(3);
+        
+        $query = $this->report_model->getCountColorStation($task,1);
+        $data['countcolor'] = $query;
+        
+        $query = $this->gemstone_model->getGemstoneType();
+        $data['gemtype'] = $query;
+        
+        $data['task'] = $task;
+        $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
+		$this->load->view('report/allbarcode_factory_task_edit',$data);
     }
     
     function allBarcode_factory_processcolor()
@@ -279,6 +294,65 @@ class Report extends CI_Controller {
             ->join('process_type', 'process_type.id=gemstone.process_type', 'left')
             ->where('disable',0)
             ->where('(pass=0 OR pass=3)')
+            ->where($column)
+            ->edit_column("bid",'<div class="tooltip-demo">
+        <a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
+        </div>',"bid");
+        }
+        /*
+		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone.dateadd as gemdate, gemstone_barcode.id as bid", FALSE)
+		->from('gemstone_barcode')
+        ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
+        ->join('supplier', 'gemstone.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
+        ->where('disable',0)
+        ->where('(pass=0 OR pass=3)')
+        ->where($column)
+        */
+		//->edit_column("pid","$1","pid");
+		//->edit_column("bid",'<a id="fancyboxall" href="'.site_url("gemstone/viewtask_number/$1/".$task).'" class="btn btn-primary btn-xs" data-toggle="tooltip" data-target="#view" data-placement="top"><span class="glyphicon glyphicon-user"></span></a>',"bid");
+
+        
+		echo $this->datatables->generate(); 
+	}
+    
+    function ajaxGetAllBarcodeFactory_Task_edit()
+	{
+        $task = $this->uri->segment(3);   
+        switch($task) {
+            case '16' : $column = "(task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2!=1)"; break;
+            case '3' : $column = "(task3=1)"; break;
+            case '4' : $column = "(task4=1)"; break;
+            case '5' : $column = "(task5=1)"; break;
+            case '6' : $column = "(task6=1)"; break;
+            case '7' : $column = "(task7=1)"; break;
+            case '8' : $column = "(task8=1)"; break;
+            case '9' : $column = "(task9=1)"; break;
+            case '10' : $column = "(task10=1)"; break;
+            case '12' : $column = "(qc1=1)"; break;
+            case '13' : $column = "(qc2=1)"; break;
+            
+        }
+        
+        $this->load->library('Datatables');
+        if ($task !=16) {
+            $this->datatables
+            ->select("aa.barcodeid as barcodeid, CONCAT(aa.sname, lot, '-', number, '#', no) as detail, aa.gemtype as gemtype, aa.processname as processname, CONCAT(aa.firstname,' ', aa.lastname) as workername, gemdate, aa.bid as bid", FALSE)
+            ->from("(SELECT gemstone_barcode.id as barcodeid, supplier.name as sname, lot, number, no, gemstone_type.name as gemtype, gemstone_task.dateadd as gemdate, gemstone_barcode.id as bid, firstname, lastname, process_type.name as processname FROM (`gemstone_barcode`) LEFT JOIN `gemstone` ON `gemstone`.`id` = `gemstone_barcode`.`gemstone_id` LEFT JOIN `supplier` ON `gemstone`.`supplier`=`supplier`.`id` LEFT JOIN `gemstone_type` ON `gemstone_type`.`id`=`gemstone`.`type` LEFT JOIN `gemstone_task` ON `gemstone_barcode`.`id`=`gemstone_task`.`barcode` LEFT JOIN `worker` ON `worker`.`id`=`gemstone_task`.`worker` LEFT JOIN `process_type` ON `process_type`.`id`=`gemstone`.`process_type` WHERE `disable` = 0 AND pass = 3 AND ".$column." order by gemstone_task.dateadd desc) as aa")
+            ->group_by('barcodeid')
+            ->edit_column("bid",'<div class="tooltip-demo">
+        <a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
+        </div>',"bid");
+        }else{
+            $this->datatables
+            ->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, process_type.name, 'ส่วนกลาง',' ' , gemstone_barcode.id as bid", FALSE)
+            ->from('gemstone_barcode')
+            ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
+            ->join('supplier', 'gemstone.supplier=supplier.id','left')
+            ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
+            ->join('process_type', 'process_type.id=gemstone.process_type', 'left')
+            ->where('disable',0)
+            ->where('pass',3)
             ->where($column)
             ->edit_column("bid",'<div class="tooltip-demo">
         <a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
@@ -426,4 +500,62 @@ class Report extends CI_Controller {
         $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
 		$this->load->view('report/allbarcode_return',$data);
     }
+    
+    function showgems_edit()
+    {
+        $query = $this->report_model->getAllGemstone_edit();
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
+		$this->load->view('report/showgems_edit',$data);
+    }
+    
+    function showgems_editing()
+    {
+        $query = $this->report_model->getAllGemstone_edit();
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
+		$this->load->view('report/showgems_editing',$data);
+    }
+    
+    function ajaxGetAllBarcode_edit()
+	{
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone_qc.detail as qcdetail, date_format(gemstone_qc.dateadd,'%d/%m/%y') as editdate, (CASE WHEN pass=1 THEN 'ผ่าน' WHEN pass=2 THEN 'ไม่ผ่าน' WHEN pass=3 THEN 'กำลังซ่อม' END) as statusnow, gemstone_barcode.id as bid", FALSE)
+		->from('gemstone_qc')
+        ->join('gemstone_barcode','gemstone_qc.barcode = gemstone_barcode.id', 'left')
+        ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
+        ->join('supplier', 'gemstone.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
+        ->where('disable',0)
+        ->where('gemstone_qc.status',3)
+		//->edit_column("pid","$1","pid");
+		
+		->edit_column("bid",'<div class="tooltip-demo">
+	<a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a></div>',"bid");
+
+        
+		echo $this->datatables->generate(); 
+	}
+    
+    function ajaxGetAllBarcode_editing()
+	{
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone_qc.detail as qcdetail, date_format(gemstone_qc.dateadd,'%d/%m/%y') as editdate, (CASE WHEN pass=1 THEN 'ผ่าน' WHEN pass=2 THEN 'ไม่ผ่าน' WHEN pass=3 THEN 'กำลังซ่อม' END) as statusnow, gemstone_barcode.id as bid", FALSE)
+		->from('gemstone_qc')
+        ->join('gemstone_barcode','gemstone_qc.barcode = gemstone_barcode.id', 'left')
+        ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
+        ->join('supplier', 'gemstone.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
+        ->where('disable',0)
+        ->where('gemstone_qc.status',3)
+		//->edit_column("pid","$1","pid");
+		
+		->edit_column("bid",'<div class="tooltip-demo">
+	<a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a></div>',"bid");
+
+        
+		echo $this->datatables->generate(); 
+	}
 }

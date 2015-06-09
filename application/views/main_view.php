@@ -110,7 +110,7 @@ if ($colorgraph>0) {
                                   เลือก <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_1" data-toggle="tab">แยกตามสีในโรงงาน</a></li>
+                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_1-1" data-toggle="tab">แยกตามสีในโรงงาน</a></li>
                         <!--
                                   <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_2" data-toggle="tab">จำนวนเข้า-ออกแต่ละวัน</a></li>
                                   <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
@@ -122,13 +122,13 @@ if ($colorgraph>0) {
                               <li class="pull-right header">จำนวนของในโรงงานทั้งหมด <u><?php echo $sum; ?></u> ชิ้น</li>
                             </ul>
                             <div class="tab-content">
-                              <div class="tab-pane active" id="tab_1">
+                              <div class="tab-pane active" id="tab_1-1">
                                 <div id="bar-type" style="height: 300px;"></div>
                                   <hr>
                                 <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> &nbsp;&nbsp; แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;
                                 <button type="button" class="btn bg-navy" onClick="window.location.href='<?php echo site_url("report/allParcel_factory"); ?>'"> <i class="fa fa-archive"></i> &nbsp;&nbsp; แสดงชุดวัตถุดิบในโรงงาน </button>
                               </div><!-- /.tab-pane -->
-                              <div class="tab-pane" id="tab_2">
+                              <div class="tab-pane" id="tab_2-1">
                                 The European languages are members of the same family. Their separate existence is a myth.
                                 For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
                                 in their grammar, their pronunciation and their most common words. Everyone realizes why a
@@ -141,57 +141,62 @@ if ($colorgraph>0) {
                           </div><!-- nav-tabs-custom -->
                         </section>
                 
-                <div class="col-md-3">
-                <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">จำนวนของในแต่ละ Station</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <div class="box-body">
-                  <div class="table-responsive">
-                    <table class="table no-margin">
-                      <thead>
-                        <tr>
-                          <th>สถานี</th>
-                          <th>จำนวน</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                    <?php
+                
+                        <section class="col-md-3 connectedSortable">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs pull-right">
+                              <li class="pull-left header">จำนวนของในแต่ละ Station</li>
+                            </ul>
+                            <div class="tab-content">
+                              <div class="tab-pane active" id="tab_1-2">
+                                  <div class="table-responsive">
+                                    <table class="table no-margin">
+                                      <thead>
+                                        <tr>
+                                          <th>สถานี</th>
+                                          <th>จำนวน</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                    <?php
 
-                        $sum = 0;
-                        foreach($station_array as $loop) { 
-                            echo "<tr><td>";
-                            switch ($loop->number) {
-                                case 5: echo "บล็อกรูปร่าง"; break;
-                                case 3: echo "หน้ากระดาน"; break;
-                                case 4: echo "ติดแชล็ก"; break;
-                                case 6: echo "เจียหน้า"; break;
-                                case 7: echo "กลับติดก้นแชล็ก"; break;
-                                case 8: echo "บล็อกก้น"; break;
-                                case 9: echo "เจียก้น"; break;
-                                case 12: echo "QC หน้า"; break;
-                                case 13: echo "QC ก้น"; break;
-                                case 16: echo "ส่วนกลาง"; break;
-                            }
-                            echo "</td><td>";
-                                echo "<a href='".site_url('report/allBarcode_factory_task/'.$loop->number)."'>";
-                                echo $loop->count;
-                                echo "</a>";
-                                
-                            echo "</td></tr>";
-                            $sum += $loop->count;
-                        }
-                        //echo "<tr><th>รวมทั้งหมด</th><th>".$sum."</th></tr>";
-                    ?>
-                      </tbody>
-                    </table>
-                  </div><!-- /.table-responsive -->
-                </div><!-- /.box-body -->
-              </div>
-                </div> 
-                        
-            </div>  <!-- /div row -->
+                                        $sum = 0;
+                                        foreach($station_array as $loop) { 
+                                            echo "<tr><td>";
+                                            switch ($loop->number) {
+                                                case 5: echo "บล็อกรูปร่าง"; break;
+                                                case 3: echo "หน้ากระดาน"; break;
+                                                case 4: echo "ติดแชล็ก"; break;
+                                                case 6: echo "เจียหน้า"; break;
+                                                case 7: echo "กลับติดก้นแชล็ก"; break;
+                                                case 8: echo "บล็อกก้น"; break;
+                                                case 9: echo "เจียก้น"; break;
+                                                case 10: echo "โรงงานโคราช"; break;
+                                                case 12: echo "QC หน้า"; break;
+                                                case 13: echo "QC ก้น"; break;
+                                                case 16: echo "ส่วนกลาง"; break;
+                                            }
+                                            echo "</td><td>";
+                                                echo "<a href='".site_url('report/allBarcode_factory_task/'.$loop->number)."'>";
+                                                echo $loop->count;
+                                                echo "</a>";
+
+                                            echo "</td></tr>";
+                                            $sum += $loop->count;
+                                        }
+                                        //echo "<tr><th>รวมทั้งหมด</th><th>".$sum."</th></tr>";
+                                    ?>
+                                      </tbody>
+                                    </table>
+                                  </div><!-- /.table-responsive -->
+                              </div><!-- /.tab-pane -->
+                            </div><!-- /.tab-content -->
+                          </div><!-- nav-tabs-custom -->
+                        </section>
+                
+                
+                
+
                 
                 </div>
             <div class="row">
@@ -252,7 +257,7 @@ if ($colorgraph>0) {
                             <a class="btn bg-purple" href="<?php echo site_url("report/allBarcode_return"); ?>"><i class="fa fa-table"></i> แสดงวัตถุดิบไม่เหมาะสม</a>
                         </div>
                         
-                        <!-- datepicker modal-->
+                        <!-- datepicker modal for error -->
 						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						
 						  <div class="modal-dialog modal-md">
@@ -288,6 +293,8 @@ if ($colorgraph>0) {
 						
                     </div>
                     <!-- close modal -->
+
+                
                     </div>
                 </div>
                 </div>
