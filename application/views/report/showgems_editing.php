@@ -32,7 +32,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" href="<?php echo site_url("report/showgems_edit"); ?>">แสดงบาร์โค้ดที่ต้องซ่อมทั้งหมด</button>
+                    <a class="btn btn-primary" href="<?php echo site_url("report/showgems_edit"); ?>">แสดงบาร์โค้ดที่ต้องซ่อมทั้งหมด</a>
                 </div>
             </div>
         </div>

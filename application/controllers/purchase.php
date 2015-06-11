@@ -15,6 +15,14 @@ class Purchase extends CI_Controller {
 	 
 	}
     
+    function addstock()
+	{
+		$this->load->helper(array('form'));
+        
+		$data['title'] = "Cien|Gemstone Tracking System - Add Stone in Inventory";
+		$this->load->view('purchase/addstock',$data);
+	}
+    
     function addgems()
 	{
 		$this->load->helper(array('form'));

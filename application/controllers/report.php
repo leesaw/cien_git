@@ -503,7 +503,7 @@ class Report extends CI_Controller {
     
     function showgems_edit()
     {
-        $query = $this->report_model->getAllGemstone_edit();
+        //$query = $this->report_model->getAllGemstone_edit();
         
         $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
 		$this->load->view('report/showgems_edit',$data);
@@ -511,7 +511,7 @@ class Report extends CI_Controller {
     
     function showgems_editing()
     {
-        $query = $this->report_model->getAllGemstone_edit();
+        $query = $this->report_model->getAllGemstone_editing();
         
         $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
 		$this->load->view('report/showgems_editing',$data);
@@ -550,6 +550,7 @@ class Report extends CI_Controller {
         ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
         ->where('disable',0)
         ->where('gemstone_qc.status',3)
+        ->where('pass',3)
 		//->edit_column("pid","$1","pid");
 		
 		->edit_column("bid",'<div class="tooltip-demo">

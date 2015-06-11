@@ -63,14 +63,25 @@
               </a>
             </li>
             <?php if (($this->session->userdata('sessstatus') == 4) || ($this->session->userdata('sessstatus') == 1)) { ?>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-diamond"></i>
+                <span>Inventory</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo site_url("stock/addstock"); ?>"><i class="fa fa-circle-o"></i> New Stone</a></li>
+                <li><a href="<?php echo site_url("stock/liststock"); ?>"><i class="fa fa-circle-o"></i> List Inventory</a></li>
+              </ul>
+            </li>
             <li>
-              <a href="<?php echo site_url("purchase/addgems"); ?>">
-                <i class="fa fa-file-text-o"></i> <span>Add new stone detail</span>
+              <a href="<?php echo site_url("purchase/addstock"); ?>">
+                <i class="fa fa-file-text-o"></i> <span>Add New Delivery Form</span>
               </a>
             </li>
             <li>
               <a href="<?php echo site_url("purchase/allgems"); ?>">
-                <i class="fa fa-th"></i> <span>Show stone detail</span>
+                <i class="fa fa-th"></i> <span>View Delivery</span>
               </a>
             </li>
             <li>

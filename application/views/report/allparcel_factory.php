@@ -59,7 +59,6 @@
                                     $datehidden = date('Y/m/d', $phpdate);
                                     
 								?>
-									<!--<tr><td><a id="fancyboxall" href="<?php echo site_url("gemstone/viewtask/".$loop->barcodeid);  ?>"><?php echo $loop->barcodeid."-".$loop->gembarcode."(#".$loop->no.")"; ?></a></td> -->
                                     <tr><td><span class="hide"><?php echo $datehidden; ?></span><?php echo $date; ?></td>
                                     <td><?php echo $loop->supname.$loop->lot."-".$loop->number; ?></td>
                                     <td><?php echo $loop->_min."-".$loop->_max; ?></td>
@@ -72,7 +71,6 @@
                                         <td><?php echo ($loop->amount - $loop->waiting); ?></td><td><code><b><?php echo $loop->waiting; ?></b></code></td>
 									<td width="50">
                                     <a href="<?php echo site_url("report/showdetail_parcel/".$loop->gemid); ?>" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="View"><span class="glyphicon glyphicon-search"></span></a>
-	</div>
                                         
 									</td>
 									</tr>

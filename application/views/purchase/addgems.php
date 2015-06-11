@@ -34,7 +34,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Supplier *</label> <button type="button" class="btn btn-success btn-xs" onClick="add_supplier();"> <i class="fa fa-plus"></i> เพิ่ม Supplier</button>
+                                        <label>Supplier *</label> 
                                         <select class="form-control" name="supplierid" id="supplierid">
 										<?php 	if(is_array($supplier_array)) {
 												foreach($supplier_array as $loop){
@@ -52,45 +52,33 @@
 							</div>
                             <div class="col-md-3">
                                     <div class="form-group">
-                                            <label>Quantity *</label>
-                                            <input type="text" class="form-control" name="amount" id="amount" value="<?php echo set_value('amount'); ?>">
+                                            <label>Color *</label>
+                                            <input type="text" class="form-control" name="type" id="type" value="<?php echo set_value('type'); ?>">
                                     </div>
 							</div>
                         </div>
                         <div class="row">
-                            <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label>Type *</label>
-                                        <select class="form-control" name="typeid" id="typeid">
-										<?php 	if(is_array($type_array)) {
-												foreach($type_array as $loop){
-													echo "<option value='".$loop->id."_".$loop->barcode."'>".$loop->name."</option>";
-										 } } ?>
-                                        </select>
-                                    </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Quantity *</label>
+                                    <input type="text" class="form-control" name="amount" id="amount" value="<?php echo set_value('amount'); ?>">
+                                </div>
 							</div>
                             <div class="col-md-2">
-                                    <div class="form-group">
-                                            <label>Color</label>
-                                            <input type="text" class="form-control" name="color" id="color" value="<?php echo set_value('color'); ?>" maxlength="3">
-											<p class="help-block"><?php echo form_error('color'); ?></p>
-                                    </div>
-							</div>
-                            <div class="col-md-3">
                                     <div class="form-group">
                                             <label>Carat *</label>
                                             <input type="text" class="form-control" name="carat" id="carat" value="<?php echo set_value('carat'); ?>">
 											<p class="help-block"><?php echo form_error('carat'); ?></p>
                                     </div>
 							</div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                     <div class="form-group">
                                             <label>Size เข้า *</label>
                                             <input type="text" class="form-control" name="sizein" id="sizein" value="<?php echo set_value('sizein'); ?>">
 											<p class="help-block"><?php echo form_error('sizein'); ?></p>
                                     </div>
 							</div>
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                         <label>Size ออก *</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="sizeout" id="sizeout">
@@ -132,7 +120,7 @@
 					</div>
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-lg">  <i class="fa fa-floppy-o"></i> &nbsp;&nbsp; <b>Save</b>  &nbsp; &nbsp; </button>&nbsp; &nbsp; &nbsp; &nbsp; 
-                        <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='<?php echo site_url("main"); ?>'"> <i class="fa fa-reply"></i> &nbsp;&nbsp; <b>Cancel</b> </button>
+                        <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='<?php echo site_url("purchase/addstock"); ?>'"> <i class="fa fa-reply"></i> &nbsp;&nbsp; <b>Back</b> </button>
                     </div>
                 </div>
 			</section>
