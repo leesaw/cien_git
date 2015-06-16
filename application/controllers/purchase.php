@@ -293,6 +293,7 @@ class Purchase extends CI_Controller {
             // add all barcode of gemtone parcel
             $no++;
             $i = 0;
+            $amount_out = $amount;
             while ($amount>0) {
                 $barcode_array[$i] = array(
                     'gemstone_id' => $gemid,
@@ -307,7 +308,9 @@ class Purchase extends CI_Controller {
             $this->gemstone_model->addGemstone_barcode_array($barcode_array);
             
             // update amount_out and carat_out
-            //$stock = array('carat_out' => $carat, 
+            $stock = array('carat_out' => $carat, 'amount_out' => $amount_out, 'id' => $stockid);
+            $this->load->model('stock_model','',TRUE);
+            $this->stock_model->editAmountCaratOut($stock,'plus');
             
             if ($result){
                 redirect('purchase/print_stone_barcode/'.$gemid);
@@ -368,6 +371,18 @@ class Purchase extends CI_Controller {
     function deleteParcel()
     {
         $id = $this->uri->segment(3);
+        
+        $this->load->model('stock_model','',TRUE);
+        $query = $this->stock_model->getAmountCaratOut($id);
+        
+        foreach($query as $loop) {
+            $amount = $loop->amount;
+            $carat = $loop->carat;
+            $stockid = $loop->stockid;
+        }
+        
+        $stock = array('carat_out' => $carat, 'amount_out' => $amount, 'id' => $stockid);
+        $this->stock_model->editAmountCaratOut($stock,'minus');
 
 		$result = $this->gemstone_model->delParcel($id);
 		redirect('purchase/addstock', 'refresh');
@@ -480,6 +495,18 @@ class Purchase extends CI_Controller {
     function deletegem()
     {
         $id = $this->uri->segment(3);
+        
+        $this->load->model('stock_model','',TRUE);
+        $query = $this->stock_model->getAmountCaratOut($id);
+        
+        foreach($query as $loop) {
+            $amount = $loop->amount;
+            $carat = $loop->carat;
+            $stockid = $loop->stockid;
+        }
+        
+        $stock = array('carat_out' => $carat, 'amount_out' => $amount, 'id' => $stockid);
+        $this->stock_model->editAmountCaratOut($stock,'minus');
 
 		$result = $this->gemstone_model->delParcel($id);
 		redirect('purchase/allgems', 'refresh');

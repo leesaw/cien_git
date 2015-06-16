@@ -61,7 +61,7 @@
 	
 	<section class="content">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                     <div class="box box-primary">
                         <div class="box-body chart-responsive">
                             <div class="chart" id="bar-color" style="height: 300px;"></div>
@@ -198,7 +198,7 @@ $(document).ready(function()
           bars: {
               show: true,
               showNumbers: true,
-              barWidth: 0.4,
+              barWidth: 0.5,
               align: "center",
               numbers : {
                     yAlign: function(y) { return y/2; }

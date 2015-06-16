@@ -74,12 +74,6 @@
                                         <input type="text" class="form-control" name="type" id="type" value="<?php echo $gemtype; ?>" readonly>
                                     </div>
 							</div>
-                            <div class="col-md-2">
-                                    <div class="form-group has-success">
-                                            <label class="control-label" for="inputSuccess">Color</label>
-                                            <input type="text" class="form-control" name="color" id="color" value="<?php echo $color; ?>" readonly>
-                                    </div>
-							</div>
                             <div class="col-md-3">
                                     <div class="form-group has-success">
                                             <label class="control-label" for="inputSuccess">Carat</label>

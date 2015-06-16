@@ -71,7 +71,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo site_url("stock/addstock"); ?>"><i class="fa fa-circle-o"></i> New Stone</a></li>
-                <li><a href="<?php echo site_url("stock/liststock"); ?>"><i class="fa fa-circle-o"></i> List Inventory</a></li>
+                <li><a href="<?php echo site_url("stock/liststock"); ?>"><i class="fa fa-circle-o"></i> Inventory List</a></li>
               </ul>
             </li>
             <li>
@@ -85,8 +85,14 @@
               </a>
             </li>
             <li>
-            <?php } ?>
-            <?php if ($this->session->userdata('sessstatus') <= 2) { ?>
+            <?php }
+            
+            if ($this->session->userdata('sessstatus') == 3) {
+            ?>
+            <li><a href="<?php echo site_url("stock/liststock"); ?>"><i class="fa fa-diamond"></i> Inventory List</a></li>
+            <?php    
+            }
+                if ($this->session->userdata('sessstatus') <= 2) { ?>
             <li>
               <a href="<?php echo site_url("purchase/createbarcode");  //echo site_url("gemstone/addgems"); ?>">
                 <i class="fa fa-file-text-o"></i> <span>พิมพ์บาร์โค้ด</span>

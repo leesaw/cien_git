@@ -140,6 +140,8 @@ class Stock extends CI_Controller {
     {
         $id = $this->uri->segment(3);
         
+        $query = $this->stock_model->getStockOutList($id);
+        $data['parcel_array'] = $query;
         
         $data['title'] = "Cien|Gemstone Tracking System - View Stone";
         $this->load->view('stock/view_stone',$data);
@@ -156,7 +158,7 @@ class Stock extends CI_Controller {
         ->where('disable',0)
         //->where('gemstone_stock.amount > gemstone_stock.amount_out')
 		->edit_column("bid",'<div class="tooltip-demo">
-    <a href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
+    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a>
 	<button href="'.site_url("stock/delete_stone/$1").'" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="tooltip" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล" onClick="del_confirm($1)"><span class="glyphicon glyphicon-remove"></span></button></div>',"bid");
 		echo $this->datatables->generate();
 	}
