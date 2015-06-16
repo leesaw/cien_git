@@ -21,14 +21,12 @@
 	
 	<section class="content">
 		<div class="row">
-            <div class="col-lg-8">
+            <div class="col-md-8">
                 <div class="box box-primary">
 				<?php if ($this->session->flashdata('showresult') == 'fail') {
 					    echo '<div class="box-heading"><div class="alert alert-danger"> Barcode ซ้ำกับที่มีอยู่ในระบบ</div>';
-						?> </div> <?php
-					  } 
-				?>
-					<div class="box-header"><h4 class="box-title">* Please fill in all fields</h4> </div>
+                        } ?> 
+					<div class="box-header"><h4 class="box-title">* Please fill in all fields</h4></div>
                     <form method="post" action="<?php echo site_url('purchase/addgems'); ?> " onSubmit="return chk_add_gems()">
                     <div class="box-body">
                         <div class="row">
@@ -37,14 +35,12 @@
                                         <label>Inventory *</label> 
                                         <div class="input-group">
                                             <input type="hidden" name="stockid" value="<?php if(isset($stockid)) echo $stockid; else echo 0; ?>">
-                                            <input type="text" class="form-control" name="stock" id="stock" value="
-                                            <?php if(isset($stone_array)) { 
+                                            <input type="text" class="form-control" name="stock" id="stock" value="<?php if(isset($stone_array)) { 
                                                     foreach($stone_array as $loop) {
-                                                        echo $loop->detail." ";
+                                                        echo $loop->datein." &nbsp;&nbsp;| &nbsp;&nbsp;".$loop->supname.$loop->lot." Lot".$loop->carat." &nbsp;&nbsp;|&nbsp;&nbsp; ".$loop->gemtype;
                                                     }
                                                 }
-                                            ?>                              
-                                            " disabled>
+                                            ?>" disabled>
                                             <div class="input-group-btn">
                                                 <a class="btn btn-primary" href="<?php echo site_url('stock/liststock_select'); ?>"> <i class="fa fa-search"></i></a>
                                             </div>
@@ -59,7 +55,7 @@
                     </div>
                 </form>
                 </div>
-                </div>
+                </div></div>
 			</section>
 		</div>
 	</div>

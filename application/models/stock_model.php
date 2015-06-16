@@ -25,13 +25,21 @@ Class Stock_model extends CI_Model
     
     function getStone_purchase($id)
     {
-        $this->db->select("CONCAT(supplier.name,lot,'  Lot',carat) as detail,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat,(gemstone_stock.amount - gemstone_stock.amount_out) as remain, gemstone_stock.id as bid", FALSE);
+        $this->db->select("supplier.name as supname,supplier.id as supid,lot,carat,gemstone_type.name as gemtype, gemstone_type.id as typeid, gemstone_type.barcode as typebarcode, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat,(gemstone_stock.amount - gemstone_stock.amount_out) as remain, gemstone_stock.id as bid, date_format(gemstone_stock.datein,'%d/%m/%y') as datein", FALSE);
         $this->db->from('gemstone_stock');
         $this->db->join('supplier', 'gemstone_stock.supplier=supplier.id','left');
         $this->db->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left');
         $this->db->where('gemstone_stock.id', $id);
         $query = $this->db->get();		
         return $query->result();
+    }
+    
+    function editAmountCaratOut($stock=NULL)
+    {
+        $this->db->where('id', $stock['id']);
+        unset($stock['id']);
+        $query = $this->db->update('gemstone_stock', $stock); 	
+        return $query;
     }
 }
 ?>

@@ -102,7 +102,7 @@ if ($colorgraph>0) {
 ?>
         <div class="box-body">
             <div class="row">
-                <section class="col-md-6 connectedSortable">
+                <section class="col-md-7 connectedSortable">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                               <li class="dropdown">
@@ -142,7 +142,7 @@ if ($colorgraph>0) {
                         </section>
                 
                 
-                        <section class="col-md-3 connectedSortable">
+                        <section class="col-md-2 connectedSortable">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs pull-right">
                               <li class="pull-left header">จำนวนของในแต่ละ Station</li>
@@ -335,7 +335,7 @@ if ($colorgraph>0) {
           bars: {
               show: true,
               showNumbers: true,
-              barWidth: 0.4,
+              barWidth: 0.5,
               align: "center",
               numbers : {
                     yAlign: function(y) { return y/2; }

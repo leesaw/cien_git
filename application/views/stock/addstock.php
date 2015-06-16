@@ -26,7 +26,7 @@
                 <div class="box box-success">
                 <?php 
                         if ($this->session->flashdata('showresult') == 'true') {
-					       echo '<div class="box-heading"><div class="alert alert-success"> Adding completed stone to inventory</div>';
+					       echo '<div class="box-heading"><div class="alert alert-success"> Adding completed</div>';
 						?> </div>
                 
                 <?php   }else if ($this->session->flashdata('showresult') == 'fail') {
@@ -62,24 +62,9 @@
                                             <input type="text" class="form-control" name="lot" id="lot" value="<?php echo set_value('lot'); ?>">
                                     </div>
 							</div>
-                            <div class="col-md-2">
-                                    <div class="form-group">
-                                            <label>Quantity *</label>
-                                            <input type="text" class="form-control" name="amount" id="amount" value="<?php echo set_value('amount'); ?>">
-                                    </div>
-							</div>
-                            <div class="col-md-2">
-                                    <div class="form-group">
-                                            <label>Carat *</label>
-                                            <input type="text" class="form-control" name="carat" id="carat" value="<?php echo set_value('carat'); ?>">
-											<p class="help-block"><?php echo form_error('carat'); ?></p>
-                                    </div>
-							</div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Color *</label>
+                                        <label>Type *</label>
                                         <select class="form-control" name="typeid" id="typeid">
 										<?php 	if(is_array($type_array)) {
 												foreach($type_array as $loop){
@@ -88,7 +73,16 @@
                                         </select>
                                     </div>
 							</div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
+                                    <div class="form-group">
+                                            <label>Color</label>
+                                            <input type="text" class="form-control" name="color" id="color" value="<?php echo set_value('color'); ?>">
+                                    </div>
+							</div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label>Order</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="order" id="order" value="<?php echo set_value('order'); ?>">
@@ -110,6 +104,31 @@
 											<p class="help-block"><?php echo form_error('size'); ?></p>
                                     </div>
 							</div>
+                        <!-- 
+                        </div>
+                        <div class="row"> -->
+                            <div class="col-md-2">
+                                    <div class="form-group">
+                                            <label>Quantity *</label>
+                                            <input type="text" class="form-control" name="amount" id="amount" value="<?php echo set_value('amount'); ?>">
+                                    </div>
+							</div>
+                            <div class="col-md-2">
+                                    <div class="form-group">
+                                            <label>Carat *</label>
+                                            <input type="text" class="form-control" name="carat" id="carat" value="<?php echo set_value('carat'); ?>">
+											<p class="help-block"><?php echo form_error('carat'); ?></p>
+                                    </div>
+							</div>
+                            <!--
+                            <div class="col-md-2">
+                                    <div class="form-group">
+                                            <label>Kilogram</label>
+                                            <input type="text" class="form-control" name="kilogram" id="kilogram" value="<?php echo set_value('kilogram'); ?>">
+											<p class="help-block"><?php echo form_error('kilogram'); ?></p>
+                                    </div>
+							</div>
+                            -->
                         </div>
 					</div>
                     <div class="box-footer">
@@ -131,6 +150,10 @@
       $(function () {
         get_datepicker("#datein");
           
+        $('#datein').on('change', function(){
+            $('.datepicker').hide();
+        });
+          
         $('input').iCheck({
           checkboxClass: 'icheckbox_square-blue',
           radioClass: 'iradio_square-blue',
@@ -144,7 +167,7 @@
         function chk_add_gems()
 		{
             var amount=$('#amount').val();
-			if(amount==0){
+			if(amount<0){
 				alert('กรุณาป้อนจำนวน');
 				$('#amount').focus();
 				return false;
@@ -172,7 +195,7 @@
             }
             */
             var carat=$('#carat').val();
-			if(carat==0){
+			if(carat<0){
 				alert('กรุณาป้อนกะรัต');
 				$('#carat').focus();
 				return false;
@@ -184,6 +207,8 @@
                     return false;
                 }
             }
+
+            
 			var size=$('#size').val();
 			if(size==0){
 				alert('กรุณาป้อน size');

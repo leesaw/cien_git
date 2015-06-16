@@ -38,15 +38,19 @@
                             <table class="table table-bordered table-striped" id="tablebarcode" width="100%">
                                 <thead>
                                     <tr>
-                                        <th width="150">Date In</th>
-                                        <th>Supplier and Lot</th>
-                                        <th>Color</th>
-                                        <th>Size</th>
-                                        <th>Order</th>
+                                        <th width="100" rowspan="2">Date In</th>
+                                        <th rowspan="2">Supplier and Lot</th>
+                                        <th rowspan="2">Color</th>
+                                        <th rowspan="2">Size</th>
+                                        <th rowspan="2">Order</th>
+                                        <th width="60" rowspan="2">Quantity</th>
+                                        <th width="80" rowspan="2">Carat</th>
+                                        <th colspan="2" style="text-align:center">In Stock</th>
+										<th width="60" rowspan="2"> </th>
+                                    </tr>
+                                    <tr>
                                         <th width="60">Quantity</th>
-                                        <th width="80">Carat</th>
-                                        <th width="60">In Stock</th>
-										<th width="100"> </th>
+                                        <th width="60">Carat</th>
                                     </tr>
                                 </thead>
                                 

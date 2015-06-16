@@ -65,6 +65,7 @@ class Stock extends CI_Controller {
         $lot = $this->input->post('lot');
         $amount = $this->input->post('amount');
         $carat = $this->input->post('carat');
+        $kilogram = $this->input->post('kilogram');
 
         $type = explode("_",$this->input->post('typeid'));
         $type_id = $type[0];
@@ -72,6 +73,7 @@ class Stock extends CI_Controller {
         
         $order = $this->input->post('order');
         $size = $this->input->post('size');
+        $color = $this->input->post('color');
         $datetime = date('Y-m-d H:i:s');
 
         $gemstone = array(
@@ -79,10 +81,12 @@ class Stock extends CI_Controller {
             'lot' => $lot,
             'order_type' => $order,
             'type' => $type_id,
+            'color' => $color,
             'datein' => $datein,
             'dateadd' => $datetime,
             'carat' => $carat,
             'amount' => $amount,
+            'kilogram' => $kilogram,
             'size' => $size
         );
             
@@ -145,7 +149,7 @@ class Stock extends CI_Controller {
 	{
         $this->load->library('Datatables');
 		$this->datatables
-		->select("date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,'  Lot',carat) as detail,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remain, gemstone_stock.id as bid", FALSE)
+		->select("date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,'  Lot',carat) as detail,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remainamount,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
 		->from('gemstone_stock')
         ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
         ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
@@ -154,19 +158,19 @@ class Stock extends CI_Controller {
 		->edit_column("bid",'<div class="tooltip-demo">
     <a href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
 	<button href="'.site_url("stock/delete_stone/$1").'" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="tooltip" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล" onClick="del_confirm($1)"><span class="glyphicon glyphicon-remove"></span></button></div>',"bid");
-		echo $this->datatables->generate(); 
+		echo $this->datatables->generate();
 	}
     
     function ajaxGetListInventory_select()
 	{
         $this->load->library('Datatables');
 		$this->datatables
-		->select("gemstone_stock.id as bid, date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,' Lot ',carat) as detail,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remain", FALSE)
+		->select("gemstone_stock.id as bid, date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,' Lot ',carat) as detail,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remain,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out,2),'</b></code>') as remaincarat", FALSE)
 		->from('gemstone_stock')
         ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
         ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
         ->where('disable',0)
-        ->where('gemstone_stock.amount > gemstone_stock.amount_out')
+        ->where('((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out))')
 		->edit_column("bid",'<div class="tooltip-demo">
     <a href="'.site_url("stock/select_stock/$1").'" class="btn btn-primary btn-xs" data-title="Select" data-toggle="tooltip" data-target="#select" data-placement="top" rel="tooltip" title="เลือก"><span class="glyphicon glyphicon-shopping-cart"></span> &nbsp;&nbsp;Select</a></div>',"bid");
 		echo $this->datatables->generate(); 
