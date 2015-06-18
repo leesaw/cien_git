@@ -145,7 +145,7 @@ if ($colorgraph>0) {
                         <section class="col-md-2 connectedSortable">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs pull-right">
-                              <li class="pull-left header">จำนวนของในแต่ละ Station</li>
+                              <li class="pull-left header">ของในแต่ละ Station</li>
                             </ul>
                             <div class="tab-content">
                               <div class="tab-pane active" id="tab_1-2">
@@ -282,7 +282,7 @@ if ($colorgraph>0) {
 								</div>            <!-- /modal-body -->
 							
 								<div class="modal-footer">
-                                    <a class="btn btn-success pull-left" href="<?php echo site_url("report/viewErrorBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a></button>
+                                    <a class="btn btn-success pull-left" href="<?php echo site_url("report/viewErrorBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a>
 										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
 										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
 								</div> 	

@@ -6,6 +6,7 @@ class VerifyLogin extends CI_Controller {
  {
    parent::__construct();
    $this->load->model('user','',TRUE);
+   $this->load->model('config_model','',TRUE);
  }
 
  function index()
@@ -52,6 +53,7 @@ class VerifyLogin extends CI_Controller {
 		 'sesslastname' => $row->lastname,
 		 'sessstatus' => $row->status
        );
+    
        $this->session->set_userdata($sess_array);
      }
      return TRUE;

@@ -358,26 +358,43 @@ class Gemstone extends CI_Controller {
                 }else{
                     if ($center ==0) {
                         if ($insystem >0) {
-                            // get max tempid and increment for new tempid
-                            $result = $this->gemstone_model->getTempID();
-                            foreach ($result as $loop)
-                            {
-                                $tempid = $loop->tempid;
+                            
+                            // check previous task
+                            $this->load->model('config_model','',TRUE);
+                            $query = $this->config_model->getConfig('LOCK_SEQ_TASK');
+                            foreach($query as $loop) { $config_value = $loop->value; }
+                            
+                            if ($config_value==1) {
+                                $pretask = $this->gemstone_model->checkPreTask_status($barcodeid, $status);
+                            }else{
+                                $pretask = 1;   
                             }
-                            $tempid++;
+                            
+                            if ($pretask>0) {
+                                // get max tempid and increment for new tempid
+                                $result = $this->gemstone_model->getTempID();
+                                foreach ($result as $loop)
+                                {
+                                    $tempid = $loop->tempid;
+                                }
+                                $tempid++;
 
-                            $datetime = date('Y-m-d H:i:s');
+                                $datetime = date('Y-m-d H:i:s');
 
-                            $barcode = array(
-                                'barcode' => $barcodeid,
-                                'tempid' => $tempid,
-                                'status' => $status,
-                                'dateadd' => $datetime,
-                                'worker' => $workerid,
-                                'userid' => $this->session->userdata('sessid')
-                            );
-                            $result2 = $this->gemstone_model->addBarcodeTemp($barcode);
-                            redirect(current_url());
+                                $barcode = array(
+                                    'barcode' => $barcodeid,
+                                    'tempid' => $tempid,
+                                    'status' => $status,
+                                    'dateadd' => $datetime,
+                                    'worker' => $workerid,
+                                    'userid' => $this->session->userdata('sessid')
+                                );
+                                $result2 = $this->gemstone_model->addBarcodeTemp($barcode);
+                                redirect(current_url());
+                            }else{
+                                $this->session->set_flashdata('showresult', 'fail_seq'.$status);
+                                redirect(current_url());
+                            }
                         }else{
                             $this->session->set_flashdata('showresult', 'fail5');
                             redirect(current_url());
@@ -560,8 +577,12 @@ class Gemstone extends CI_Controller {
 		$this->form_validation->set_message('required', 'กรุณาใส่ข้อมูล');
 		$this->form_validation->set_error_delimiters('<code>', '</code>');
         
-        //$status = $this->uri->segment(3);
-        $status = 0;
+        $status = $this->uri->segment(3);
+        if ($status !=10) { 
+            $status = 0;
+        }else{
+            $data['taskid'] = $status;   
+        }
 		
 		if($this->form_validation->run() == TRUE) {
 			

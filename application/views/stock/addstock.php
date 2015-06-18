@@ -23,7 +23,7 @@
 	<section class="content">
 		<div class="row">
             <div class="col-lg-8">
-                <div class="box box-success">
+                <div class="box box-primary">
                 <?php 
                         if ($this->session->flashdata('showresult') == 'true') {
 					       echo '<div class="box-heading"><div class="alert alert-success"> Adding completed</div>';
@@ -167,46 +167,36 @@
         function chk_add_gems()
 		{
             var amount=$('#amount').val();
-			if(amount<0){
+            if (isNaN(amount)) 
+            {
+                alert("กรุณาใส่เฉพาะตัวเลข");
+                $('#amount').focus();
+                return false;
+            }else if(amount==""){
 				alert('กรุณาป้อนจำนวน');
 				$('#amount').focus();
 				return false;
-			}else{
-                if (isNaN(amount)) 
-                {
-                    alert("กรุณาใส่เฉพาะตัวเลข");
-                    $('#amount').focus();
-                    return false;
-                }
-            }
-            /*
-            var color=$('#color').val();
-			if(color==0){
-				alert('กรุณาป้อนสี');
-				$('#color').focus();
+            }else if(amount<0){
+				alert('กรุณาป้อนจำนวนที่ไม่ติดลบ');
+				$('#amount').focus();
 				return false;
-			}else{
-                if (isNaN(color)) 
-                {
-                    alert("กรุณาใส่เฉพาะตัวเลข");
-                    $('#color').focus();
-                    return false;
-                }
-            }
-            */
+			}
+            
             var carat=$('#carat').val();
-			if(carat<0){
+            if (isNaN(carat)) 
+            {
+                alert("กรุณาใส่เฉพาะตัวเลข");
+                $('#carat').focus();
+                return false;
+            }else if(carat==""){
 				alert('กรุณาป้อนกะรัต');
 				$('#carat').focus();
 				return false;
-			}else{
-                if (isNaN(carat)) 
-                {
-                    alert("กรุณาใส่เฉพาะตัวเลข");
-                    $('#carat').focus();
-                    return false;
-                }
-            }
+            }else if(carat<0){
+				alert('กรุณาป้อนจำนวนที่ไม่ติดลบ');
+				$('#carat').focus();
+				return false;
+			}
 
             
 			var size=$('#size').val();

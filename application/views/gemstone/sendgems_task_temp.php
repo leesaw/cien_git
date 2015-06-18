@@ -49,7 +49,14 @@
                           else if ($this->session->flashdata('showresult') == 'fail3') echo '<div class="alert-message alert alert-danger"> กรุณาสแกนผู้เบิกของ</div>';
                           else if ($this->session->flashdata('showresult') == 'fail4') echo '<div class="alert-message alert alert-danger"> Barcode นี้ยังไม่ได้รับคืน</div>';
                           else if ($this->session->flashdata('showresult') == 'fail5') echo '<div class="alert-message alert alert-danger"> Barcode นี้ออกจากโรงงานแล้ว</div>';
-					
+					      else if ($this->session->flashdata('showresult') == 'fail_seq5') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 3 ติดแชล็ก</div>';
+                          else if ($this->session->flashdata('showresult') == 'fail_seq3') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 4 บล็อกรูปร่าง</div>';
+                          else if ($this->session->flashdata('showresult') == 'fail_seq6') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 5 กดหน้ากระดาน</div>';
+                          else if ($this->session->flashdata('showresult') == 'fail_seq12') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 6 เจียหน้า</div>';
+                          else if ($this->session->flashdata('showresult') == 'fail_seq7') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน QC หน้า</div>';
+                          else if ($this->session->flashdata('showresult') == 'fail_seq8') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 7 กลับติดก้นแชล็ก</div>';
+                          else if ($this->session->flashdata('showresult') == 'fail_seq9') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 8 บล็อกก้น</div>';
+                          else if ($this->session->flashdata('showresult') == 'fail_seq13') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 9 เจียก้น</div>';
 					?>
 					<div class="box-header">
                         <h4 class="box-title">กรุณาสแกน Barcode</h4></div>
@@ -78,7 +85,7 @@
 						</div>
                         
                         
-                        
+                        <?php if($taskid!=10) { ?>
                         <div class="row">
                             <div class="col-md-8">
                                     <div class="form-group has-error">
@@ -88,7 +95,7 @@
                                     </div>
 							</div>
 						</div>    
-                        
+                        <?php } ?>
         <div class="row">
 			<div class="col-lg-12">
                 <div class="panel panel-default">

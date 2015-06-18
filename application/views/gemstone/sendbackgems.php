@@ -42,6 +42,19 @@
 
 
 						</div>
+                        <hr><br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                    <div class="form-group">
+                                        <a href="<?php echo site_url("gemstone/sendgems_task_temp/10"); ?>"><button type="button" class="btn btn-primary btn-lg btn-block">  <span class="glyphicon glyphicon-send"></span><br><b>ส่งไปโคราช</b>  </button></a>
+                                    </div>
+                            </div>
+                            <div class="col-md-6">
+                                    <div class="form-group">
+                                        <a href="<?php echo site_url("gemstone/sendgems_back_temp/10"); ?>"><button type="button" class="btn btn-success btn-lg btn-block">  <span class="glyphicon glyphicon-repeat"></span><br><b>รับคืนจากโคราช</b>  </button></a>
+                                    </div>
+                            </div>
+                        </div>
 					</div>
                     <div class="box-footer">
                         

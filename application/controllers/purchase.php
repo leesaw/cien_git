@@ -220,6 +220,7 @@ class Purchase extends CI_Controller {
 	{
             $stockid = $this->input->post('stockid');
             $supplier_id = $this->input->post('supplierid');
+            $color= $this->input->post('color');
 			$lot= $this->input->post('lot');
             $type_id = $this->input->post('typeid');
             $type_barcode = $this->input->post('typebarcode');
@@ -273,7 +274,7 @@ class Purchase extends CI_Controller {
 				'lot' => $lot,
                 'number' => $new_number,
 				'type' => $type_id,
-				//'color' => $color,
+				'color' => $color,
                 'carat' => $carat,
                 'amount' => $amount,
                 'size_in' => $sizein,

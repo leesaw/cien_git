@@ -34,7 +34,11 @@
                         <div class="row">
                             <?php
                                 if(is_array($stone_array)) {
-				                    foreach($stone_array as $loop){ ?>
+				                    foreach($stone_array as $loop){ 
+                            
+                                        $remain_amount = $loop->remain;
+                                        $remain_carat = $loop->remaincarat;
+                            ?>
                             <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Supplier *</label> 
@@ -47,6 +51,7 @@
 							<div class="col-md-3">
                                     <div class="form-group">
                                             <label>Lot</label>
+                                            <input type="hidden" name="color" value="<?php echo $loop->color; ?>">
                                             <input type="text" class="form-control" name="lot" id="lot" value="<?php echo $loop->lot; ?>" readonly>
                                     </div>
 							</div>
@@ -145,6 +150,10 @@
         
         function chk_add_gems()
 		{
+            var remain_amount = parseInt(<?php echo json_encode($remain_amount); ?>);
+            var remain_carat = parseFloat(<?php echo json_encode($remain_carat); ?>);
+            remain_carat = remain_carat.toFixed(2);
+
             var amount=$('#amount').val();
 			if(amount==0){
 				alert('กรุณาป้อนจำนวน');
@@ -158,21 +167,7 @@
                     return false;
                 }
             }
-            /*
-            var color=$('#color').val();
-			if(color==0){
-				alert('กรุณาป้อนสี');
-				$('#color').focus();
-				return false;
-			}else{
-                if (isNaN(color)) 
-                {
-                    alert("กรุณาใส่เฉพาะตัวเลข");
-                    $('#color').focus();
-                    return false;
-                }
-            }
-            */
+            
             var carat=$('#carat').val();
 			if(carat==0){
 				alert('กรุณาป้อนกะรัต');
@@ -186,12 +181,23 @@
                     return false;
                 }
             }
-			var sizein=$('#sizein').val();
-			if(sizein==0){
-				alert('กรุณาป้อน size เข้า');
-				$('#sizein').focus();
+			var sizeout=$('#sizeout').val();
+			if(sizeout==0){
+				alert('กรุณาป้อน size ออก');
+				$('#sizeout').focus();
 				return false;
 			}
+            
+            if(amount > remain_amount) {
+                alert('จำนวนในสต๊อกมีไม่เพียงพอ');
+				$('#amount').focus();
+				return false;
+            }else if(carat > remain_carat) {
+                alert('จำนวนในสต๊อกมีไม่เพียงพอ');
+				$('#carat').focus();
+				return false;
+            }
+            
 			if(!ok) {return false;}
 		}
         

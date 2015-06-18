@@ -24,7 +24,7 @@
                                     case 7: $process = "กลับติดก้นแชล็ก"; break;
                                     case 8: $process = "บล็อกก้น"; break;
                                     case 9: $process = "เจียก้น"; break;
-                                    case 10: $process = "เช็คขนาดเครื่องมือ"; break;
+                                    case 10: $process = "รับคืนจากโคราช"; break;
                                     case 11: $process = "ตรวจ QA"; break;
                                     case 12: $process = "QC หน้า"; break;
                                     case 13: $process = "QC ก้น"; break;
@@ -51,7 +51,7 @@
 					
 					?>
 					<div class="box-header"><h4 class="box-title">กรุณาสแกน Barcode</h4></div>
-					<form method="post" action="<?php echo site_url('gemstone/sendgems_back_temp'); ?>">
+					<form method="post" action="<?php echo site_url('gemstone/sendgems_back_temp/'.$taskid); ?>">
                         
                     <?php $workername = ""; $worker_id = 0;
                             foreach($worker_array as $loop) { 
@@ -83,7 +83,7 @@
 						</div>
                         
                         
-                        
+                        <?php if($taskid!=10) { ?>
                         <div class="row">
                             <div class="col-md-8">
                                     <div class="form-group has-error">
@@ -92,7 +92,8 @@
 										<p class="help-block"><?php echo form_error('barcode'); ?></p>	
                                     </div>
 							</div>
-						</div>    
+						</div>   
+                        <?php } ?>
                         
         <div class="row">
 			<div class="col-lg-12">
@@ -134,7 +135,7 @@
                     <div class="box-footer">
                         <a href="<?php echo site_url("gemstone/saveTemptoBack/".$taskid);  ?>" onClick="return chk_add_worker()"><button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button></a>
                         &nbsp; &nbsp; &nbsp; &nbsp; 
-                        <button type="button" class="btn btn-danger btn-lg" onClick="window.location.href='<?php echo site_url("gemstone/cleartemp_back"); ?>'"><span class="glyphicon glyphicon-repeat"></span>&nbsp;<b> เริ่มต้นใหม่ทั้งหมด </b></button>
+                        <button type="button" class="btn btn-danger btn-lg" onClick="window.location.href='<?php echo site_url("gemstone/cleartemp_back/".$taskid); ?>'"><span class="glyphicon glyphicon-repeat"></span>&nbsp;<b> เริ่มต้นใหม่ทั้งหมด </b></button>
                     </div>
                 </div>
             </div>
