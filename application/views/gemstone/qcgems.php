@@ -54,6 +54,11 @@
                                         <a href="<?php echo site_url("gemstone/qctemp/4"); ?>"><button type="button" class="btn bg-purple btn-lg btn-block"><b>วัตถุดิบไม่เหมาะสม</b> </button></a>
                                     </div>
                             </div> 
+                            <div class="col-md-4">
+                                    <div class="form-group">
+                                        <a href="<?php echo site_url("gemstone/qctemp/5"); ?>"><button type="button" class="btn bg-navy btn-lg btn-block"><b>คืนวัตถุดิบ</b> </button></a>
+                                    </div>
+                            </div> 
                         </div>
 					</div>
                     <div class="box-footer">

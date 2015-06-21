@@ -125,4 +125,29 @@ class Main extends CI_Controller {
 			
 			$this->load->view('changepass_view',$data);
 	}
+    
+    function config()
+    {
+        $this->load->model('config_model','',TRUE);
+        $data["config_array"] = $this->config_model->getAllconfig();
+		
+		$data['title'] = "Cien|Gemstone Tracking System - Configuration";
+		$this->load->view('config',$data);
+    }
+    
+    function saveconfig()
+    {
+        $lock_seq_task = $this->input->post('LOCK_SEQ_TASK');
+        $config_array = array("config" => "LOCK_SEQ_TASK", "value" => $lock_seq_task);
+        $this->load->model('config_model','',TRUE);
+        $result = $this->config_model->editConfig($config_array);
+        if ($result){
+            $this->session->set_flashdata('showresult', 'true');
+        }else{
+            $this->session->set_flashdata('showresult', 'fail');
+        }
+        $data["config_array"] = $this->config_model->getAllconfig();
+        $data['title'] = "Cien|Gemstone Tracking System - Configuration";
+		$this->load->view('config',$data);
+    }
 }

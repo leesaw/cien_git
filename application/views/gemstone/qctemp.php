@@ -19,6 +19,7 @@
                                     case 2: $process = "ไม่ผ่าน (Not Pass)"; break;
                                     case 3: $process = "ซ่อม"; break;
                                     case 4: $process = "วัตถุดิบไม่เหมาะสม"; break;
+                                    case 5: $process = "คืนวัตถุดิบ"; break;
                                     default: $process = "";
                                   }
                                 echo $process;
@@ -138,7 +139,7 @@
                             </div>
                         </div>
                     </div> 
-                <?php }else if ($taskid==4) { ?>  
+                <?php }else if (($taskid==4) || ($taskid==5)) { ?>  
                     <div class="row">
                         <div class="col-md-5">
                                     <div class="form-group">

@@ -27,7 +27,11 @@
             </ul>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-
+            <?php if ($this->session->userdata('sessstatus') == 1) { ?>
+              <li class="tasks-menu">
+                <a href="<?php echo site_url("main/config"); ?>"><i class="fa fa-cog"></i> ตั้งค่า</a>
+              </li>
+            <?php } ?>
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">

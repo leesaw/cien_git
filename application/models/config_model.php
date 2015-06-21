@@ -10,12 +10,20 @@ Class Config_model extends CI_Model
         return $query->result();
     }
     
-    function editConfig($config)
+    function editConfig($temp)
     {
-        $this->db->where('config', $user['config']);
-        unset($config['config']);
-        $query = $this->db->update('config', $config); 	
+        $this->db->where('config', $temp['config']);
+        unset($temp['config']);
+        $query = $this->db->update('config', $temp); 	
         return $query;
+    }
+    
+    function getAllconfig()
+    {
+        $this->db->select("config,value");
+        $this->db->from("config");
+        $query = $this->db->get();		
+        return $query->result();
     }
 
 }

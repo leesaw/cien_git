@@ -102,7 +102,7 @@ if ($colorgraph>0) {
 ?>
         <div class="box-body">
             <div class="row">
-                <section class="col-md-7 connectedSortable">
+                <section class="col-md-8 connectedSortable">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                               <li class="dropdown">
@@ -142,7 +142,7 @@ if ($colorgraph>0) {
                         </section>
                 
                 
-                        <section class="col-md-2 connectedSortable">
+                        <section class="col-md-3 connectedSortable">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs pull-right">
                               <li class="pull-left header">ของในแต่ละ Station</li>
