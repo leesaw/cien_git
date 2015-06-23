@@ -21,7 +21,7 @@
 	
 	<section class="content">
 		<div class="row">
-            <div class="col-md-10">
+            <div class="col-md-6">
                 <div class="box box-primary">
                 <?php 
                         if ($this->session->flashdata('showresult') == 'true') {
@@ -38,19 +38,19 @@
 					
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-10">
                                 <form method="post" action="<?php echo site_url('main/saveconfig'); ?>">
-                                    <?php foreach($config_array as $loop) { 
+                <?php foreach($config_array as $loop) { 
                     switch($loop->config) {
-                        case "LOCK_SEQ_TASK": $text = "บังคับให้เบิกวัตถุดิบตามขั้นตอน (0=ข้ามขั้นตอนได้, 1=บังคับ)"; break;
+                        case "LOCK_SEQ_TASK": $text = "บังคับให้เบิกวัตถุดิบตามขั้นตอน <text class='text-red'>( 0 = ข้ามขั้นตอนได้, 1 = บังคับ)</text>"; break;
                         default: $text = "ไม่สามารถแสดงข้อความได้";
                     }
-                                    ?>
+                ?>
                                     <div class="form-group">
                                             <label><?php echo $text; ?></label>
                                             <input type="text" class="form-control" name="<?php echo $loop->config; ?>" value="<?php echo $loop->value; ?>">
                                     </div>
-                                    <?php } ?>
+                <?php } ?>
                                 
 							</div>
 						</div>

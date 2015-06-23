@@ -151,9 +151,15 @@
                         <span class="description-text">จำนวนที่วัตถุดิบไม่เหมาะสม</span>
                       </div><!-- /.description-block -->
                     </div><!-- /.col -->
+                    <div class="col-sm-2 col-xs-3 bg-navy">
+                      <div class="description-block border-right">
+                        <h3 class="description-header"><?php echo $qc_return_ok; ?> เม็ด</h3>
+                        <span class="description-text">จำนวนที่วัตถุดิบที่คืน</span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
                     <div class="col-sm-2 col-xs-3 bg-orange">
                       <div class="description-block">
-                        <h3 class="description-header"><?php echo $amount-$qc_ok-$qc_not-$qc_return; ?> เม็ด</h3>
+                        <h3 class="description-header"><?php echo $amount-$qc_ok-$qc_not-$qc_return-$qc_return_ok; ?> เม็ด</h3>
                         <span class="description-text">จำนวนที่เหลือ</span>
                       </div><!-- /.description-block -->
                     </div>

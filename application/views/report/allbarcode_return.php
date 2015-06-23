@@ -39,7 +39,7 @@
                                         <th width="150">Barcode</th>
                                         <th>เลขที่ ลำดับ</th>
                                         <th>ชนิด</th>
-                                        <th width="150">วันที่เข้า</th>
+                                        <th width="150">วันที่นำออก</th>
                                         <th width="250">สาเหตุ</th>
 										<th width="100"> </th>
                                     </tr>

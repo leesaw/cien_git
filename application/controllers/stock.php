@@ -49,6 +49,7 @@ class Stock extends CI_Controller {
     
     function savestock()
 	{
+        $rough = $this->input->post("roughtype");
         $datein = $this->input->post("datein");
         if ($datein != "") {
             $datein = explode('/', $datein);
@@ -77,6 +78,7 @@ class Stock extends CI_Controller {
         $datetime = date('Y-m-d H:i:s');
 
         $gemstone = array(
+            'stone_type' => $rough,
             'supplier' => $supplier_id,
             'lot' => $lot,
             'order_type' => $order,

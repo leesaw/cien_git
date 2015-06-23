@@ -38,9 +38,19 @@
 					<form method="post" action="<?php echo site_url('stock/savestock'); ?>" onSubmit="return chk_add_gems()">
                     <div class="box-body">
                         <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Rough * </label>
+                                    <input type="radio" name="roughtype" id="rough1" value="พลอยสำเร็จ" checked> พลอยสำเร็จ
+                                    <input type="radio" name="roughtype" id="rough2" value="พลอยก้อน"> พลอยก้อน
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
                             <div class="col-md-2">
                                 <div class="form-group">
-								    <label for="">Date In * </label>
+								    <label>Date In * </label>
 								    <input type="text" class="form-control" id="datein" name="datein" />
 								</div>
                             </div>
@@ -120,26 +130,24 @@
 											<p class="help-block"><?php echo form_error('carat'); ?></p>
                                     </div>
 							</div>
-                            <!--
-                            <div class="col-md-2">
+                            <div class="col-md-2" id="kg" style="display:none">
                                     <div class="form-group">
-                                            <label>Kilogram</label>
+                                            <label>Kilogram *</label>
                                             <input type="text" class="form-control" name="kilogram" id="kilogram" value="<?php echo set_value('kilogram'); ?>">
-											<p class="help-block"><?php echo form_error('kilogram'); ?></p>
                                     </div>
 							</div>
-                            -->
                         </div>
-					</div>
+
                     <div class="box-footer">
                         <button type="submit" class="btn btn-success btn-lg">  <i class="fa fa-floppy-o"></i> &nbsp;&nbsp; <b>Save</b>  &nbsp; &nbsp; </button>&nbsp; &nbsp; &nbsp; &nbsp; 
                         <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='<?php echo site_url("main"); ?>'"> <i class="fa fa-reply"></i> &nbsp;&nbsp; <b>Cancel</b> </button>
                     </div>
                 </div>
+            </form>
+        </div></div>
 			</section>
 		</div>
 	</div>
-</form>
 
 <?php $this->load->view('js_footer'); ?>
 <script src="<?php echo base_url(); ?>plugins/bootbox.min.js"></script>
@@ -154,49 +162,73 @@
             $('.datepicker').hide();
         });
           
-        $('input').iCheck({
-          checkboxClass: 'icheckbox_square-blue',
-          radioClass: 'iradio_square-blue',
-          increaseArea: '20%' // optional
+        $('#rough1').on('click', function(){            
+            document.getElementById('kg').style.display = 'none';
         });
+          
+        $('#rough2').on('click', function(){            
+            document.getElementById('kg').style.display = 'block';
+        });
+          
+        roughCheck();
+
       });
+
 
         $(".alert").alert();
         window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
         
         function chk_add_gems()
 		{
-            var amount=$('#amount').val();
-            if (isNaN(amount)) 
-            {
-                alert("กรุณาใส่เฉพาะตัวเลข");
-                $('#amount').focus();
-                return false;
-            }else if(amount==""){
-				alert('กรุณาป้อนจำนวน');
-				$('#amount').focus();
-				return false;
-            }else if(amount<0){
-				alert('กรุณาป้อนจำนวนที่ไม่ติดลบ');
-				$('#amount').focus();
-				return false;
-			}
-            
-            var carat=$('#carat').val();
-            if (isNaN(carat)) 
-            {
-                alert("กรุณาใส่เฉพาะตัวเลข");
-                $('#carat').focus();
-                return false;
-            }else if(carat==""){
-				alert('กรุณาป้อนกะรัต');
-				$('#carat').focus();
-				return false;
-            }else if(carat<0){
-				alert('กรุณาป้อนจำนวนที่ไม่ติดลบ');
-				$('#carat').focus();
-				return false;
-			}
+            if (document.getElementById('rough1').checked) {
+                var amount=$('#amount').val();
+                if (isNaN(amount)) 
+                {
+                    alert("กรุณาใส่เฉพาะตัวเลข");
+                    $('#amount').focus();
+                    return false;
+                }else if(amount==""){
+                    alert('กรุณาป้อนจำนวน');
+                    $('#amount').focus();
+                    return false;
+                }else if(amount<0){
+                    alert('กรุณาป้อนจำนวนที่ไม่ติดลบ');
+                    $('#amount').focus();
+                    return false;
+                }
+
+                var carat=$('#carat').val();
+                if (isNaN(carat)) 
+                {
+                    alert("กรุณาใส่เฉพาะตัวเลข");
+                    $('#carat').focus();
+                    return false;
+                }else if(carat==""){
+                    alert('กรุณาป้อนกะรัต');
+                    $('#carat').focus();
+                    return false;
+                }else if(carat<0){
+                    alert('กรุณาป้อนจำนวนที่ไม่ติดลบ');
+                    $('#carat').focus();
+                    return false;
+                }
+            }else{
+                var kilogram=$('#kilogram').val();
+                if (isNaN(kilogram)) 
+                {
+                    alert("กรุณาใส่เฉพาะตัวเลข");
+                    $('#kilogram').focus();
+                    return false;
+                }else if(kilogram==""){
+                    alert('กรุณาป้อนน้ำหนัก Kilogram');
+                    $('#kilogram').focus();
+                    return false;
+                }else if(kilogram<0){
+                    alert('กรุณาป้อนจำนวนที่ไม่ติดลบ');
+                    $('#kilogram').focus();
+                    return false;
+                }   
+            }
 
             
 			var size=$('#size').val();
@@ -232,6 +264,13 @@
                 }
             });
         }
+function roughCheck() {
+    if (document.getElementById('rough1').checked) {
+        document.getElementById('kg').style.display = 'none';
+    }
+    else document.getElementById('kg').style.display = 'block';
+
+}       
         
 function get_datepicker(id)
 {

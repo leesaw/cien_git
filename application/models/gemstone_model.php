@@ -268,21 +268,21 @@ Class Gemstone_model extends CI_Model
  {
     switch($next) 
     {
-        case 5: $column = "task4 = 2"; break;
-        case 3: $column = "task5 = 2"; break;
-        case 6: $column = "task3 = 2"; break;
-        case 12: $column = "task6 = 2"; break;
-        case 7: $column = "qc1 = 2"; break;
-        case 8: $column = "task7 = 2"; break;
-        case 9: $column = "task8 = 2"; break;
-        case 13: $column = "task9 = 2"; break;
+        case 5: $column = "(task4 = 2 or pass = 3 or task10 = 2)"; break;
+        case 3: $column = "(task5 = 2 or pass = 3 or task10 = 2)"; break;
+        case 6: $column = "(task3 = 2 or pass = 3 or task10 = 2)"; break;
+        case 12: $column = "(task6 = 2 or pass = 3 or task10 = 2)"; break;
+        case 7: $column = "(qc1 = 2 or pass = 3 or task10 = 2)"; break;
+        case 8: $column = "(task7 = 2 or pass = 3 or task10 = 2)"; break;
+        case 9: $column = "(task8 = 2 or pass = 3 or task10 = 2)"; break;
+        case 13: $column = "(task9 = 2 or pass = 3 or task10 = 2)"; break;
         default: $column = "";
     }
      
     $this->db->select("id");
     $this->db->from("gemstone_barcode");
     $this->db->where("id", $barcodeid);
-    $this->db->where($column);
+    if ($column!="") $this->db->where($column);
     $query = $this->db->get();		
 	return $query->num_rows();
  }

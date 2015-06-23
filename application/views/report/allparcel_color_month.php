@@ -89,9 +89,10 @@
 								<?php if(isset($parcel_array)) { foreach($parcel_array as $loop) { 
                                     $phpdate = strtotime($loop->dateadd);
                                     $date = date( 'd/m/Y', $phpdate );
+                                    $datehidden = date('Y/m/d', $phpdate);
                                     
 								?>
-                                    <tr><td><?php echo $date; ?></td>
+                                    <tr><td><span class="hide"><?php echo $datehidden; ?></span><?php echo $date; ?></td>
                                     <td><?php echo $loop->supname.$loop->lot."-".$loop->number; ?></td>
                                     <td><?php echo $loop->_min."-".$loop->_max; ?></td>
                                     <td><?php echo $loop->gemtype; ?></td>

@@ -36,6 +36,7 @@
                                         else if ($loop->status == 2) echo "QC ไม่ผ่าน";
                                         else if ($loop->status == 3) echo "ซ่อม";
                                         else if ($loop->status == 4) echo "วัตถุดิบไม่เหมาะสม";
+                                        else if ($loop->status == 5) echo "คืนวัตถุดิบ";
                                     ?></a></td>
                                     <td><?php echo $loop->detail; ?></td>
                                     <td><?php echo $loop->dateadd; ?></td>

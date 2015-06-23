@@ -17,6 +17,7 @@ if ( ! function_exists('test_method'))
         else if ($var==0) $result = '<span class="badge bg-blue"><i class="fa fa-coffee"></i>&nbsp;&nbsp;Waiting</span>';
         else if ($var==3) $result = '<span class="badge bg-yellow"><i class="fa fa-gear"></i>&nbsp;&nbsp;ซ่อม</span>';
         else if ($var==4) $result = '<span class="badge bg-purple"><i class="fa fa-rotate-left"></i>&nbsp;&nbsp;วัตถุดิบไม่เหมาะสม</span>';
+        else if ($var==5) $result = '<span class="badge bg-navy"><i class="fa fa-rotate-left"></i>&nbsp;&nbsp;คืนวัตถุดิบ</span>';
         return $result;
     } 
 }

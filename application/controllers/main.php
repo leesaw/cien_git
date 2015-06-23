@@ -148,6 +148,6 @@ class Main extends CI_Controller {
         }
         $data["config_array"] = $this->config_model->getAllconfig();
         $data['title'] = "Cien|Gemstone Tracking System - Configuration";
-		$this->load->view('config',$data);
+        redirect('main/config', 'refresh');
     }
 }

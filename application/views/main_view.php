@@ -244,7 +244,7 @@ if ($colorgraph>0) {
             </div>  <!-- /div row -->
             
             <?php } ?>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="box box-success">
                         <div class="box-header with-border">
                              <h3 class="box-title">แสดงของเข้า-ออก 7 วันล่าสุด</h3>
@@ -254,7 +254,8 @@ if ($colorgraph>0) {
                         </div>
                         <div class="box-footer">
                             <a data-toggle="modal" data-target="#myModal" class="btn btn-danger" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="" data-backdrop="static" data-keyboard="false"><i class="fa fa-bar-chart"></i> แสดงเหตุผล QC ไม่ผ่าน</a> &nbsp;&nbsp;
-                            <a class="btn bg-purple" href="<?php echo site_url("report/allBarcode_return"); ?>"><i class="fa fa-table"></i> แสดงวัตถุดิบไม่เหมาะสม</a>
+                            <a class="btn bg-purple" href="<?php echo site_url("report/allBarcode_return"); ?>"><i class="fa fa-table"></i> แสดงวัตถุดิบไม่เหมาะสม</a> &nbsp;&nbsp;
+                            <a class="btn bg-navy" href="<?php echo site_url("report/allBarcode_return_ok"); ?>"><i class="fa fa-rotate-left"></i> แสดงคืนวัตถุดิบ</a>
                         </div>
                         
                         <!-- datepicker modal for error -->

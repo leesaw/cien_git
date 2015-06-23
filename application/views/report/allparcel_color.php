@@ -34,7 +34,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"></div>
                     <div class="panel-body">
-                            <table class="table table-bordered table-striped" id="tablebarcode">
+                            <table class="table table-bordered table-striped" id="tablebarcode" width="100%">
                                 <thead>
                                     <tr>
                                         <th width="60" rowspan="2" style="text-align:center">วันที่เข้า</th>
@@ -45,7 +45,7 @@
 										<th width="100" rowspan="2" style="text-align:center">Size เข้า</th>
                                         <th width="100" rowspan="2" style="text-align:center">Size ออก</th>
                                         <th width="100" rowspan="2" style="text-align:center">ประเภทงาน</th>
-                                        <th width="60" rowspan="2" style="text-align:center">จัดการ</th>
+                                        <th width="40" rowspan="2" style="text-align:center">จัดการ</th>
                                     </tr>
                                     <tr><th width="60" style="text-align:center">เม็ด</th><th width="60" style="text-align:center">กะรัต</th></tr>
                                 </thead>
@@ -53,9 +53,9 @@
 								<?php if(isset($parcel_array)) { foreach($parcel_array as $loop) { 
                                     $phpdate = strtotime($loop->dateadd);
                                     $date = date( 'd/m/Y', $phpdate );
-                                    
+                                    $datehidden = date('Y/m/d', $phpdate);
 								?>
-                                    <tr><td><?php echo $date; ?></td>
+                                    <tr><td><span class="hide"><?php echo $datehidden; ?></span><?php echo $date; ?></td>
                                     <td><?php echo $loop->supname.$loop->lot."-".$loop->number; ?></td>
                                     <td><?php echo $loop->_min."-".$loop->_max; ?></td>
                                     <td><?php echo $loop->gemtype; ?></td>

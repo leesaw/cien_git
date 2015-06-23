@@ -13,8 +13,10 @@ Class Report_model extends CI_Model
     //$this->db->join('gemstone_size', 'gemstone_size.id=gemstone.size_out','left');
     $this->db->where('gemstone_type.name', $color);
     $this->db->where('disable',0);
-    $this->db->where('gemstone.dateadd >=', $start);
-    $this->db->where('gemstone.dateadd <=', $end);
+     if (($start!=0) or ($end!=0)) {
+        $this->db->where('gemstone.dateadd >=', $start);
+        $this->db->where('gemstone.dateadd <=', $end);
+     }
     $query = $this->db->get();
 	return $query->result();
  }

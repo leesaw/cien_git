@@ -106,6 +106,7 @@ class Report extends CI_Controller {
         $data['qc_ok'] = $this->gemstone_model->getCountQC($id,1);
         $data['qc_not'] = $this->gemstone_model->getCountQC($id,2);
         $data['qc_return'] = $this->gemstone_model->getCountQC($id,4);
+        $data['qc_return_ok'] = $this->gemstone_model->getCountQC($id,5);
         
         $query = $this->gemstone_model->getNumberRange($id);
         foreach ($query as $loop) { $data['minno'] = $loop->_min; $data['maxno'] = $loop->_max; }
@@ -127,9 +128,14 @@ class Report extends CI_Controller {
         $color = $this->input->post('typeid');
         $month = $this->input->post('month');
         
-        $month = explode('-',$month);
-        $start = $month[1].'-'.$month[0].'-01';
-        $end = $month[1].'-'.$month[0].'-31';
+        if ($month !="") {
+            $month = explode('-',$month);
+            $start = $month[1].'-'.$month[0].'-01';
+            $end = $month[1].'-'.$month[0].'-31';
+        }else{
+            $start = 0;
+            $end = 0;
+        }
         
         $query = $this->report_model->getAllParcelColor_string($color, $start, $end);
 		if($query){
@@ -254,6 +260,24 @@ class Report extends CI_Controller {
 	</div>',"bid"); */
 
         
+		echo $this->datatables->generate(); 
+	}
+    
+    function ajaxGetAllBarcodeReturn_ok()
+	{
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone.dateadd as gemdate, gemstone_qc.detail as gemdetail, gemstone_barcode.id as bid", FALSE)
+		->from('gemstone_barcode')
+        ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
+        ->join('supplier', 'gemstone.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
+        ->join('gemstone_qc', 'gemstone_qc.barcode=gemstone_barcode.id', 'left')
+        ->where('disable',0)
+        ->where('pass', 5)
+		->edit_column("bid",'<div class="tooltip-demo">
+	<a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
+	</div>',"bid");
 		echo $this->datatables->generate(); 
 	}
     
@@ -501,6 +525,11 @@ class Report extends CI_Controller {
 		$this->load->view('report/allbarcode_return',$data);
     }
     
+    function allBarcode_return_ok() {
+        $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
+		$this->load->view('report/allbarcode_return_ok',$data);
+    }
+    
     function showgems_edit()
     {
         //$query = $this->report_model->getAllGemstone_edit();
@@ -521,7 +550,7 @@ class Report extends CI_Controller {
 	{
         $this->load->library('Datatables');
 		$this->datatables
-		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone_qc.detail as qcdetail, date_format(gemstone_qc.dateadd,'%d/%m/%y') as editdate, (CASE WHEN pass=1 THEN 'ผ่าน' WHEN pass=2 THEN 'ไม่ผ่าน' WHEN pass=3 THEN 'กำลังซ่อม' END) as statusnow, gemstone_barcode.id as bid", FALSE)
+		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone_qc.detail as qcdetail,CONCAT('<span class=hide>',date_format(gemstone_qc.dateadd,'%Y/%m/%d'),'</span>',date_format(gemstone_qc.dateadd,'%d/%m/%Y')) as editdate, (CASE WHEN pass=1 THEN 'ผ่าน' WHEN pass=2 THEN 'ไม่ผ่าน' WHEN pass=3 THEN 'กำลังซ่อม' END) as statusnow, gemstone_barcode.id as bid", FALSE)
 		->from('gemstone_qc')
         ->join('gemstone_barcode','gemstone_qc.barcode = gemstone_barcode.id', 'left')
         ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
@@ -542,7 +571,7 @@ class Report extends CI_Controller {
 	{
         $this->load->library('Datatables');
 		$this->datatables
-		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone_qc.detail as qcdetail, date_format(gemstone_qc.dateadd,'%d/%m/%y') as editdate, (CASE WHEN pass=1 THEN 'ผ่าน' WHEN pass=2 THEN 'ไม่ผ่าน' WHEN pass=3 THEN 'กำลังซ่อม' END) as statusnow, gemstone_barcode.id as bid", FALSE)
+		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone_qc.detail as qcdetail, CONCAT('<span class=hide>',date_format(gemstone_qc.dateadd,'%Y/%m/%d'),'</span>',date_format(gemstone_qc.dateadd,'%d/%m/%Y')) as editdate, (CASE WHEN pass=1 THEN 'ผ่าน' WHEN pass=2 THEN 'ไม่ผ่าน' WHEN pass=3 THEN 'กำลังซ่อม' END) as statusnow, gemstone_barcode.id as bid", FALSE)
 		->from('gemstone_qc')
         ->join('gemstone_barcode','gemstone_qc.barcode = gemstone_barcode.id', 'left')
         ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
