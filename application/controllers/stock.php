@@ -134,8 +134,32 @@ class Stock extends CI_Controller {
     
     function liststock()
     {
+        $query = $this->gemstone_model->getGemstoneType();
+		if($query){
+			$data['type_array'] =  $query;
+		}else{
+			$data['type_array'] = array();
+		}
+        
+        $data['colorid'] = 0;
+        $data['stoneid'] = 0;
         $data['title'] = "Cien|Gemstone Tracking System - List Inventory";
         $this->load->view('stock/liststock',$data);
+    }
+    
+    function liststock_color()
+    {
+        $data['colorid'] = $this->uri->segment(3);
+        $data['stoneid'] = $this->uri->segment(4);
+        $query = $this->gemstone_model->getGemstoneType();
+		if($query){
+			$data['type_array'] =  $query;
+		}else{
+			$data['type_array'] = array();
+		}
+        
+        $data['title'] = "Cien|Gemstone Tracking System - List Inventory";
+        $this->load->view('stock/liststock_color',$data);
     }
     
     function view_stone()
@@ -158,7 +182,24 @@ class Stock extends CI_Controller {
         ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
         ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
         ->where('disable',0)
-
+		->edit_column("bid",'<div class="tooltip-demo">
+    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a>
+	<button href="'.site_url("stock/delete_stone/$1").'" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="tooltip" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล" onClick="del_confirm($1)"><span class="glyphicon glyphicon-remove"></span></button></div>',"bid");
+		echo $this->datatables->generate();
+	}
+    
+    function ajaxGetListInventory_color()
+	{
+        $colorid = $this->uri->segment(3);
+        $stoneid = $this->uri->segment(4);
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("CONCAT('<span class=hide>',date_format(gemstone_stock.datein,'%Y/%m/%d'),'</span>',date_format(gemstone_stock.datein,'%d/%m/%Y')) as datein, CONCAT(supplier.name,lot) as detail,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remainamount,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
+		->from('gemstone_stock')
+        ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
+        ->where('disable',0)
+        ->where('gemstone_stock.type',$colorid)
 		->edit_column("bid",'<div class="tooltip-demo">
     <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a>
 	<button href="'.site_url("stock/delete_stone/$1").'" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="tooltip" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล" onClick="del_confirm($1)"><span class="glyphicon glyphicon-remove"></span></button></div>',"bid");

@@ -40,13 +40,13 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
-                                    <label>Rough * </label>
-                                    <input type="radio" name="roughtype" id="rough1" value="พลอยสำเร็จ" checked> พลอยสำเร็จ
+                                    <label>Rough * : &nbsp;&nbsp;</label>
+                                    <input type="radio" name="roughtype" id="rough1" value="พลอยสำเร็จ" checked> พลอยสำเร็จ &nbsp;&nbsp;
                                     <input type="radio" name="roughtype" id="rough2" value="พลอยก้อน"> พลอยก้อน
                                 </div>
                             </div>
                         </div>
-                        <hr>
+                        <br>
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="form-group">

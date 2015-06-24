@@ -38,10 +38,14 @@
                                 <div class="form-group">
                                     <label>เลือกสี</label>
                                         <select class="form-control" name="typeid" id="typeid" onChange="listColor(this)">
-                                            <option value="0" selected>All Color</option>
+                                            <option value="0">ทั้งหมด</option>
                                             <?php 	if(is_array($type_array)) {
                                                         foreach($type_array as $loop){
-                                                            echo "<option value='".$loop->id."'>".$loop->name."</option>";
+                                                            if ($colorid == $loop->id) {
+                                                                echo "<option value='".$loop->id."' selected>".$loop->name."</option>";
+                                                            }else{
+                                                                echo "<option value='".$loop->id."'>".$loop->name."</option>";
+                                                            }
                                                     } } ?>
                                         </select>
                                 </div>
@@ -49,10 +53,10 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>เลือกประเภทวัตถุดิบ</label>
-                                    <select class="form-control" name="stoneid" id="stoneid" onChange="listType(this)">
-                                        <option value="0">ทั้งหมด</option>
-                                        <option value="1">พลอยก้อน</option>
-                                        <option value="2">พลอยสำเร็จ</option>
+                                    <select class="form-control" name="stoneid" id="stoneid" onChange="listColor(this)">
+                                        <option value="0" <?php if ($stoneid==0) echo "selected"; ?>>ทั้งหมด</option>
+                                        <option value="1" <?php if ($stoneid==1) echo "selected"; ?>>พลอยก้อน</option>
+                                        <option value="2" <?php if ($stoneid==2) echo "selected"; ?>>พลอยสำเร็จ</option>
                                     </select>
                                 </div>
                             </div>
@@ -118,7 +122,9 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "bDeferRender": true,
-            'sAjaxSource'    : '<?php echo site_url("stock/ajaxGetListInventory"); ?>',
+            'sAjaxSource'    : '<?php if($stoneid==0) echo site_url("stock/ajaxGetListInventory_color/".$colorid);
+                                    elseif($colorid==0) echo site_url("stock/ajaxGetListInventory_stone/".$stoneid);
+                                    else echo site_url("stock/ajaxGetListInventory_color_stone/".$colorid."/".$stoneid); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {
                     "dataType": 'json',
