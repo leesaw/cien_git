@@ -34,7 +34,7 @@
                 <div class="panel panel-default">
 					<div class="panel-heading">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label>เลือกสี</label>
                                         <select class="form-control" name="typeid" id="typeid" onChange="listColor(this)">
@@ -46,14 +46,21 @@
                                         </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label>เลือกประเภทวัตถุดิบ</label>
                                     <select class="form-control" name="stoneid" id="stoneid" onChange="listType(this)">
-                                        <option value="0">ทั้งหมด</option>
-                                        <option value="1">พลอยก้อน</option>
-                                        <option value="2">พลอยสำเร็จ</option>
+                                        <option value="0" <?php if ($stoneid==0) echo "selected"; ?>>ทั้งหมด</option>
+                                        <option value="1" <?php if ($stoneid==1) echo "selected"; ?>>พลอยก้อน</option>
+                                        <option value="2" <?php if ($stoneid==2) echo "selected"; ?>>พลอยสำเร็จ</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                        <input type="radio" name="empty" id="instock" value="0" <?php if($stock=="instock") echo "checked"; ?>> <label class="text-green"> In Stock</label>&nbsp; &nbsp;
+                                        <input type="radio" name="empty" id="outstock" value="1" <?php if($stock=="outstock") echo "checked"; ?>> <label class="text-red"> Out of Stock</label>&nbsp; &nbsp;
+                                        <input type="radio" name="empty" id="allstock" value="2" <?php if(($stock=="allstock") || ($stock=="")) echo "checked"; ?>> <label class="text-blue"> Show All</label>&nbsp; &nbsp;
                                 </div>
                             </div>
                         </div> 
@@ -64,13 +71,15 @@
                                     <tr>
                                         <th width="100" rowspan="2">Date In</th>
                                         <th rowspan="2">Supplier and Lot</th>
+                                        <th rowspan="2">Rough</th>
                                         <th rowspan="2">Color</th>
                                         <th rowspan="2">Size</th>
                                         <th rowspan="2">Order</th>
                                         <th width="60" rowspan="2">Quantity</th>
                                         <th width="80" rowspan="2">Carat</th>
+                                        <th width="80" rowspan="2">Kilogram (kg.)</th>
                                         <th colspan="2" style="text-align:center">In Stock</th>
-										<th width="60" rowspan="2"> </th>
+										<th width="100" rowspan="2"> </th>
                                     </tr>
                                     <tr>
                                         <th width="60">Quantity</th>
@@ -118,7 +127,7 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "bDeferRender": true,
-            'sAjaxSource'    : '<?php echo site_url("stock/ajaxGetListInventory"); ?>',
+            'sAjaxSource'    : '<?php echo site_url("stock/ajaxGetListInventory/".$stock); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {
                     "dataType": 'json',
@@ -137,7 +146,32 @@ $(document).ready(function()
     'autoScale':false,
     'transitionIn':'none', 
     'transitionOut':'none', 
-    'type':'iframe'}); 
+    'type':'iframe'
+    }); 
+    
+    $('#fancyboxedit').fancybox({ 
+    'width': '85%',
+    'height': '100%', 
+    'autoScale':false,
+    'transitionIn':'none', 
+    'transitionOut':'none', 
+    'type':'iframe',
+    'afterClose': function () { // USE THIS IT IS YOUR ANSWER THE KEY WORD IS "afterClose"
+                parent.location.reload(true);
+            }
+    }); 
+    
+    $('#instock').on('click', function(){            
+        window.location.replace("<?php echo site_url("stock/liststock/instock"); ?>");
+    });
+          
+    $('#outstock').on('click', function(){            
+        window.location.replace("<?php echo site_url("stock/liststock/outstock"); ?>");
+    });
+    
+    $('#allstock').on('click', function(){            
+        window.location.replace("<?php echo site_url("stock/liststock/allstock"); ?>");
+    });
 });
     
 function del_confirm(val1) {
@@ -168,7 +202,7 @@ function listType(sel) {
     var var1 = sel.value;
     var colorid = <?php echo $colorid; ?>;
     if (var1 == 0) {
-        if (color==0) window.location.replace("<?php echo site_url("stock/liststock"); ?>");
+        if (colorid==0) window.location.replace("<?php echo site_url("stock/liststock"); ?>");
         else window.location.replace("<?php echo site_url("stock/liststock_color/".$colorid."/0"); ?>");
     }else{
         window.location.replace("<?php echo site_url("stock/liststock_color"); ?>"+"/"+colorid+"/"+var1);
