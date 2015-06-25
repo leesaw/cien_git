@@ -222,6 +222,47 @@ class Stock extends CI_Controller {
 
 	}
     
+    function editstock_out()
+	{
+        $stockid = $this->input->post("stoneid");
+        $reason = $this->input->post('reason');
+        $detail = $this->input->post('detail');
+        $amount = $this->input->post('amount');
+        $carat = $this->input->post('carat');
+        $datetime = date('Y-m-d H:i:s');
+
+        $gemstone = array(
+            'gemstone_stock_id' => $stockid,
+            'reason' => $reason,
+            'detail' => $detail,
+            'carat' => $carat,
+            'amount' => $amount,
+            'dateadd' => $datetime,
+            'userid' => $this->session->userdata('sessid')
+        );
+            
+        $result = $this->stock_model->addStockCut($gemstone);
+        
+        // update amount_out and carat_out
+        $stock = array('carat_out' => $carat, 'amount_out' => $amount, 'id' => $stockid);
+        $this->stock_model->editAmountCaratOut($stock,'plus');
+        
+        if ($result){
+            $this->session->set_flashdata('showresult', 'true');
+        }else{
+            $this->session->set_flashdata('showresult', 'fail');
+        }
+
+        $query = $this->stock_model->getStone_purchase($stockid);
+        $data['stone_array'] = $query;
+        
+        $data['stockid'] = $stockid;
+        $data['title'] = "Cien|Gemstone Tracking System - Edit Stone";
+        redirect('stock/out_stone', 'refresh');
+
+
+	}
+    
     function liststock()
     {
         $query = $this->gemstone_model->getGemstoneType();
@@ -260,6 +301,9 @@ class Stock extends CI_Controller {
         
         $query = $this->stock_model->getStockOutList($id);
         $data['parcel_array'] = $query;
+        
+        $query = $this->stock_model->getStockCutList($id);
+        $data['cut_array'] = $query;
         
         $data['title'] = "Cien|Gemstone Tracking System - View Stone";
         $this->load->view('stock/view_stone',$data);
@@ -318,10 +362,12 @@ class Stock extends CI_Controller {
         ->where('disable',0)
         ->where($column)
 		->edit_column("bid",'<div class="tooltip-demo">
-    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a>
-    <a id="fancyboxedit" href="'.site_url("stock/edit_stone/$1").'" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a> &nbsp;&nbsp;
+    <a id="fancyboxout" href="'.site_url("stock/out_stone/$1").'" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-export"></span></a> &nbsp;&nbsp;
 	<button href="'.site_url("stock/delete_stone/$1").'" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="tooltip" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล" onClick="del_confirm($1)"><span class="glyphicon glyphicon-remove"></span></button></div>',"bid");
 		echo $this->datatables->generate();
+        
+        //    <a id="fancyboxedit" href="'.site_url("stock/edit_stone/$1").'" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
 	}
     
     function ajaxGetListInventory_stone()
@@ -349,7 +395,8 @@ class Stock extends CI_Controller {
         ->where('gemstone_stock.stone_type',$stoneid)
         ->where($column)
 		->edit_column("bid",'<div class="tooltip-demo">
-    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a>
+    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a> &nbsp;&nbsp;
+    <a id="fancyboxout" href="'.site_url("stock/out_stone/$1").'" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-export"></span></a> &nbsp;&nbsp;
 	<button href="'.site_url("stock/delete_stone/$1").'" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="tooltip" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล" onClick="del_confirm($1)"><span class="glyphicon glyphicon-remove"></span></button></div>',"bid");
 		echo $this->datatables->generate();
 	}
@@ -375,7 +422,8 @@ class Stock extends CI_Controller {
         ->where('gemstone_stock.type',$colorid)
         ->where($column)
 		->edit_column("bid",'<div class="tooltip-demo">
-    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a>
+    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a> &nbsp;&nbsp;
+    <a id="fancyboxout" href="'.site_url("stock/out_stone/$1").'" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-export"></span></a> &nbsp;&nbsp;
 	<button href="'.site_url("stock/delete_stone/$1").'" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="tooltip" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล" onClick="del_confirm($1)"><span class="glyphicon glyphicon-remove"></span></button></div>',"bid");
 		echo $this->datatables->generate();
 	}
@@ -407,7 +455,8 @@ class Stock extends CI_Controller {
         ->where('gemstone_stock.type',$colorid)
         ->where($column)
 		->edit_column("bid",'<div class="tooltip-demo">
-    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a>
+    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a> &nbsp;&nbsp;
+    <a id="fancyboxout" href="'.site_url("stock/out_stone/$1").'" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-export"></span></a> &nbsp;&nbsp;
 	<button href="'.site_url("stock/delete_stone/$1").'" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="tooltip" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล" onClick="del_confirm($1)"><span class="glyphicon glyphicon-remove"></span></button></div>',"bid");
 		echo $this->datatables->generate();
 	}
@@ -451,6 +500,17 @@ class Stock extends CI_Controller {
         $data['stockid'] = $id;
 		$data['title'] = "Cien|Gemstone Tracking System - Add Stone in Inventory";
 		$this->load->view('purchase/addstock',$data);
+    }
+    
+    function out_stone()
+    {
+        $data['stockid'] = $this->uri->segment(3);
+        
+        $query = $this->stock_model->getOut_reason();
+        $data['reason_array'] = $query;
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Out stone";
+        $this->load->view('stock/out_stone',$data);
     }
     
 }

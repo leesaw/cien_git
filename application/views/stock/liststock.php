@@ -56,7 +56,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                         <input type="radio" name="empty" id="instock" value="0" <?php if($stock=="instock") echo "checked"; ?>> <label class="text-green"> In Stock</label>&nbsp; &nbsp;
                                         <input type="radio" name="empty" id="outstock" value="1" <?php if($stock=="outstock") echo "checked"; ?>> <label class="text-red"> Out of Stock</label>&nbsp; &nbsp;
@@ -151,6 +151,18 @@ $(document).ready(function()
     
     $('#fancyboxedit').fancybox({ 
     'width': '85%',
+    'height': '100%', 
+    'autoScale':false,
+    'transitionIn':'none', 
+    'transitionOut':'none', 
+    'type':'iframe',
+    'afterClose': function () { // USE THIS IT IS YOUR ANSWER THE KEY WORD IS "afterClose"
+                parent.location.reload(true);
+            }
+    }); 
+    
+    $('#fancyboxout').fancybox({ 
+    'width': '50%',
     'height': '100%', 
     'autoScale':false,
     'transitionIn':'none', 

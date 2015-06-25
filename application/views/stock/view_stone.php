@@ -18,6 +18,7 @@
 			<div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
+                        <h4>ส่งโรงงาน</h4>
                             <table class="table table-bordered table-striped" id="tablebarcode" width="100%">
                                 <thead>
                                     <tr>
@@ -51,6 +52,35 @@
                                     <td><?php echo $loop->size_in; ?></td>
                                     <td><?php echo $loop->size_out; ?></td>
                                     <td><?php echo $loop->process_name." ".$loop->process_detail; ?></td>
+									</tr>
+								<?php } }?>
+								</tbody>
+							</table>
+                        
+                        <h4>อื่น ๆ</h4>
+                            <table class="table table-bordered table-striped" id="tablebarcode" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th width="60" rowspan="2" style="text-align:center">Created on</th>
+                                        <th width="120" rowspan="2" style="text-align:center">Reason</th>
+                                        <th width="120" rowspan="2" style="text-align:center">Detail</th>
+                                        <th colspan="2" style="text-align:center">Stone</th>
+                                    </tr>
+                                    <tr><th width="50" style="text-align:center">Quantity</th><th width="50" style="text-align:center">Carat</th></tr>
+                                </thead>
+								<tbody>
+								<?php if(isset($cut_array)) { foreach($cut_array as $loop) { 
+                                    $phpdate = strtotime($loop->dateadd);
+                                    $date = date( 'd/m/Y', $phpdate );
+                                    $datehidden = date('Y/m/d', $phpdate);
+                                    
+								?>
+
+                                    <tr><td><span class="hide"><?php echo $datehidden; ?></span><?php echo $date; ?></td>
+                                    <td><?php echo $loop->reason; ?></td>
+                                    <td><?php echo $loop->detail; ?></td>
+                                    <td><?php echo $loop->amount; ?></td>
+                                    <td><?php echo $loop->carat; ?></td>
 									</tr>
 								<?php } }?>
 								</tbody>

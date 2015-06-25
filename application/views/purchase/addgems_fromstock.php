@@ -33,6 +33,8 @@
                     <div class="box-body">
                         <div class="row">
                             <?php
+                                //$remain_amount=0;
+                                //$remain_carat=0;
                                 if(is_array($stone_array)) {
 				                    foreach($stone_array as $loop){ 
                             
@@ -192,7 +194,7 @@
                 alert('จำนวนในสต๊อกมีไม่เพียงพอ');
 				$('#amount').focus();
 				return false;
-            }else if(carat > remain_carat) {
+            }elseif(carat > remain_carat) {
                 alert('จำนวนในสต๊อกมีไม่เพียงพอ');
 				$('#carat').focus();
 				return false;

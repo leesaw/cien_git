@@ -7,6 +7,12 @@ Class Stock_model extends CI_Model
         return $this->db->insert_id();	
     }
     
+    function addStockCut($gemstone)
+    {
+        $this->db->insert('stock_cut', $gemstone);
+        return $this->db->insert_id();	
+    }
+    
     function editStock($temp)
     {
         $this->db->where('id', $temp['id']);
@@ -74,6 +80,23 @@ Class Stock_model extends CI_Model
         $this->db->where('disable != ',1);
         $this->db->where('stockid',$stockid);
         $query = $this->db->get();
+        return $query->result();
+    }
+    
+    function getStockCutList($stockid)
+    {
+        $this->db->select('dateadd, reason, detail, amount, carat');
+        $this->db->from('stock_cut');
+        $this->db->where('gemstone_stock_id',$stockid);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
+    function getOut_reason()
+    {
+        $this->db->select("id, name");
+        $this->db->from("stock_cut_reason");
+        $query = $this->db->get();	
         return $query->result();
     }
 
