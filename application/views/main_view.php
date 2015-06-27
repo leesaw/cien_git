@@ -46,24 +46,17 @@
 
     $sum = 0;
     foreach($gem_array as $loop) { 
-        /*
-        switch ($loop->typename) {
-            case 'Ruby': $color = '#FF0000'; break;
-            case 'Blue': $color = '#58ACFA'; break;
-            case 'Green': $color = '#31B404'; break;
-            case 'Yellow': $color = '#F4FA58'; break;
-            case 'Orange': $color = '#FE9A2E'; break;
-            case 'Purple': $color = '#AC58FA'; break;
-            case 'Pink': $color = '#F781D8'; break;
-            case 'Light Blue': $color = '#CEE3F6'; break;
-            case 'Bangacha': $color = '#31B404'; break;
-        }
-        $dataset_type[] = array('label' => $loop->typename, 'data' => $loop->count, 'color' => $color );
-        */
+
         $dataset_type[] = array($loop->typename, $loop->count);
 
         $sum += $loop->count;
     }
+
+    foreach($rough_array as $loop) { 
+
+        $dataset_rough[] = array($loop->typename, $loop->amount);
+    }
+
     foreach($station_array as $loop) { 
         switch ($loop->number) {
             case 5: $station = "บล็อกรูปร่าง"; break;
@@ -110,32 +103,31 @@ if ($colorgraph>0) {
                                   เลือก <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_1-1" data-toggle="tab">แยกตามสีในโรงงาน</a></li>
-                        <!--
-                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_2" data-toggle="tab">จำนวนเข้า-ออกแต่ละวัน</a></li>
-                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_1-1" data-toggle="tab">จำนวนของในโรงงานทั้งหมด</a></li>
+                        
+                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_2-1" data-toggle="tab">จำนวนวัตถุดิบที่จัดซื้อ</a></li>
+                        <!--          <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
                                   <li role="presentation" class="divider"></li>
                                   <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
                         -->
                                 </ul>
                               </li>
-                              <li class="pull-right header">จำนวนของในโรงงานทั้งหมด <u><?php echo $sum; ?></u> ชิ้น</li>
+                              
                             </ul>
                             <div class="tab-content">
                               <div class="tab-pane active" id="tab_1-1">
-                                <div id="bar-type" style="height: 300px;"></div>
+                                <h4 class="pull-right header">จำนวนของในโรงงานทั้งหมด <u><?php echo $sum; ?></u> ชิ้น</h4><br><br>
+                                <div id="inventory-rough" style="height: 300px;"></div><!--<div id="bar-type" style="height: 300px;"></div> -->
                                   <hr>
                                 <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> &nbsp;&nbsp; แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;
                                 <button type="button" class="btn bg-navy" onClick="window.location.href='<?php echo site_url("report/allParcel_factory"); ?>'"> <i class="fa fa-archive"></i> &nbsp;&nbsp; แสดงชุดวัตถุดิบในโรงงาน </button>
                               </div><!-- /.tab-pane -->
                               <div class="tab-pane" id="tab_2-1">
-                                The European languages are members of the same family. Their separate existence is a myth.
-                                For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
-                                in their grammar, their pronunciation and their most common words. Everyone realizes why a
-                                new common language would be desirable: one could refuse to pay expensive translators. To
-                                achieve this, it would be necessary to have uniform grammar, pronunciation and more common
-                                words. If several languages coalesce, the grammar of the resulting language is more simple
-                                and regular than that of the individual languages.
+                                <h4 class="pull-right header">จำนวนของใน Inventory </h4><br><br>
+                                
+                                  <hr>
+                                <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> &nbsp;&nbsp; แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;
+                                <button type="button" class="btn bg-navy" onClick="window.location.href='<?php echo site_url("report/allParcel_factory"); ?>'"> <i class="fa fa-archive"></i> &nbsp;&nbsp; แสดงชุดวัตถุดิบในโรงงาน </button>
                               </div><!-- /.tab-pane -->
                             </div><!-- /.tab-content -->
                           </div><!-- nav-tabs-custom -->
@@ -328,6 +320,32 @@ if ($colorgraph>0) {
           color: "#FF0000"
         };
         $.plot("#bar-type", [bar_type], {
+          grid: {
+            borderWidth: 1,
+            borderColor: "#f3f3f3",
+            tickColor: "#f3f3f3"
+          },
+          bars: {
+              show: true,
+              showNumbers: true,
+              barWidth: 0.5,
+              align: "center",
+              numbers : {
+                    yAlign: function(y) { return y/2; }
+                }
+          },
+          xaxis: {
+            mode: "categories",
+            tickLength: 10
+          }
+          
+        });
+          
+        var rough_array = {
+          data: <?php echo json_encode($dataset_rough); ?>,
+          color: "#00FFFF"
+        };
+        $.plot("#inventory-rough", [rough_array], {
           grid: {
             borderWidth: 1,
             borderColor: "#f3f3f3",

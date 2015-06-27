@@ -29,29 +29,58 @@
 
                         
         <div class="box-body">
-            
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>เลือกสี</label>
+                                        <select class="form-control" name="typeid" id="typeid" onChange="listColor(this)">
+                                            <option value="0" selected>All Color</option>
+                                            <?php 	if(is_array($type_array)) {
+                                                        foreach($type_array as $loop){
+                                                            echo "<option value='".$loop->id."'>".$loop->name."</option>";
+                                                    } } ?>
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>เลือกประเภทวัตถุดิบ</label>
+                                    <select class="form-control" name="stoneid" id="stoneid" onChange="listType(this)">
+                                        <option value="0" <?php if ($stoneid==0) echo "selected"; ?>>ทั้งหมด</option>
+                                        <option value="1" <?php if ($stoneid==1) echo "selected"; ?>>พลอยก้อน</option>
+                                        <option value="2" <?php if ($stoneid==2) echo "selected"; ?>>พลอยสำเร็จ</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                        <input type="radio" name="empty" id="instock" value="0" <?php if(($stock=="instock") || ($stock=="")) echo "checked"; ?>> <label class="text-green"> In Stock</label>&nbsp; &nbsp;
+                                        <input type="radio" name="empty" id="allstock" value="2" <?php if($stock=="allstock") echo "checked"; ?>> <label class="text-blue"> Show All</label>&nbsp; &nbsp;
+                                </div>
+                            </div>
+                        </div> 
         <div class="row">
-			<div class="col-xs-10">
+			<div class="col-xs-12">
                 <div class="panel panel-default">
 					<div class="panel-heading"></div>
                     <div class="panel-body">
                             <table class="table table-bordered table-striped" id="tablebarcode" width="100%">
                                 <thead>
                                     <tr>
-                                        <th width="80" rowspan="2"> </th>
                                         <th width="80" rowspan="2">Date In</th>
                                         <th rowspan="2">Supplier and Lot</th>
                                         <th rowspan="2">Rough</th>
                                         <th rowspan="2">Color</th>
                                         <th rowspan="2">Size</th>
                                         <th rowspan="2">Order</th>
-                                        <th width="60" rowspan="2">Quantity</th>
+                                        <th width="80" rowspan="2">Quantity</th>
                                         <th width="80" rowspan="2">Carat</th>
                                         <th width="80" rowspan="2">Kilogram (kg.)</th>
                                         <th colspan="2" style="text-align:center">In Stock</th>
+                                        <th width="80" rowspan="2">เลือก</th>
                                     </tr>
                                     <tr>
-                                        <th width="60">Quantity</th>
+                                        <th width="80">Quantity</th>
                                         <th width="80">Carat</th>
                                     </tr>
                                 </thead>
@@ -96,7 +125,7 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "bDeferRender": true,
-            'sAjaxSource'    : '<?php echo site_url("stock/ajaxGetListInventory_select"); ?>',
+            'sAjaxSource'    : '<?php echo site_url("stock/ajaxGetListInventory_select/".$stock); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {
                     "dataType": 'json',
@@ -116,6 +145,14 @@ $(document).ready(function()
     'transitionIn':'none', 
     'transitionOut':'none', 
     'type':'iframe'}); 
+    
+    $('#instock').on('click', function(){            
+        window.location.replace("<?php echo site_url("stock/liststock_select/instock"); ?>");
+    });
+    
+    $('#allstock').on('click', function(){            
+        window.location.replace("<?php echo site_url("stock/liststock_select/allstock"); ?>");
+    });
 });
     
 function del_confirm(val1) {
@@ -131,6 +168,27 @@ function del_confirm(val1) {
 
 }
 
+function listColor(sel) {
+    var var1 = sel.value;
+    var stone_type = <?php echo $stoneid; ?>;
+    if (var1 == 0) {
+        if (stone_type==0) window.location.replace("<?php echo site_url("stock/liststock_select"); ?>");
+        else window.location.replace("<?php echo site_url("stock/liststock_select_color/0/".$stoneid); ?>");
+    }else{
+        window.location.replace("<?php echo site_url("stock/liststock_select_color"); ?>"+"/"+var1+"/"+stone_type);
+    }
+}
+    
+function listType(sel) {
+    var var1 = sel.value;
+    var colorid = <?php echo $colorid; ?>;
+    if (var1 == 0) {
+        if (colorid==0) window.location.replace("<?php echo site_url("stock/liststock_select"); ?>");
+        else window.location.replace("<?php echo site_url("stock/liststock_select_color/".$colorid."/0"); ?>");
+    }else{
+        window.location.replace("<?php echo site_url("stock/liststock_select_color"); ?>"+"/"+colorid+"/"+var1);
+    }
+}
 
 $(".alert").alert();
 window.setTimeout(function() { $(".alert").alert('close'); }, 4000);

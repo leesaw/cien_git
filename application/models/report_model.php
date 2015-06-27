@@ -269,9 +269,24 @@ Class Report_model extends CI_Model
 	return $query->result();
  }
     
- function getAllGemstone_editing()
+ function getAllGemstoneInventory_instock($rough)
  {
-    
+     if ($rough == "พลอยสำเร็จ") {
+        $this->db->select("gemstone_type.name as typename,SUM((gemstone_stock.amount-gemstone_stock.amount_out)) as amount, FORMAT(SUM(gemstone_stock.carat - gemstone_stock.carat_out),2) as carat", FALSE);
+     }else{
+        $this->db->select("gemstone_type.name as typename,FORMAT(SUM(gemstone_stock.kilogram*1000-gemstone_stock.carat_out*0.2),2) as carat", FALSE);
+     }
+    $this->db->from("gemstone_stock");
+    $this->db->join("gemstone_type", "gemstone_type.id=gemstone_stock.type", "left");
+    $this->db->where("stone_type", $rough);
+    if ($rough == "พลอยสำเร็จ") {
+        $this->db->where("(gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out)");
+    }else{
+        $this->db->where("(gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2))");   
+    }
+    $this->db->group_by("gemstone_stock.type");
+    $query = $this->db->get();
+    return $query->result();
  }
 
 }

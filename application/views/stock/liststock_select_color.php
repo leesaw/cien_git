@@ -27,12 +27,8 @@
             <div class="col-lg-12">
                 <div class="box box-primary">
 
-             
-        <div class="box-body">   
-        <div class="row">
-			<div class="col-md-12">
-                <div class="panel panel-default">
-					<div class="panel-heading">
+                        
+        <div class="box-body">
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="form-group">
@@ -62,32 +58,34 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                        <input type="radio" name="empty" id="instock" value="0" <?php if($stock=="instock") echo "checked"; ?>> <label class="text-green"> In Stock</label>&nbsp; &nbsp;
-                                        <input type="radio" name="empty" id="outstock" value="1" <?php if($stock=="outstock") echo "checked"; ?>> <label class="text-red"> Out of Stock</label>&nbsp; &nbsp;
-                                        <input type="radio" name="empty" id="allstock" value="2" <?php if(($stock=="allstock") || ($stock=="")) echo "checked"; ?>> <label class="text-blue"> Show All</label>&nbsp; &nbsp;
+                                        <input type="radio" name="empty" id="instock" value="0" <?php if(($stock=="instock") || ($stock=="")) echo "checked"; ?>> <label class="text-green"> In Stock</label>&nbsp; &nbsp;
+                                        <input type="radio" name="empty" id="allstock" value="2" <?php if($stock=="allstock") echo "checked"; ?>> <label class="text-blue"> Show All</label>&nbsp; &nbsp;
                                 </div>
                             </div>
                         </div> 
-                    </div>
+        <div class="row">
+			<div class="col-xs-12">
+                <div class="panel panel-default">
+					<div class="panel-heading"></div>
                     <div class="panel-body">
                             <table class="table table-bordered table-striped" id="tablebarcode" width="100%">
                                 <thead>
                                     <tr>
-                                        <th width="100" rowspan="2">Date In</th>
+                                        <th width="80" rowspan="2">Date In</th>
                                         <th rowspan="2">Supplier and Lot</th>
                                         <th rowspan="2">Rough</th>
                                         <th rowspan="2">Color</th>
                                         <th rowspan="2">Size</th>
                                         <th rowspan="2">Order</th>
-                                        <th width="60" rowspan="2">Quantity</th>
+                                        <th width="80" rowspan="2">Quantity</th>
                                         <th width="80" rowspan="2">Carat</th>
                                         <th width="80" rowspan="2">Kilogram (kg.)</th>
                                         <th colspan="2" style="text-align:center">In Stock</th>
-										<th width="100" rowspan="2"> </th>
+                                        <th width="80" rowspan="2">เลือก</th>
                                     </tr>
                                     <tr>
-                                        <th width="60">Quantity</th>
-                                        <th width="60">Carat</th>
+                                        <th width="80">Quantity</th>
+                                        <th width="80">Carat</th>
                                     </tr>
                                 </thead>
                                 
@@ -131,9 +129,9 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "bDeferRender": true,
-            'sAjaxSource'    : '<?php if($stoneid==0) echo site_url("stock/ajaxGetListInventory_color/".$colorid."/".$stock);
-                                    elseif($colorid==0) echo site_url("stock/ajaxGetListInventory_stone/".$stoneid."/".$stock);
-                                    else echo site_url("stock/ajaxGetListInventory_color_stone/".$colorid."/".$stoneid."/".$stock); ?>',
+            'sAjaxSource'    : '<?php if($stoneid==0) echo site_url("stock/ajaxGetListInventory_select_color/".$colorid."/".$stock);
+                                    elseif($colorid==0) echo site_url("stock/ajaxGetListInventory_select_stone/".$stoneid."/".$stock);
+                                    else echo site_url("stock/ajaxGetListInventory_select_color_stone/".$colorid."/".$stoneid."/".$stock); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {
                     "dataType": 'json',
@@ -152,51 +150,19 @@ $(document).ready(function()
     'autoScale':false,
     'transitionIn':'none', 
     'transitionOut':'none', 
-    'type':'iframe'
-    }); 
-    
-    $('#fancyboxedit').fancybox({ 
-    'width': '85%',
-    'height': '100%', 
-    'autoScale':false,
-    'transitionIn':'none', 
-    'transitionOut':'none', 
-    'type':'iframe',
-    'afterClose': function () { // USE THIS IT IS YOUR ANSWER THE KEY WORD IS "afterClose"
-                parent.location.reload(true);
-            }
-    }); 
-    
-    $('#fancyboxout').fancybox({ 
-    'width': '50%',
-    'height': '100%', 
-    'autoScale':false,
-    'transitionIn':'none', 
-    'transitionOut':'none', 
-    'type':'iframe',
-    'afterClose': function () { // USE THIS IT IS YOUR ANSWER THE KEY WORD IS "afterClose"
-                parent.location.reload(true);
-            }
-    }); 
+    'type':'iframe'}); 
     
     $('#instock').on('click', function(){            
-        window.location.replace("<?php if($stoneid==0) echo site_url("stock/liststock_color/".$colorid."/0/instock");
-                                       elseif($colorid==0) echo site_url("stock/liststock_color/0/".$stoneid."/instock");
-                                       else echo site_url("stock/liststock_color/".$colorid."/".$stoneid."/instock");
-                     ?>");
-    });
-          
-    $('#outstock').on('click', function(){            
-        window.location.replace("<?php if($stoneid==0) echo site_url("stock/liststock_color/".$colorid."/0/outstock");
-                                       elseif($colorid==0) echo site_url("stock/liststock_color/0/".$stoneid."/outstock");
-                                       else echo site_url("stock/liststock_color/".$colorid."/".$stoneid."/outstock");
+        window.location.replace("<?php if($stoneid==0) echo site_url("stock/liststock_select_color/".$colorid."/0/instock");
+                                       elseif($colorid==0) echo site_url("stock/liststock_select_color/0/".$stoneid."/instock");
+                                       else echo site_url("stock/liststock_select_color/".$colorid."/".$stoneid."/instock");
                      ?>");
     });
     
     $('#allstock').on('click', function(){            
-        window.location.replace("<?php if($stoneid==0) echo site_url("stock/liststock_color/".$colorid."/0/allstock");
-                                       elseif($colorid==0) echo site_url("stock/liststock_color/0/".$stoneid."/allstock");
-                                       else echo site_url("stock/liststock_color/".$colorid."/".$stoneid."/allstock");
+        window.location.replace("<?php if($stoneid==0) echo site_url("stock/liststock_select_color/".$colorid."/0/allstock");
+                                       elseif($colorid==0) echo site_url("stock/liststock_select_color/0/".$stoneid."/allstock");
+                                       else echo site_url("stock/liststock_select_color/".$colorid."/".$stoneid."/allstock");
                      ?>");
     });
 });
@@ -213,15 +179,15 @@ function del_confirm(val1) {
 		});
 
 }
-    
+
 function listColor(sel) {
     var var1 = sel.value;
     var stone_type = <?php echo $stoneid; ?>;
     if (var1 == 0) {
-        if (stone_type==0) window.location.replace("<?php echo site_url("stock/liststock"); ?>");
-        else window.location.replace("<?php echo site_url("stock/liststock_color/0/".$stoneid); ?>");
+        if (stone_type==0) window.location.replace("<?php echo site_url("stock/liststock_select"); ?>");
+        else window.location.replace("<?php echo site_url("stock/liststock_select_color/0/".$stoneid); ?>");
     }else{
-        window.location.replace("<?php echo site_url("stock/liststock_color"); ?>"+"/"+var1+"/"+stone_type);
+        window.location.replace("<?php echo site_url("stock/liststock_select_color"); ?>"+"/"+var1+"/"+stone_type);
     }
 }
     
@@ -229,13 +195,12 @@ function listType(sel) {
     var var1 = sel.value;
     var colorid = <?php echo $colorid; ?>;
     if (var1 == 0) {
-        if (colorid==0) window.location.replace("<?php echo site_url("stock/liststock"); ?>");
-        else window.location.replace("<?php echo site_url("stock/liststock_color/".$colorid."/0"); ?>");
+        if (colorid==0) window.location.replace("<?php echo site_url("stock/liststock_select"); ?>");
+        else window.location.replace("<?php echo site_url("stock/liststock_select_color/".$colorid."/0"); ?>");
     }else{
-        window.location.replace("<?php echo site_url("stock/liststock_color"); ?>"+"/"+colorid+"/"+var1);
+        window.location.replace("<?php echo site_url("stock/liststock_select_color"); ?>"+"/"+colorid+"/"+var1);
     }
 }
-
 
 $(".alert").alert();
 window.setTimeout(function() { $(".alert").alert('close'); }, 4000);

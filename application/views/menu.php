@@ -22,6 +22,15 @@
                   <li><a href="<?php echo site_url("report/allparcel_color/Purple"); ?>">Purple</a></li>
                   <li><a href="<?php echo site_url("report/allparcel_color/Ruby"); ?>">Ruby</a></li>
                   <li><a href="<?php echo site_url("report/allparcel_color/Pink"); ?>">Pink</a></li>
+                  <li><a href="<?php echo site_url("report/allparcel_color/Green"); ?>">Green</a></li>
+                  <li><a href="<?php echo site_url("report/allparcel_color/มรกต"); ?>">มรกต</a></li>
+                  <li><a href="<?php echo site_url("report/allparcel_color/Tsavori"); ?>">Tsavori</a></li>
+                  <li><a href="<?php echo site_url("report/allparcel_color/Brown_Garnet"); ?>">Brown Garnet</a></li>
+                  <li><a href="<?php echo site_url("report/allparcel_color/Amethast"); ?>">Amethast</a></li>
+                  <li><a href="<?php echo site_url("report/allparcel_color/Red_Spinel"); ?>">Red Spinel</a></li>
+                  <li><a href="<?php echo site_url("report/allparcel_color/Swiss_Blue"); ?>">Swiss Blue</a></li>
+                  <li><a href="<?php echo site_url("report/allparcel_color/London_Blue"); ?>">London Blue</a></li>
+                  <li><a href="<?php echo site_url("report/allparcel_color/Aqumarine"); ?>">Aqumarine</a></li>
                 </ul>
               </li>
             </ul>

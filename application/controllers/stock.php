@@ -349,9 +349,9 @@ class Stock extends CI_Controller {
         if(($stock=="") || ($stock=="allstock")) {
             $column = "gemstone_stock.amount > -1";
         }elseif($stock=="instock") {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }elseif($stock=="outstock") {
-            $column = "((gemstone_stock.amount = gemstone_stock.amount_out) AND (gemstone_stock.carat = gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0))";
+            $column = "((gemstone_stock.amount <= gemstone_stock.amount_out) AND (gemstone_stock.carat <= gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0 OR (gemstone_stock.kilogram*1000<=gemstone_stock.carat_out*0.2)))";
         }
         $this->load->library('Datatables');
 		$this->datatables
@@ -377,9 +377,9 @@ class Stock extends CI_Controller {
         if(($stock=="") || ($stock=="allstock")) {
             $column = "gemstone_stock.amount > -1";
         }elseif($stock=="instock") {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }elseif($stock=="outstock") {
-            $column = "((gemstone_stock.amount = gemstone_stock.amount_out) AND (gemstone_stock.carat = gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0))";
+            $column = "((gemstone_stock.amount <= gemstone_stock.amount_out) AND (gemstone_stock.carat <= gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0 OR (gemstone_stock.kilogram*1000<=gemstone_stock.carat_out*0.2)))";
         }
         switch($stoneid){
             case 1: $stoneid = "พลอยก้อน"; break;
@@ -408,9 +408,9 @@ class Stock extends CI_Controller {
         if(($stock=="") || ($stock=="allstock")) {
             $column = "gemstone_stock.amount > -1";
         }elseif($stock=="instock") {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }elseif($stock=="outstock") {
-            $column = "((gemstone_stock.amount = gemstone_stock.amount_out) AND (gemstone_stock.carat = gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0))";
+            $column = "((gemstone_stock.amount <= gemstone_stock.amount_out) AND (gemstone_stock.carat <= gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0 OR (gemstone_stock.kilogram*1000<=gemstone_stock.carat_out*0.2)))";
         }
         $this->load->library('Datatables');
 		$this->datatables
@@ -436,9 +436,9 @@ class Stock extends CI_Controller {
         if(($stock=="") || ($stock=="allstock")) {
             $column = "gemstone_stock.amount > -1";
         }elseif($stock=="instock") {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }elseif($stock=="outstock") {
-            $column = "((gemstone_stock.amount = gemstone_stock.amount_out) AND (gemstone_stock.carat = gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0))";
+            $column = "((gemstone_stock.amount <= gemstone_stock.amount_out) AND (gemstone_stock.carat <= gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0 OR (gemstone_stock.kilogram*1000<=gemstone_stock.carat_out*0.2)))";
         }
         switch($stoneid){
             case 1: $stoneid = "พลอยก้อน"; break;
@@ -461,16 +461,112 @@ class Stock extends CI_Controller {
 		echo $this->datatables->generate();
 	}
     
+    //  when need to print out delivery form 
+    
     function ajaxGetListInventory_select()
 	{
+        $stock = $this->uri->segment(3);
+        if($stock=="allstock") {
+            $column = "gemstone_stock.amount > -1";
+        }elseif(($stock=="") || ($stock=="instock")) {
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+        }
+        
         $this->load->library('Datatables');
 		$this->datatables
-		->select("gemstone_stock.id as bid, date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,' Lot ',carat) as detail,gemstone_stock.stone_type as stonetype,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg ,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remain,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out,2),'</b></code>') as remaincarat", FALSE)
+		->select("date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,' Lot ',carat) as detail,gemstone_stock.stone_type as stonetype,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg ,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remain,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
 		->from('gemstone_stock')
         ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
         ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
         ->where('disable',0)
-        ->where('((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0))')
+        ->where($column)
+		->edit_column("bid",'<div class="tooltip-demo">
+    <a href="'.site_url("stock/select_stock/$1").'" class="btn btn-primary btn-xs" data-title="Select" data-toggle="tooltip" data-target="#select" data-placement="top" rel="tooltip" title="เลือก"><span class="glyphicon glyphicon-shopping-cart"></span> &nbsp;&nbsp;Select</a></div>',"bid");
+		echo $this->datatables->generate(); 
+	}
+    
+    function ajaxGetListInventory_select_stone()
+	{
+        $stoneid = $this->uri->segment(3);
+        $stock = $this->uri->segment(4);
+        
+        if($stock=="allstock") {
+            $column = "gemstone_stock.amount > -1";
+        }elseif(($stock=="") || ($stock=="instock")) {
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+        }
+        
+        switch($stoneid){
+            case 1: $stoneid = "พลอยก้อน"; break;
+            case 2: $stoneid = "พลอยสำเร็จ"; break;
+        }
+        
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,' Lot ',carat) as detail,gemstone_stock.stone_type as stonetype,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg ,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remain,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
+		->from('gemstone_stock')
+        ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
+        ->where('disable',0)
+        ->where('gemstone_stock.stone_type',$stoneid)
+        ->where($column)
+		->edit_column("bid",'<div class="tooltip-demo">
+    <a href="'.site_url("stock/select_stock/$1").'" class="btn btn-primary btn-xs" data-title="Select" data-toggle="tooltip" data-target="#select" data-placement="top" rel="tooltip" title="เลือก"><span class="glyphicon glyphicon-shopping-cart"></span> &nbsp;&nbsp;Select</a></div>',"bid");
+		echo $this->datatables->generate(); 
+	}
+    
+    function ajaxGetListInventory_select_color()
+	{
+        $colorid = $this->uri->segment(3);
+        $stock = $this->uri->segment(4);
+        
+        if($stock=="allstock") {
+            $column = "gemstone_stock.amount > -1";
+        }elseif(($stock=="") || ($stock=="instock")) {
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+        }
+        
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,' Lot ',carat) as detail,gemstone_stock.stone_type as stonetype,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg ,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remain,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
+		->from('gemstone_stock')
+        ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
+        ->where('disable',0)
+        ->where('gemstone_stock.type',$colorid)
+        ->where($column)
+		->edit_column("bid",'<div class="tooltip-demo">
+    <a href="'.site_url("stock/select_stock/$1").'" class="btn btn-primary btn-xs" data-title="Select" data-toggle="tooltip" data-target="#select" data-placement="top" rel="tooltip" title="เลือก"><span class="glyphicon glyphicon-shopping-cart"></span> &nbsp;&nbsp;Select</a></div>',"bid");
+		echo $this->datatables->generate(); 
+	}
+    
+    function ajaxGetListInventory_select_color_stone()
+	{
+        $stoneid = $this->uri->segment(4);
+        $colorid = $this->uri->segment(3);
+        $stock = $this->uri->segment(5);
+        
+        if($stock=="allstock") {
+            $column = "gemstone_stock.amount > -1";
+        }elseif(($stock=="") || ($stock=="instock")) {
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+        }
+        
+        switch($stoneid){
+            case 1: $stoneid = "พลอยก้อน"; break;
+            case 2: $stoneid = "พลอยสำเร็จ"; break;
+        }
+        
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,' Lot ',carat) as detail,gemstone_stock.stone_type as stonetype,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg ,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remain,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
+		->from('gemstone_stock')
+        ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
+        ->where('disable',0)
+        ->where('gemstone_stock.stone_type',$stoneid)
+        ->where('gemstone_stock.type',$colorid)
+        ->where($column)
 		->edit_column("bid",'<div class="tooltip-demo">
     <a href="'.site_url("stock/select_stock/$1").'" class="btn btn-primary btn-xs" data-title="Select" data-toggle="tooltip" data-target="#select" data-placement="top" rel="tooltip" title="เลือก"><span class="glyphicon glyphicon-shopping-cart"></span> &nbsp;&nbsp;Select</a></div>',"bid");
 		echo $this->datatables->generate(); 
@@ -486,8 +582,34 @@ class Stock extends CI_Controller {
     
     function liststock_select()
     {
+        $query = $this->gemstone_model->getGemstoneType();
+		if($query){
+			$data['type_array'] =  $query;
+		}else{
+			$data['type_array'] = array();
+		}
+        
+        $data['colorid'] = 0;
+        $data['stoneid'] = 0;
+        $data['stock'] = $this->uri->segment(3);
         $data['title'] = "Cien|Gemstone Tracking System - List Inventory";
         $this->load->view('stock/liststock_select',$data);
+    }
+    
+    function liststock_select_color()
+    {
+        $data['colorid'] = $this->uri->segment(3);
+        $data['stoneid'] = $this->uri->segment(4);
+        $data['stock'] = $this->uri->segment(5);
+        $query = $this->gemstone_model->getGemstoneType();
+		if($query){
+			$data['type_array'] =  $query;
+		}else{
+			$data['type_array'] = array();
+		}
+        
+        $data['title'] = "Cien|Gemstone Tracking System - List Inventory";
+        $this->load->view('stock/liststock_select_color',$data);
     }
     
     function select_stock()

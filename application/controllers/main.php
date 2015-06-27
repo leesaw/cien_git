@@ -17,17 +17,10 @@ class Main extends CI_Controller {
             
             $query = $this->report_model->getAllGemstoneInFactory();
             $data['gem_array'] = $query;
-            /*
-            $color = array();
-            $i=0;
-            foreach ($query as $loop) {
-                $typename = str_replace(" ", "", $loop->typename);
-                $data['color_'.$typename] = $this->report_model->getColorGemstoneInFactory($loop->typename);
-                $color[$i] = $typename;
-                $i++;
-            }
-            $data['color'] = $color;
-            */
+            
+            $query = $this->report_model->getAllGemstoneInventory_instock("พลอยสำเร็จ");
+            $data['rough_array'] = $query;
+            
             if ($color>0) { $data['color'] = $this->report_model->getColorGemstoneInFactory_id($color); }
             else { $color = 1; $data['color'] = $this->report_model->getColorGemstoneInFactory_id($color); }
             

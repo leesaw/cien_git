@@ -33,17 +33,17 @@
                     <div class="box-body">
                         <div class="row">
                             <?php
-                                //$remain_amount=0;
-                                //$remain_carat=0;
+                                $remain_amount=0;
+                                $remain_carat=0;
                                 if(is_array($stone_array)) {
 				                    foreach($stone_array as $loop){ 
                             
-                                        $remain_amount = $loop->remain;
-                                        $remain_carat = $loop->remaincarat;
                             ?>
                             <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Supplier *</label> 
+                                        <input type="hidden" name="remain_amount" id="remain_amount" value="<?php echo $loop->remain; ?>">
+                                        <input type="hidden" name="remain_carat" id="remain_carat" value="<?php echo $loop->remaincarat; ?>">
                                         <input type="hidden" name="stockid" value="<?php echo $stockid; ?>">
                                         <input type="hidden" name="supplierid" value="<?php echo $loop->supid; ?>">
                                         <input type="text" class="form-control" name="supname" id="supname" value="<?php echo $loop->supname; ?>" readonly>
@@ -83,7 +83,6 @@
                                     <div class="form-group">
                                             <label>Carat *</label>
                                             <input type="text" class="form-control" name="carat" id="carat" value="<?php echo set_value('carat'); ?>">
-											<p class="help-block"><?php echo form_error('carat'); ?></p>
                                     </div>
 							</div>
                             <div class="col-md-4">
@@ -130,11 +129,12 @@
                         <button type="submit" class="btn btn-primary btn-lg">  <i class="fa fa-floppy-o"></i> &nbsp;&nbsp; <b>Save</b>  &nbsp; &nbsp; </button>&nbsp; &nbsp; &nbsp; &nbsp; 
                         <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='<?php echo site_url("purchase/addstock"); ?>'"> <i class="fa fa-reply"></i> &nbsp;&nbsp; <b>Back</b> </button>
                     </div>
-                </div>
+                        </form>
+            </div>
 			</section>
 		</div>
 	</div>
-</form>
+
 
 <?php $this->load->view('js_footer'); ?>
 <script src="<?php echo base_url(); ?>plugins/bootbox.min.js"></script>
@@ -152,9 +152,11 @@
         
         function chk_add_gems()
 		{
-            var remain_amount = parseInt(<?php echo json_encode($remain_amount); ?>);
-            var remain_carat = parseFloat(<?php echo json_encode($remain_carat); ?>);
+            
+            var remain_amount = parseInt($('#remain_amount').val());
+            var remain_carat = parseFloat($('#remain_carat').val());
             remain_carat = remain_carat.toFixed(2);
+            remain_carat = parseFloat(remain_carat);
 
             var amount=$('#amount').val();
 			if(amount==0){
@@ -189,17 +191,17 @@
 				$('#sizeout').focus();
 				return false;
 			}
-            
+            /*
             if(amount > remain_amount) {
                 alert('จำนวนในสต๊อกมีไม่เพียงพอ');
 				$('#amount').focus();
 				return false;
-            }elseif(carat > remain_carat) {
+            }else if(carat > remain_carat) {
                 alert('จำนวนในสต๊อกมีไม่เพียงพอ');
 				$('#carat').focus();
 				return false;
             }
-            
+            */
 			if(!ok) {return false;}
 		}
         
