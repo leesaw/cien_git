@@ -18,8 +18,8 @@ foreach($barcode_array as $loop) {
 <table>
     <tr><td width="50">&nbsp;</td><td width="320"><font style="font-size:10px;"><?php echo $loop->gemid; ?></font></td></tr> 
     <tr><td width="50">&nbsp;</td><td><font style="font-size:12px;"><?php echo $date." &nbsp; &nbsp;".$loop->supname.$loop->lot."-".$loop->number."(#".$loop->no.") &nbsp; &nbsp;".$loop->typename; //echo $loop->id."-".$label."(#".$loop->no.")"; ?></font></td></tr>
-    <tr><td width="50">&nbsp;</td><td><font style="font-size:12px;"><?php echo $loop->process_name." ".$loop->process_detail; //echo $loop->id."-".$label."(#".$loop->no.")"; ?></font></td></tr>
-    <tr><td width="50">&nbsp;</td><td><font style="font-size:12px;">Size : <?php echo $loop->size_out; ?></font></td></tr>
+    <tr><td width="50">&nbsp;</td><td><font style="font-size:12px;font-weight:bold;"><?php if ($loop->process_name=="Degrade") echo strtoupper($loop->process_name); else echo $loop->process_name; ?></font><font style="font-size:12px;"><?php echo " ".$loop->process_detail; //echo $loop->id."-".$label."(#".$loop->no.")"; ?></font></td></tr>
+    <tr><td width="50">&nbsp;</td><td><font style="font-size:12px;font-weight:bold;">Size : <?php echo $loop->size_out; ?></font></td></tr>
 </table>
 <?php 
 $i++;

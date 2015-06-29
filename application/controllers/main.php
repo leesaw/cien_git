@@ -16,10 +16,7 @@ class Main extends CI_Controller {
             $this->load->model('report_model','',TRUE);
             
             $query = $this->report_model->getAllGemstoneInFactory();
-            $data['gem_array'] = $query;
-            
-            $query = $this->report_model->getAllGemstoneInventory_instock("พลอยสำเร็จ");
-            $data['rough_array'] = $query;
+            $data['gem_array'] = $query;   
             
             if ($color>0) { $data['color'] = $this->report_model->getColorGemstoneInFactory_id($color); }
             else { $color = 1; $data['color'] = $this->report_model->getColorGemstoneInFactory_id($color); }
@@ -46,7 +43,6 @@ class Main extends CI_Controller {
             $data['ss'] = $sevenday;
             $query = $this->report_model->getInOutSevenDay($sevenday);
             $data['sevenday'] = $query;
-            
 			$data['title'] = "Cien|Gemstone Tracking System - Main";
 			$this->load->view('main_view',$data);
         }
@@ -56,6 +52,29 @@ class Main extends CI_Controller {
 		 redirect('login', 'refresh');
 	   }
 	}
+    
+    function dashboard_purchasing()
+    {
+        if($this->session->userdata('sessid'))
+		{
+            $this->load->model('gemstone_model','',TRUE);
+            $this->load->model('report_model','',TRUE);
+
+            $query = $this->report_model->getAllGemstoneInventory_instock("พลอยสำเร็จ");
+            $data['rough1_array'] = $query;     
+            
+            $query = $this->report_model->getAllGemstoneInventory_instock("พลอยก้อน");
+            $data['rough2_array'] = $query;     
+
+			$data['title'] = "Cien|Gemstone Tracking System - Main";
+			$this->load->view('main_purchasing_view',$data);
+        }
+	   else
+	   {
+		 //If no session, redirect to login page
+		 redirect('login', 'refresh');
+	   }
+    }
 	
 	function logout()
 	{

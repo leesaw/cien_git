@@ -540,7 +540,7 @@ class Report extends CI_Controller {
     
     function showgems_editing()
     {
-        $query = $this->report_model->getAllGemstone_editing();
+        //$query = $this->report_model->getAllGemstone_editing();
         
         $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
 		$this->load->view('report/showgems_editing',$data);

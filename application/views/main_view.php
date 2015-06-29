@@ -20,7 +20,8 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            Dashboard
+            Dashboard &nbsp; &nbsp;<small><input type="radio" name="empty" id="factory" value="0" checked> <label class="text-green"> Factory</label>&nbsp; &nbsp;
+              <input type="radio" name="empty" id="purchasing" value="1"> <label class="text-red"> Purchasing</label></small>
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -50,11 +51,6 @@
         $dataset_type[] = array($loop->typename, $loop->count);
 
         $sum += $loop->count;
-    }
-
-    foreach($rough_array as $loop) { 
-
-        $dataset_rough[] = array($loop->typename, $loop->amount);
     }
 
     foreach($station_array as $loop) { 
@@ -97,34 +93,10 @@ if ($colorgraph>0) {
             <div class="row">
                 <section class="col-md-8 connectedSortable">
                         <div class="nav-tabs-custom">
-                            <ul class="nav nav-tabs">
-                              <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                  เลือก <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_1-1" data-toggle="tab">จำนวนของในโรงงานทั้งหมด</a></li>
-                        
-                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_2-1" data-toggle="tab">จำนวนวัตถุดิบที่จัดซื้อ</a></li>
-                        <!--          <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-                                  <li role="presentation" class="divider"></li>
-                                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-                        -->
-                                </ul>
-                              </li>
-                              
-                            </ul>
                             <div class="tab-content">
                               <div class="tab-pane active" id="tab_1-1">
                                 <h4 class="pull-right header">จำนวนของในโรงงานทั้งหมด <u><?php echo $sum; ?></u> ชิ้น</h4><br><br>
-                                <div id="inventory-rough" style="height: 300px;"></div><!--<div id="bar-type" style="height: 300px;"></div> -->
-                                  <hr>
-                                <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> &nbsp;&nbsp; แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;
-                                <button type="button" class="btn bg-navy" onClick="window.location.href='<?php echo site_url("report/allParcel_factory"); ?>'"> <i class="fa fa-archive"></i> &nbsp;&nbsp; แสดงชุดวัตถุดิบในโรงงาน </button>
-                              </div><!-- /.tab-pane -->
-                              <div class="tab-pane" id="tab_2-1">
-                                <h4 class="pull-right header">จำนวนของใน Inventory </h4><br><br>
-                                
+                                <div id="bar-type" style="height: 300px;"></div><!--<div id="bar-type" style="height: 300px;"></div> -->
                                   <hr>
                                 <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> &nbsp;&nbsp; แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;
                                 <button type="button" class="btn bg-navy" onClick="window.location.href='<?php echo site_url("report/allParcel_factory"); ?>'"> <i class="fa fa-archive"></i> &nbsp;&nbsp; แสดงชุดวัตถุดิบในโรงงาน </button>
@@ -291,6 +263,8 @@ if ($colorgraph>0) {
                     </div>
                 </div>
                 </div>
+                
+
             </div>  <!-- div body -->
         </section>
           
@@ -341,34 +315,9 @@ if ($colorgraph>0) {
           
         });
           
-        var rough_array = {
-          data: <?php echo json_encode($dataset_rough); ?>,
-          color: "#00FFFF"
-        };
-        $.plot("#inventory-rough", [rough_array], {
-          grid: {
-            borderWidth: 1,
-            borderColor: "#f3f3f3",
-            tickColor: "#f3f3f3"
-          },
-          bars: {
-              show: true,
-              showNumbers: true,
-              barWidth: 0.5,
-              align: "center",
-              numbers : {
-                    yAlign: function(y) { return y/2; }
-                }
-          },
-          xaxis: {
-            mode: "categories",
-            tickLength: 10
-          }
-          
-        });
-          
-        //BAR CHART
-        var bar = new Morris.Bar({
+        //BAR CHART 7days
+        if ($('#bar-seven').length > 0)
+        var morris2 = Morris.Bar({
           element: 'bar-seven',
           resize: true,
           data: [
@@ -385,10 +334,17 @@ if ($colorgraph>0) {
           ykeys: ['a', 'b', 'c', 'd'],
           labels: ['ของเข้า', 'QC ผ่าน', 'QC ไม่ผ่าน', 'วัตถุดิบไม่เหมาะสม'],
           hideHover: 'auto',
+          parseTime: false,
           xLabelAngle: 30
         });
           
+        $('#factory').on('click', function(){            
+            window.location.replace("<?php echo site_url("main/index"); ?>");
+        });
 
+        $('#purchasing').on('click', function(){            
+            window.location.replace("<?php echo site_url("main/dashboard_purchasing"); ?>");
+        });
     });
     
 $(document).ready(function()
