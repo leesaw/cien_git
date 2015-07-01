@@ -274,7 +274,7 @@ Class Report_model extends CI_Model
      if ($rough == "พลอยสำเร็จ") {
         $this->db->select("gemstone_type.name as typename,SUM((gemstone_stock.amount-gemstone_stock.amount_out)) as amount, FORMAT(SUM(gemstone_stock.carat - gemstone_stock.carat_out),2) as carat", FALSE);
      }else{
-        $this->db->select("gemstone_type.name as typename,FORMAT(SUM(gemstone_stock.kilogram*1000-gemstone_stock.carat_out*0.2),2) as carat", FALSE);
+        $this->db->select("gemstone_type.name as typename,FORMAT(SUM(gemstone_stock.kilogram*1000*5-gemstone_stock.carat_out),2) as carat", FALSE);
      }
     $this->db->from("gemstone_stock");
     $this->db->join("gemstone_type", "gemstone_type.id=gemstone_stock.type", "left");

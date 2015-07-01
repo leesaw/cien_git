@@ -21,7 +21,7 @@
         <section class="content-header">
           <h1>
             Dashboard &nbsp; &nbsp;<small><input type="radio" name="empty" id="factory" value="0" checked> <label class="text-green"> Factory</label>&nbsp; &nbsp;
-              <input type="radio" name="empty" id="purchasing" value="1"> <label class="text-red"> Purchasing</label></small>
+              <?php  if ($this->session->userdata('sessstatus') != 2) { ?><input type="radio" name="empty" id="purchasing" value="1"> <label class="text-red"> Purchasing</label><?php } ?></small>
           </h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -46,10 +46,10 @@
     $dataset_type = array();
 
     $sum = 0;
+    $count = 0;
     foreach($gem_array as $loop) { 
-
         $dataset_type[] = array($loop->typename, $loop->count);
-
+        $count++;
         $sum += $loop->count;
     }
 
@@ -289,30 +289,24 @@ if ($colorgraph>0) {
 
       $(function () {
         "use strict";
-        var bar_type = {
-          data: <?php echo json_encode($dataset_type); ?>,
-          color: "#FF0000"
-        };
-        $.plot("#bar-type", [bar_type], {
-          grid: {
-            borderWidth: 1,
-            borderColor: "#f3f3f3",
-            tickColor: "#f3f3f3"
-          },
-          bars: {
-              show: true,
-              showNumbers: true,
-              barWidth: 0.5,
-              align: "center",
-              numbers : {
-                    yAlign: function(y) { return y/2; }
-                }
-          },
-          xaxis: {
-            mode: "categories",
-            tickLength: 10
-          }
+
           
+        //BAR CHART color type
+        if ($('#bar-type').length > 0)
+        var morris2 = Morris.Bar({
+          element: 'bar-type',
+          resize: true,
+          data: [
+              <?php for($i=0; $i<$count; $i++) { ?>
+            {y: <?php echo json_encode($dataset_type[$i][0]); ?>, a: <?php echo str_replace( ',', '', json_encode($dataset_type[$i][1], JSON_NUMERIC_CHECK)); ?>},
+              <?php } ?>
+          ],
+          barColors: ['#FE2E64'],
+          xkey: 'y',
+          ykeys: ['a'],
+          labels: ['เม็ด'],
+          hideHover: 'auto',
+          xLabelAngle: 30
         });
           
         //BAR CHART 7days

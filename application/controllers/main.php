@@ -55,7 +55,7 @@ class Main extends CI_Controller {
     
     function dashboard_purchasing()
     {
-        if($this->session->userdata('sessid'))
+        if (($this->session->userdata('sessid')) && ( $this->session->userdata('sessstatus') != 2))
 		{
             $this->load->model('gemstone_model','',TRUE);
             $this->load->model('report_model','',TRUE);

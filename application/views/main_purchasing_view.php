@@ -42,7 +42,6 @@
     }
 
     $count2 = 0;
-    print_r($rough2_array);
     foreach($rough2_array as $loop) { 
         $count2++;
         $dataset_rough2[] = array($loop->typename, $loop->carat);
