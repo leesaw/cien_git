@@ -29,11 +29,10 @@
 
                         
         <div class="box-body">
-            
         <div class="row">
 			<div class="col-lg-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading"></div>
+                    <div class="panel-heading"><a data-toggle="modal" data-target="#myModal" class="btn btn-primary" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="" data-backdrop="static" data-keyboard="false"><i class="fa fa-table"></i> แสดงชุดวัตถุดิบที่ส่งโรงงาน</a></div>
                     <div class="panel-body">
                             <table class="table table-bordered table-striped" id="tablebarcode" width="100%">
                                 <thead>
@@ -96,27 +95,42 @@
 	</div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-          <iframe src="/user/dashboard" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>  
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+                        <!-- datepicker modal for error -->
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						
+						  <div class="modal-dialog modal-md">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">	                 	
+										<strong>เลือกช่วงวันที่ต้องการ</strong> 
+									</h4>
+								</div>            <!-- /modal-header -->
+								<div class="modal-body">
+									<form class="form-inline" role="form" action="<?php echo site_url("report/viewSendFactoryBetween"); ?>" method="POST" target="_blank">
+									<div class="form-group">
+										<label for="">เริ่ม: </label>
+										<input type="text" class="form-control" id="startdate" name="startdate" />
+									</div>
+									<div class="form-group">
+										<label for=""> สิ้นสุด :</label>
+										<input type="text" class="form-control" id="enddate" name="enddate" />
+									</div>
+										
+								</div>            <!-- /modal-body -->
+							
+								<div class="modal-footer">
+                                    <a class="btn btn-success pull-left" href="<?php echo site_url("report/viewSendFactoryBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a>
+										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
+										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
+								</div> 	
+								</form>								
+							</div>
+						</div>
+					</div>
+						
+                    </div>
+                    <!-- close modal -->
 
 
 <?php $this->load->view('js_footer'); ?>
@@ -137,7 +151,8 @@ $(function() {
 });
 $(document).ready(function()
 {
-    
+    get_datepicker("#startdate");
+    get_datepicker("#enddate");
     
     $('#fancyboxall').fancybox({ 
     'width': '85%',
@@ -160,7 +175,19 @@ function del_confirm(val1) {
 		});
 
 }
+    
+function get_datepicker(id)
+{
 
+	$(id).datepicker({ language:'th-th',format:'dd/mm/yyyy'
+		    });
+
+}
+    // tooltip demo
+    $('.tooltip-demo').tooltip({
+        selector: "[rel=tooltip]",
+        container: "body"
+    })
 
 $(".alert").alert();
 window.setTimeout(function() { $(".alert").alert('close'); }, 4000);

@@ -13,8 +13,7 @@
 <body class="skin-blue">
 	<div class="wrapper">
 	<?php $this->load->view('menu'); ?>
-	
-	
+
 	
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->

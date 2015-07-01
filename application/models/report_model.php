@@ -279,8 +279,9 @@ Class Report_model extends CI_Model
     $this->db->from("gemstone_stock");
     $this->db->join("gemstone_type", "gemstone_type.id=gemstone_stock.type", "left");
     $this->db->where("stone_type", $rough);
+    $this->db->where("disable",0);
     if ($rough == "พลอยสำเร็จ") {
-        $this->db->where("(gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out)");
+        $this->db->where("((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out))");
     }else{
         $this->db->where("(gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2))");   
     }

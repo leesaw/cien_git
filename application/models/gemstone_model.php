@@ -4,7 +4,7 @@ Class Gemstone_model extends CI_Model
  function getGemstoneType()
  {
 	$this->db->select("id, name, barcode");
-	$this->db->order_by("id", "asc");
+	$this->db->order_by("name", "asc");
 	$this->db->from('gemstone_type');	
 	$query = $this->db->get();		
 	return $query->result();

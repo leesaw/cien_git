@@ -3,10 +3,10 @@ Class Supplier extends CI_Model
 {
  function getSupplier()
  {
-	$this->db->select("id, name, barcode");
-	$this->db->order_by("id", "asc");
-	$this->db->from('supplier');	
-	$query = $this->db->get();		
+	$this->db->select("name, id, barcode");
+	$this->db->from('supplier');
+    $this->db->order_by("name", "asc"); 
+	$query = $this->db->get();
 	return $query->result();
  }
 
@@ -42,4 +42,3 @@ Class Supplier extends CI_Model
 
 }
 ?>
-
