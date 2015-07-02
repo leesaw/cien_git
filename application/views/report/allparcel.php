@@ -35,6 +35,7 @@
                     <label>เลือกสี</label>
                     <form method="post" action="<?php echo site_url('report/allParcel_color_month'); ?>">
                             <select class="form-control" name="typeid" id="typeid">
+                                <option value="0">แสดงทั้งหมด</option>
                                 <?php 	if(is_array($type_array)) {
 												foreach($type_array as $loop){
 													echo "<option value='".$loop->name."'>".$loop->name."</option>";
@@ -58,7 +59,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     &nbsp;<br>
-                    <a href="<?php echo site_url("report/allparcel"); ?>"><button type="button" class="btn btn-primary">แสดงทั้งหมด</button></a>
+                    <!-- <a href="<?php echo site_url("report/allparcel"); ?>"><button type="button" class="btn btn-primary">แสดงทั้งหมด</button></a> -->
                 </div>
             </div>
             </form>

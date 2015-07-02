@@ -11,7 +11,9 @@ Class Report_model extends CI_Model
     $this->db->join('process_type', 'process_type.id=gemstone.process_type', 'left');
     $this->db->group_by('gemstone.id');
     //$this->db->join('gemstone_size', 'gemstone_size.id=gemstone.size_out','left');
-    $this->db->where('gemstone_type.name', $color);
+    if ($color != 0) {
+        $this->db->where('gemstone_type.name', $color);
+    }
     $this->db->where('disable',0);
      if (($start!=0) or ($end!=0)) {
         $this->db->where('gemstone.dateadd >=', $start);

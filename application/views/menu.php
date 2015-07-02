@@ -123,12 +123,12 @@
               </a>
             </li>
             <?php } ?>
-            <?php if ($this->session->userdata('sessstatus') != 4) { ?>
             <li>
               <a href="<?php echo site_url("report/allparcel"); ?>">
                 <i class="fa fa-th"></i> <span>ชุดวัตถุดิบทั้งหมดในโรงงาน</span>
               </a>
             </li>
+            <?php if ($this->session->userdata('sessstatus') != 4) { ?>
             <li>
               <a href="<?php echo site_url("gemstone/showgems"); ?>">
                 <i class="fa fa-barcode"></i> <span>บาร์โค้ดทั้งหมด</span>

@@ -4,6 +4,10 @@
 <?php $this->load->view('header_view'); ?>
 <link href="<?php echo base_url(); ?>plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>plugins/fancybox/jquery.fancybox.css" >
+<style>
+.modal { overflow: visible; }
+.modal-body { overflow-y: visible; }
+</style>
 </head>
 
 <body class="skin-blue">
@@ -32,7 +36,7 @@
         <div class="row">
 			<div class="col-lg-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><a data-toggle="modal" data-target="#myModal" class="btn btn-primary" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="" data-backdrop="static" data-keyboard="false"><i class="fa fa-table"></i> แสดงชุดวัตถุดิบที่ส่งโรงงาน</a></div>
+                    <div class="panel-heading"></div>
                     <div class="panel-body">
                             <table class="table table-bordered table-striped" id="tablebarcode" width="100%">
                                 <thead>
@@ -95,42 +99,7 @@
 	</div>
 
 
-                        <!-- datepicker modal for error -->
-						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						
-						  <div class="modal-dialog modal-md">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">	                 	
-										<strong>เลือกช่วงวันที่ต้องการ</strong> 
-									</h4>
-								</div>            <!-- /modal-header -->
-								<div class="modal-body">
-									<form class="form-inline" role="form" action="<?php echo site_url("report/viewSendFactoryBetween"); ?>" method="POST" target="_blank">
-									<div class="form-group">
-										<label for="">เริ่ม: </label>
-										<input type="text" class="form-control" id="startdate" name="startdate" />
-									</div>
-									<div class="form-group">
-										<label for=""> สิ้นสุด :</label>
-										<input type="text" class="form-control" id="enddate" name="enddate" />
-									</div>
-										
-								</div>            <!-- /modal-body -->
-							
-								<div class="modal-footer">
-                                    <a class="btn btn-success pull-left" href="<?php echo site_url("report/viewSendFactoryBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a>
-										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
-										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
-								</div> 	
-								</form>								
-							</div>
-						</div>
-					</div>
-						
-                    </div>
-                    <!-- close modal -->
+
 
 
 <?php $this->load->view('js_footer'); ?>
@@ -175,7 +144,7 @@ function del_confirm(val1) {
 		});
 
 }
-    
+
 function get_datepicker(id)
 {
 

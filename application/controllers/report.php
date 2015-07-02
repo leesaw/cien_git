@@ -24,12 +24,14 @@ class Report extends CI_Controller {
 			$data['type_array'] = array();
 		}
         
-        $query = $this->gemstone_model->getAllParcel();
+        /*$query = $this->gemstone_model->getAllParcel();
 		if($query){
 			$data['parcel_array'] =  $query;
 		}else{
-			$data['parcel_array'] = array();
+			
 		}
+        */
+        $data['parcel_array'] = array();
         
         $data['title'] = "Cien|Gemstone Tracking System - Show Parcel";
 		$this->load->view('report/allparcel',$data);
@@ -132,7 +134,9 @@ class Report extends CI_Controller {
             $month = explode('-',$month);
             $start = $month[1].'-'.$month[0].'-01';
             $end = $month[1].'-'.$month[0].'-31';
+            $selectmonth = $month[0]."-".$month[1];
         }else{
+            $selectmonth = "";
             $start = 0;
             $end = 0;
         }
@@ -146,6 +150,7 @@ class Report extends CI_Controller {
         
         $data['color'] = $color;
         $data['month'] = $start;
+        $data['selectmonth'] = $this->input->post('month');
         $data['title'] = "Cien|Gemstone Tracking System - Show Parcel";
 		$this->load->view('report/allparcel_color_month',$data);
     }
@@ -589,73 +594,5 @@ class Report extends CI_Controller {
 		echo $this->datatables->generate(); 
 	}
     
-    function viewSendFactoryBetween()
-    {
-        $all = $this->uri->segment(3);
-        
-        $error_query = $this->gemstone_model->getGemstoneError();
-        $error = array();
-        $table = array();
-        $i = 0;
-        
-        if ($all>0) {
-            foreach($error_query as $loop) {
-                $query = $this->report_model->getErrorAll($loop->name);
-                foreach($query as $loop2) {
-                    $error[$i] = array("id" => $loop->id, "name" => $loop->name, "count" => $loop2->count);
-                }
-                $query = $this->report_model->getErrorAll_barcode($loop->name);
-                foreach($query as $loop2) {
-                    $table[] = array("barcodeid" => $loop2->barcodeid,
-                                       "supname" => $loop2->supname,
-                                       "number" => $loop2->number,
-                                       "lot" => $loop2->lot,
-                                       "no" => $loop2->no,
-                                       "gemtype" => $loop2->gemtype,
-                                       "errordetail" => $loop2->errordetail
-                                      );
-                }
-                $i++;
-            }
-            $data['start'] = 1;
-        }else{
-            $start = $this->input->post("startdate");
-            if ($start != "") {
-                $start = explode('/', $start);
-                $start= $start[2]."-".$start[1]."-".$start[0];
-            }
-            $end = $this->input->post("enddate");
-            if ($end != "") {
-                $end = explode('/', $end);
-                $end= $end[2]."-".$end[1]."-".$end[0];
-            }
-            
-            foreach($error_query as $loop) {
-                $query = $this->report_model->getErrorBetween($loop->name, $start, $end);
-                foreach($query as $loop2) {
-                    $error[$i] = array("id" => $loop->id, "name" => $loop->name, "count" => $loop2->count);
-                }
-                $query = $this->report_model->getErrorBetween_barcode($loop->name, $start, $end);
-                foreach($query as $loop2) {
-                    $table[] = array("barcodeid" => $loop2->barcodeid,
-                                       "supname" => $loop2->supname,
-                                       "number" => $loop2->number,
-                                       "lot" => $loop2->lot,
-                                       "no" => $loop2->no,
-                                       "gemtype" => $loop2->gemtype,
-                                       "errordetail" => $loop2->errordetail
-                                      );
-                }
-                $i++;
-            }
-            
-            $data['start'] = $start;
-            $data['end'] = $end;
-        }
-        
-        $data['error'] = $error;
-        $data['table'] = $table;
-        $data['title'] = "Cien|Gemstone Tracking System - Show Errors";
-		$this->load->view('report/showerror_graph',$data);
-    }
+    
 }

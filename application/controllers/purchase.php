@@ -481,6 +481,12 @@ class Purchase extends CI_Controller {
     
     function allgems()
     {
+        $query = $this->gemstone_model->getGemstoneType();
+		if($query){
+			$data['type_array'] =  $query;
+		}else{
+			$data['type_array'] = array();
+		}
         
         $query = $this->gemstone_model->getAllParcel_purchase();
 		if($query){
