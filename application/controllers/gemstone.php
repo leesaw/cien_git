@@ -266,7 +266,7 @@ class Gemstone extends CI_Controller {
         $data['label'] = $this->uri->segment(4);
 		
 		$this->load->library('mpdf/mpdf');                
-        $mpdf = new mPDF('utf-8','A6','','' , 1 , 0 , 3 , 0 , 0 , 0); 
+        $mpdf = new mPDF('th','A6','','' , 1 , 0 , 3 , 0 , 0 , 0); 
 		$stylesheet = file_get_contents('application/libraries/mpdf/css/stylebarcode.css');
 
 		$query = $this->gemstone_model->getBarcode($barcodeid);

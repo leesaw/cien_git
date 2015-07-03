@@ -130,7 +130,7 @@
             </li>
             <?php if ($this->session->userdata('sessstatus') != 4) { ?>
             <li>
-              <a href="<?php echo site_url("gemstone/showgems"); ?>">
+              <a href="<?php echo site_url("report/searchbarcode"); ?>">
                 <i class="fa fa-barcode"></i> <span>บาร์โค้ดทั้งหมด</span>
               </a>
             </li>

@@ -291,6 +291,19 @@ Class Report_model extends CI_Model
     $query = $this->db->get();
     return $query->result();
  }
+    
+ function searchBarcode($barcode)
+ {
+    $this->db->select("gemstone_barcode.id as barcodeid, gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone_type.name as gemtype, gemstone.size_out as gemsize, no");
+	$this->db->from('gemstone_barcode');
+    $this->db->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left');
+    $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
+    $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
+    $this->db->where('gemstone_barcode.id', $barcode);
+    $this->db->where('disable',0);
+    $query = $this->db->get();		
+	return $query->result();
+ }
 
 }
 ?>

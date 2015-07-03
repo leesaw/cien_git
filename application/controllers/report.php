@@ -594,5 +594,20 @@ class Report extends CI_Controller {
 		echo $this->datatables->generate(); 
 	}
     
+    function searchbarcode()
+    {
+        $data['title'] = "Cien|Gemstone Tracking System - Search Barcode";
+		$this->load->view('report/searchbarcode',$data);
+    }
     
+    function viewbarcode()
+    {
+        $barcodeid = $this->input->post("barcodeid");
+        
+        $query = $this->report_model->searchBarcode($barcodeid);
+        $data["barcode_array"] = $query;
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Search Barcode";
+		$this->load->view('report/viewbarcode',$data);
+    }
 }
