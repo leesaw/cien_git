@@ -52,25 +52,25 @@ Class Report_model extends CI_Model
     $query = $this->db->query('select * from (    
     select 16 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2!=1 and (pass=0 or pass=3) and disable=0
     union all
-    select 4,count(task4) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task4=1 and pass=0 and disable=0
+    select 4,count(task4) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task4=1 and (pass=0 or pass=3) and disable=0
     union all
-    select 5,count(task5) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task5=1 and pass=0 and disable=0
+    select 5,count(task5) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task5=1 and (pass=0 or pass=3) and disable=0
     union all
-    select 3,count(task3) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task3=1 and pass=0 and disable=0
+    select 3,count(task3) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task3=1 and (pass=0 or pass=3) and disable=0
     union all
-    select 6,count(task6) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task6=1 and pass=0 and disable=0
+    select 6,count(task6) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task6=1 and (pass=0 or pass=3) and disable=0
     union all
-    select 12,count(qc1) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and qc1=1 and pass=0 and disable=0
+    select 12,count(qc1) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and qc1=1 and (pass=0 or pass=3) and disable=0
     union all
-    select 7,count(task7) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task7=1 and pass=0 and disable=0
+    select 7,count(task7) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task7=1 and (pass=0 or pass=3) and disable=0
     union all
-    select 8,count(task8) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task8=1 and pass=0 and disable=0
+    select 8,count(task8) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task8=1 and (pass=0 or pass=3) and disable=0
     union all
-    select 9,count(task9) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task9=1 and pass=0 and disable=0
+    select 9,count(task9) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task9=1 and (pass=0 or pass=3) and disable=0
     union all
-    select 13,count(qc2) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  qc2=1 and pass=0 and disable=0
+    select 13,count(qc2) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  qc2=1 and (pass=0 or pass=3) and disable=0
     union all
-    select 10,count(task10) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task10=1 and pass=0 and disable=0
+    select 10,count(task10) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task10=1 and (pass=0 or pass=3) and disable=0
     ) s');
     return $query->result();
      
@@ -304,6 +304,7 @@ Class Report_model extends CI_Model
     $query = $this->db->get();		
 	return $query->result();
  }
+    
 
 }
 ?>
