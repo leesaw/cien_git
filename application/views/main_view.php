@@ -48,7 +48,7 @@
     $sum = 0;
     $count = 0;
     foreach($gem_array as $loop) { 
-        $dataset_type[] = array($loop->typename, $loop->count);
+        $dataset_type[] = array($loop->typename, $loop->count, $loop->typeid);
         $count++;
         $sum += $loop->count;
     }
@@ -81,7 +81,7 @@ if ($colorgraph>0) {
                 $sumcolor += $loop->count;
             }
         }
-        if ($x<1) $dataset_color[] = array($loop2->name, 0, $loop2->id);
+        //if ($x<1) $dataset_color[] = array($loop2->name, 0, $loop2->id);
     }
 }else{
     $dataset_color = array();
@@ -162,6 +162,41 @@ if ($colorgraph>0) {
                 
 
                 
+                </div>
+            <div class="row">
+            <div class="col-xs-12">
+            
+                <div class="box box-primary">
+                    <div class="box-body no-padding">
+                      <div class="row">
+                    <div class="col-xs-12">
+                <?php 
+                    foreach($center_array as $loop) { 
+                        switch ($loop->number) {
+                            case 2: $stname= "บล็อกรูปร่าง"; break;
+                            case 3: $stname= "หน้ากระดาน"; break;
+                            case 1: $stname= "ติดแชล็ก"; break;
+                            case 4: $stname= "เจียหน้า"; break;
+                            case 6: $stname= "กลับติดก้นแชล็ก"; break;
+                            case 7: $stname= "บล็อกก้น"; break;
+                            case 8: $stname= "เจียก้น"; break;
+                            case 5: $stname= "QC หน้า"; break;
+                            case 9: $stname= "QC ก้น"; break;
+                            case 10: $stname= "QC ออกจากโรงงาน"; break;
+                        }
+                ?>
+                    <div class="col-xs-1 col-sm-2">
+                      <div class="description-block border-right">
+                        <h5 class="description-header text-red"><?php echo $loop->count;  ?></h5>
+                        <span class="description-text"><?php echo $stname;  ?></span>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                <?php
+                    }        
+                ?>
+                    </div>
+                  </div> 
+                        </div></div></div><!-- /.row -->
                 </div>
             <div class="row">
             <?php if ($colorgraph > 0) { ?>
@@ -298,7 +333,7 @@ if ($colorgraph>0) {
           resize: true,
           data: [
               <?php for($i=0; $i<$count; $i++) { ?>
-            {y: <?php echo json_encode($dataset_type[$i][0]); ?>, a: <?php echo str_replace( ',', '', json_encode($dataset_type[$i][1], JSON_NUMERIC_CHECK)); ?>},
+            {y: <?php echo json_encode($dataset_type[$i][0]); ?>, a: <?php echo str_replace( ',', '', json_encode($dataset_type[$i][1], JSON_NUMERIC_CHECK)); ?>, b: <?php echo json_encode($dataset_type[$i][2]); ?>},
               <?php } ?>
           ],
           barColors: ['#FE2E64'],
@@ -307,6 +342,10 @@ if ($colorgraph>0) {
           labels: ['เม็ด'],
           hideHover: 'auto',
           xLabelAngle: 30
+        }).on('click', function(i, row){
+            window.location.replace("<?php echo site_url('report/allBarcode_factory_processcolor'); ?>"+"/"+row.b+"/0");
+            //alert("OK"+row.b);
+            //console.log(i, row);
         });
           
         //BAR CHART 7days

@@ -15,10 +15,14 @@
         <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            แสดงชุดวัตถุดิบสี <?php echo $color." เดือน ";
+            แสดงชุดวัตถุดิบสี <?php if($color =="0") echo "ทั้งหมด"; else echo $color;
+            if ($month == 0) {
+                echo " เดือน ทั้งหมด";
+            }else{
                 $month = strtotime($month);
                 $month = date( 'F Y', $month );
-                echo $month;
+                echo " เดือน ".$month;
+            }
             ?> 
         </h1>
         <ol class="breadcrumb">
@@ -84,6 +88,7 @@
                                         <th colspan="2" style="text-align:center">ส่งเข้าโรงงาน</th>
 										<th width="100" rowspan="2" style="text-align:center">Size เข้า</th>
                                         <th width="100" rowspan="2" style="text-align:center">Size ออก</th>
+                                        <th width="100" rowspan="2" style="text-align:center">ประเภทงาน</th>
                                         <th width="60" rowspan="2" style="text-align:center">จัดการ</th>
                                     </tr>
                                     <tr><th width="60" style="text-align:center">เม็ด</th><th width="60" style="text-align:center">กะรัต</th></tr>
@@ -103,6 +108,7 @@
                                     <td><?php echo $loop->carat; ?></td>
                                     <td><?php echo $loop->size_in; ?></td>
                                     <td><?php echo $loop->size_out; ?></td>
+                                    <td><?php echo $loop->process_name." ".$loop->process_detail; ?></td>
 									<td width="50">
                                     <a href="<?php echo site_url("report/showdetail_parcel/".$loop->gemid); ?>" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="View"><span class="glyphicon glyphicon-search"></span></a>
                                         
@@ -169,7 +175,7 @@ $(function() {
 $(document).ready(function()
 {
     $("#tablebarcode").dataTable( {
-        "order": [[ 2, "desc" ]]
+        
     } );
     
     $('#fancyboxall').fancybox({ 

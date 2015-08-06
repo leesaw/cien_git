@@ -349,7 +349,7 @@ class Stock extends CI_Controller {
         if(($stock=="") || ($stock=="allstock")) {
             $column = "gemstone_stock.amount > -1";
         }elseif($stock=="instock") {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat - gemstone_stock.carat_out > 0.01) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }elseif($stock=="outstock") {
             $column = "((gemstone_stock.amount <= gemstone_stock.amount_out) AND (gemstone_stock.carat <= gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0 OR (gemstone_stock.kilogram*1000<=gemstone_stock.carat_out*0.2)))";
         }
@@ -377,7 +377,7 @@ class Stock extends CI_Controller {
         if(($stock=="") || ($stock=="allstock")) {
             $column = "gemstone_stock.amount > -1";
         }elseif($stock=="instock") {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat - gemstone_stock.carat_out > 0.01) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }elseif($stock=="outstock") {
             $column = "((gemstone_stock.amount <= gemstone_stock.amount_out) AND (gemstone_stock.carat <= gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0 OR (gemstone_stock.kilogram*1000<=gemstone_stock.carat_out*0.2)))";
         }
@@ -408,7 +408,7 @@ class Stock extends CI_Controller {
         if(($stock=="") || ($stock=="allstock")) {
             $column = "gemstone_stock.amount > -1";
         }elseif($stock=="instock") {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat - gemstone_stock.carat_out > 0.01) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }elseif($stock=="outstock") {
             $column = "((gemstone_stock.amount <= gemstone_stock.amount_out) AND (gemstone_stock.carat <= gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0 OR (gemstone_stock.kilogram*1000<=gemstone_stock.carat_out*0.2)))";
         }
@@ -436,7 +436,7 @@ class Stock extends CI_Controller {
         if(($stock=="") || ($stock=="allstock")) {
             $column = "gemstone_stock.amount > -1";
         }elseif($stock=="instock") {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat - gemstone_stock.carat_out > 0.01) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }elseif($stock=="outstock") {
             $column = "((gemstone_stock.amount <= gemstone_stock.amount_out) AND (gemstone_stock.carat <= gemstone_stock.carat_out) AND (gemstone_stock.carat!=0 OR gemstone_stock.amount!=0 OR gemstone_stock.kilogram=0 OR (gemstone_stock.kilogram*1000<=gemstone_stock.carat_out*0.2)))";
         }
@@ -469,7 +469,7 @@ class Stock extends CI_Controller {
         if($stock=="allstock") {
             $column = "gemstone_stock.amount > -1";
         }elseif(($stock=="") || ($stock=="instock")) {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat - gemstone_stock.carat_out > 0.01) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }
         
         $this->load->library('Datatables');
@@ -493,7 +493,7 @@ class Stock extends CI_Controller {
         if($stock=="allstock") {
             $column = "gemstone_stock.amount > -1";
         }elseif(($stock=="") || ($stock=="instock")) {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat - gemstone_stock.carat_out > 0.01) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }
         
         switch($stoneid){
@@ -523,7 +523,7 @@ class Stock extends CI_Controller {
         if($stock=="allstock") {
             $column = "gemstone_stock.amount > -1";
         }elseif(($stock=="") || ($stock=="instock")) {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat - gemstone_stock.carat_out > 0.01) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }
         
         $this->load->library('Datatables');
@@ -549,7 +549,7 @@ class Stock extends CI_Controller {
         if($stock=="allstock") {
             $column = "gemstone_stock.amount > -1";
         }elseif(($stock=="") || ($stock=="instock")) {
-            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat > gemstone_stock.carat_out) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+            $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat - gemstone_stock.carat_out > 0.01) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
         }
         
         switch($stoneid){

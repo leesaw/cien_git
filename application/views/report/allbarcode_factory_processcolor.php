@@ -30,6 +30,7 @@ for($i=0; $i<count($station_array); $i++) {
             foreach($process_array as $loop) {
                 if ($process == $loop->id) $processname = $loop->name;
             }
+            if ($process>0) {
         ?>
         <h1>
             แสดงบาร์โค้ดสี : <B><U><?php echo $colorname; ?></U></B> ประเภทงาน : <B><U><?php echo $processname; ?></U></B> ทั้งหมดในโรงงาน
@@ -37,11 +38,19 @@ for($i=0; $i<count($station_array); $i++) {
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> แสดงบาร์โค้ดสี : <?php echo $colorname; ?> ประเภทงาน : <?php echo $processname; ?></a></li>
         </ol>
+        <?php }else{ ?>
+        <h1>
+            แสดงบาร์โค้ดสี : <B><U><?php echo $colorname; ?></U></B> ทั้งหมดในโรงงาน
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> แสดงบาร์โค้ดสี : <?php echo $colorname; ?></a></li>
+        </ol>
+        <?php } ?>
     </section>
 	
 	<section class="content">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                     <div class="box box-primary">
                         <div class="box-body chart-responsive">
                             <div class="chart" id="bar-station" style="height: 300px;"></div>
@@ -140,7 +149,9 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "bDeferRender": true,
-            'sAjaxSource'    : '<?php echo site_url("report/ajaxGetAllBarcodeFactory_Processcolor/".$color."/".$process); ?>',
+            'sAjaxSource'    : '<?php if ($process>0) echo site_url("report/ajaxGetAllBarcodeFactory_Processcolor/".$color."/".$process); 
+                                      else echo site_url("report/ajaxGetAllBarcodeFactory_Processcolor_0/".$color);
+            ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {
                     "dataType": 'json',

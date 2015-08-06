@@ -3,15 +3,15 @@ Class Report_model extends CI_Model
 {
  function getAllParcelColor_string($color, $start, $end)
  {
-    $this->db->select('gemstone.id as gemid, supplier.name as supname, number, lot, color, gemstone_type.name as gemtype, gemstone.size_out as size_out, size_in, carat, amount, gemstone.dateadd as dateadd, min(no) as _min, max(no) as _max, process_type.name as process_name, process_detail');
+    $this->db->select('gemstone.id as gemid, supplier.name as supname, number, lot, color, gemstone_type.name as gemtype, gemstone.size_out as size_out, size_in, carat, amount, gemstone.dateadd as dateadd, mmin as _min, mmax as _max, process_type.name as process_name, process_detail');
     $this->db->from('gemstone');
     $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
     $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
-    $this->db->join('gemstone_barcode', 'gemstone_barcode.gemstone_id=gemstone.id', 'left');
+    $this->db->join('(select gemstone_id, min(no) as mmin,max(no) as mmax from gemstone_barcode GROUP BY gemstone_id) as aa', 'aa.gemstone_id=gemstone.id', 'left');
     $this->db->join('process_type', 'process_type.id=gemstone.process_type', 'left');
-    $this->db->group_by('gemstone.id');
+    //$this->db->group_by('gemstone.id');
     //$this->db->join('gemstone_size', 'gemstone_size.id=gemstone.size_out','left');
-    if ($color != 0) {
+    if ($color != "0") {
         $this->db->where('gemstone_type.name', $color);
     }
     $this->db->where('disable',0);
@@ -75,6 +75,32 @@ Class Report_model extends CI_Model
     return $query->result();
      
     //    select 10,count(task10) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  task10=1 and pass=0 and disable=0 union all select 14,count(pass) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  pass=1 and disable=0 union all select 15,count(pass) from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and  pass=2 and disable=0 union all
+ }
+    
+ function getAllGemCenter_task()
+ {
+    $query = $this->db->query('select * from (
+    select 1 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=0 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    union all 
+    select 2 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=2 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0
+    union all 
+    select 3 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4!=1 and task5=2 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    union all 
+    select 4 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=2 and task4!=1 and task5!=1 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    union all 
+    select 5 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6=2 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    union all 
+    select 6 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=2 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    union all 
+    select 7 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=2 and task8=0 and task9=0 and task10!=1 and qc1!=1 and qc2=0 and (pass=0 or pass=3) and disable=0
+    union all 
+    select 8 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8=2 and task9=0 and task10!=1 and qc1!=1 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    union all 
+    select 9 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9=2 and task10!=1 and qc1!=1 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    union all 
+    select 10 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2=2 and (pass=0 or pass=3) and disable=0 
+    ) s');
+    return $query->result();
  }
     
  function getAllStationInFactory_edit()
@@ -159,7 +185,9 @@ Class Report_model extends CI_Model
     $this->db->where('disable',0);
     $this->db->where('(pass=0 OR pass=3)');
     $this->db->where('gemstone.type',$color);
-    $this->db->where('gemstone.process_type',$process);
+    if ($process>0) {
+        $this->db->where('gemstone.process_type',$process);
+    }
     $this->db->where($column);
     $query = $this->db->get();		
 	return $query->result();

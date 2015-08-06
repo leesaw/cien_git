@@ -25,6 +25,8 @@ class Main extends CI_Controller {
             $query = $this->report_model->getAllStationInFactory();
             $data['station_array'] = $query;
             
+            $data['center_array'] = $this->report_model->getAllGemCenter_task();
+            
             $query = $this->report_model->getAllStationInFactory_edit();
             $data['edit_array'] = $query;
             
