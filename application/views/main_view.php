@@ -187,25 +187,11 @@ if ($colorgraph>0) {
                     $row_array = array();
                     foreach($center_array as $loop) { 
                         $row_array[$loop->number] = $loop->count;
-                        /*
-                        switch ($loop->number) {
-                            case 2: $stname= "บล็อกรูปร่าง"; break;
-                            case 3: $stname= "หน้ากระดาน"; break;
-                            case 1: $stname= "ติดแชล็ก"; break;
-                            case 4: $stname= "เจียหน้า"; break;
-                            case 6: $stname= "กลับติดก้นแชล็ก"; break;
-                            case 7: $stname= "บล็อกก้น"; break;
-                            case 8: $stname= "เจียก้น"; break;
-                            case 5: $stname= "QC หน้า"; break;
-                            case 9: $stname= "QC ก้น"; break;
-                            case 10: $stname= "QC ออกจากโรงงาน"; break;
-                        }
-                        */
                     }
 
                     for($i=1; $i<=count($row_array); $i++) {
                 ?>
-                    <th class="text-red text-center"><?php echo $row_array[$i]; ?></th>
+                        <td class="text-red text-center"><a href="<?php echo site_url("report/allBarcode_center_task/".$i); ?>"><b><?php echo $row_array[$i]; ?></b></a></td>
                 <?php
                     }        
                 ?>

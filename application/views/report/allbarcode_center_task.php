@@ -38,16 +38,16 @@
     <section class="content-header">
         <?php 
             switch($task) {
-            case '16' : $column = "ส่วนกลาง"; break;
-            case '3' : $column = "หน้ากระดาน"; break;
-            case '4' : $column = "ติดแชล็ก"; break;
-            case '5' : $column = "บล็อกรูปร่าง"; break;
-            case '6' : $column = "เจียหน้า"; break;
-            case '7' : $column = "กลับติดก้นแชล็ก"; break;
-            case '8' : $column = "บล็อกก้น"; break;
-            case '9' : $column = "เจียก้น"; break;
-            case '12' : $column = "QC หน้า"; break;
-            case '13' : $column = "QC ก้น"; break;
+            case '1' : $column = "รอ - ติดแชล็ก"; break;
+            case '2' : $column = "รอ - บล็อกรูปร่าง"; break;
+            case '3' : $column = "รอ - หน้ากระดาน"; break;
+            case '4' : $column = "รอ - เจียหน้า"; break;
+            case '5' : $column = "รอ - QC หน้า"; break;
+            case '6' : $column = "รอ - กลับติดก้นแชล็ก"; break;
+            case '7' : $column = "รอ - บล็อกก้น"; break;
+            case '8' : $column = "รอ - เจียก้น"; break;
+            case '9' : $column = "รอ - QC ก้น"; break;
+            case '10' : $column = "รอ - QC ออกจากโรงงาน"; break;
             default : $column = "";
         }
         ?>
@@ -164,7 +164,7 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "bDeferRender": true,
-            'sAjaxSource'    : '<?php echo site_url("report/ajaxGetAllBarcodeFactory_Task/".$task); ?>',
+            'sAjaxSource'    : '<?php echo site_url("report/ajaxGetAllBarcodeCenter_Task/".$task); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {
                     "dataType": 'json',

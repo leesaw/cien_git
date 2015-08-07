@@ -177,6 +177,21 @@ class Report extends CI_Controller {
 		$this->load->view('report/allbarcode_factory_task',$data);
     }
     
+    function allBarcode_center_task()
+    {
+        $task = $this->uri->segment(3);
+        
+        $query = $this->report_model->getCountColorCenter_task($task);
+        $data['countcolor'] = $query;
+        
+        $query = $this->gemstone_model->getGemstoneType();
+        $data['gemtype'] = $query;
+        
+        $data['task'] = $task;
+        $data['title'] = "Cien|Gemstone Tracking System - Show Gems";
+		$this->load->view('report/allbarcode_center_task',$data);
+    }
+    
     function allBarcode_factory_task_edit()
     {
         $task = $this->uri->segment(3);
@@ -340,6 +355,43 @@ class Report extends CI_Controller {
         */
 		//->edit_column("pid","$1","pid");
 		//->edit_column("bid",'<a id="fancyboxall" href="'.site_url("gemstone/viewtask_number/$1/".$task).'" class="btn btn-primary btn-xs" data-toggle="tooltip" data-target="#view" data-placement="top"><span class="glyphicon glyphicon-user"></span></a>',"bid");
+
+        
+		echo $this->datatables->generate(); 
+	}
+    
+    function ajaxGetAllBarcodeCenter_Task()
+	{
+        $task = $this->uri->segment(3);   
+        switch($task) {
+            case '1' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=0 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0)"; break;
+            case '2' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=2 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0)"; break;
+            case '3' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4!=1 and task5=2 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0)"; break;
+            case '4' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=2 and task4!=1 and task5!=1 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0)"; break;
+            case '5' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6=2 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0)"; break;
+            case '6' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=2 and qc2=0)"; break;
+            case '7' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=2 and task8=0 and task9=0 and task10!=1 and qc1!=1 and qc2=0)"; break;
+            case '8' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8=2 and task9=0 and task10!=1 and qc1!=1 and qc2=0)"; break;
+            case '9' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9=2 and task10!=1 and qc1!=1 and qc2=0)"; break;
+            case '10' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2=2)"; break;
+        } 
+        
+        $this->load->library('Datatables');
+
+        $this->datatables
+            ->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, process_type.name, 'ส่วนกลาง',' ' , gemstone_barcode.id as bid", FALSE)
+            ->from('gemstone_barcode')
+            ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
+            ->join('supplier', 'gemstone.supplier=supplier.id','left')
+            ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
+            ->join('process_type', 'process_type.id=gemstone.process_type', 'left')
+            ->where('disable',0)
+            ->where('(pass=0 OR pass=3)')
+            ->where($column)
+            ->edit_column("bid",'<div class="tooltip-demo">
+        <a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
+        </div>',"bid");
+        
 
         
 		echo $this->datatables->generate(); 
