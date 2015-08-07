@@ -91,7 +91,7 @@ if ($colorgraph>0) {
 ?>
         <div class="box-body">
             <div class="row">
-                <section class="col-md-8 connectedSortable">
+                <section class="col-md-9 connectedSortable">
                         <div class="nav-tabs-custom">
                             <div class="tab-content">
                               <div class="tab-pane active" id="tab_1-1">
@@ -125,7 +125,7 @@ if ($colorgraph>0) {
                                     <?php
 
                                         $sum = 0;
-                                        foreach($station_array as $loop) { 
+                                        foreach($station_array as $loop) {
                                             echo "<tr><td>";
                                             switch ($loop->number) {
                                                 case 5: echo "บล็อกรูปร่าง"; break;
@@ -157,21 +157,37 @@ if ($colorgraph>0) {
                             </div><!-- /.tab-content -->
                           </div><!-- nav-tabs-custom -->
                         </section>
-                
-                
-                
-
-                
                 </div>
             <div class="row">
             <div class="col-xs-12">
             
-                <div class="box box-primary">
+                <div class="box box-solid box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">ของส่วนกลาง</h3>
+                    </div>
                     <div class="box-body no-padding">
                       <div class="row">
                     <div class="col-xs-12">
+                        <table class="table table-bordered">
+                            <tr class="text-center">
+                                <td>รอ<br><b>ติดแชล็ก</b></td>
+                                <td>รอ<br><b>บล็อกรูปร่าง</b></td>
+                                <td>รอ<br><b>หน้ากระดาน</b></td>
+                                <td>รอ<br><b>เจียหน้า</b></td>
+                                <td>รอ<br><b>QC หน้า</b></td>
+                                <td>รอ<br><b>กลับติดก้นแชล็ก</b></td>
+                                <td>รอ<br><b>บล็อกก้น</b></td>
+                                <td>รอ<br><b>เจียก้น</b></td>
+                                <td>รอ<br><b>QC ก้น</b></td>
+                                <td>รอ<br><b>QC ออกจากโรงงาน</b></td>
+                            </tr>
+                            <tr>
                 <?php 
+
+                    $row_array = array();
                     foreach($center_array as $loop) { 
+                        $row_array[$loop->number] = $loop->count;
+                        /*
                         switch ($loop->number) {
                             case 2: $stname= "บล็อกรูปร่าง"; break;
                             case 3: $stname= "หน้ากระดาน"; break;
@@ -184,16 +200,17 @@ if ($colorgraph>0) {
                             case 9: $stname= "QC ก้น"; break;
                             case 10: $stname= "QC ออกจากโรงงาน"; break;
                         }
+                        */
+                    }
+
+                    for($i=1; $i<=count($row_array); $i++) {
                 ?>
-                    <div class="col-xs-1 col-sm-2">
-                      <div class="description-block border-right">
-                        <h5 class="description-header text-red"><?php echo $loop->count;  ?></h5>
-                        <span class="description-text"><?php echo $stname;  ?></span>
-                      </div><!-- /.description-block -->
-                    </div><!-- /.col -->
+                    <th class="text-red text-center"><?php echo $row_array[$i]; ?></th>
                 <?php
                     }        
                 ?>
+                            </tr>
+                        </table>
                     </div>
                   </div> 
                         </div></div></div><!-- /.row -->
@@ -243,7 +260,7 @@ if ($colorgraph>0) {
             </div>  <!-- /div row -->
             
             <?php } ?>
-                <div class="col-md-8">
+                <div class="col-md-9">
                     <div class="box box-success">
                         <div class="box-header with-border">
                              <h3 class="box-title">แสดงของเข้า-ออก 7 วันล่าสุด</h3>
