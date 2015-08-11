@@ -52,10 +52,10 @@
         }
         ?>
         <h1>
-            แสดงบาร์โค้ดใน Station : <B><U><?php echo $column; ?></U></B>
+            แสดงบาร์โค้ดในส่วนกลาง : <B><U><?php echo $column; ?></U></B>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> แสดงบาร์โค้ดที่อยู่ใน Station : <?php echo $column; ?></a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> แสดงบาร์โค้ดในส่วนกลาง : <?php echo $column; ?></a></li>
         </ol>
     </section>
 	
