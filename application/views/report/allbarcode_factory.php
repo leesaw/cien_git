@@ -107,6 +107,13 @@ $(document).ready(function()
             "bProcessing": true,
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
+            "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              { "bSearchable": false },
+            ],
             "bDeferRender": true,
             'sAjaxSource'    : '<?php echo site_url("report/ajaxGetAllBarcodeFactory"); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {

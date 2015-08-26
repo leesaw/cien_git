@@ -80,25 +80,27 @@ Class Report_model extends CI_Model
  function getAllGemCenter_task()
  {
     $query = $this->db->query('select * from (
-    select 1 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=0 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    select 1 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=0 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
     union all 
-    select 2 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=2 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0
+    select 2 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=2 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0
     union all 
-    select 3 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4!=1 and task5=2 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    select 3 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4!=1 and task5=2 and task6=0 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
     union all 
-    select 4 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=2 and task4!=1 and task5!=1 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    select 4 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3=2 and task4!=1 and task5!=1 and task6=0 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
     union all 
-    select 5 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6=2 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    select 5 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6=2 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=0 and qc2=0 and (pass=0 or pass=3) and disable=0 
     union all 
-    select 6 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=2 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    select 6 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=2 and qc2=0 and (pass=0 or pass=3) and disable=0 
     union all 
-    select 7 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=2 and task8=0 and task9=0 and task10!=1 and qc1!=1 and qc2=0 and (pass=0 or pass=3) and disable=0
+    select 7 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=2 and task8=0 and task9=0 and task10=0 and qc1!=1 and qc2=0 and (pass=0 or pass=3) and disable=0
     union all 
-    select 8 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8=2 and task9=0 and task10!=1 and qc1!=1 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    select 8 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8=2 and task9=0 and task10=0 and qc1!=1 and qc2=0 and (pass=0 or pass=3) and disable=0 
     union all 
-    select 9 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9=2 and task10!=1 and qc1!=1 and qc2=0 and (pass=0 or pass=3) and disable=0 
+    select 9 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9=2 and task10=0 and qc1!=1 and qc2=0 and (pass=0 or pass=3) and disable=0 
     union all 
-    select 10 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2=2 and (pass=0 or pass=3) and disable=0 
+    select 10 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10=0 and qc1!=1 and qc2=2 and (pass=0 or pass=3) and disable=0 
+    union all 
+    select 11 as number,count(*) as count from gemstone_barcode,gemstone where gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10=2 and qc1!=1 and qc2!=1 and (pass=0 or pass=3) and disable=0 
     ) s');
     return $query->result();
  }
@@ -165,16 +167,17 @@ Class Report_model extends CI_Model
  function getCountColorCenter_task($task)
  {
     switch($task) {
-            case '1' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=0 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0)"; break;
-            case '2' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=2 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0)"; break;
-            case '3' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4!=1 and task5=2 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0)"; break;
-            case '4' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=2 and task4!=1 and task5!=1 and task6=0 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0)"; break;
-            case '5' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6=2 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=0 and qc2=0)"; break;
-            case '6' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=0 and task8=0 and task9=0 and task10!=1 and qc1=2 and qc2=0)"; break;
-            case '7' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=2 and task8=0 and task9=0 and task10!=1 and qc1!=1 and qc2=0)"; break;
-            case '8' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8=2 and task9=0 and task10!=1 and qc1!=1 and qc2=0)"; break;
-            case '9' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9=2 and task10!=1 and qc1!=1 and qc2=0)"; break;
-            case '10' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2=2)"; break;
+            case '1' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=0 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=0 and qc2=0)"; break;
+            case '2' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4=2 and task5=0 and task6=0 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=0 and qc2=0)"; break;
+            case '3' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=0 and task4!=1 and task5=2 and task6=0 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=0 and qc2=0)"; break;
+            case '4' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3=2 and task4!=1 and task5!=1 and task6=0 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=0 and qc2=0)"; break;
+            case '5' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6=2 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=0 and qc2=0)"; break;
+            case '6' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=0 and task8=0 and task9=0 and task10=0 and qc1=2 and qc2=0)"; break;
+            case '7' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7=2 and task8=0 and task9=0 and task10=0 and qc1!=1 and qc2=0)"; break;
+            case '8' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8=2 and task9=0 and task10=0 and qc1!=1 and qc2=0)"; break;
+            case '9' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9=2 and task10=0 and qc1!=1 and qc2=0)"; break;
+            case '10' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10=0 and qc1!=1 and qc2=2)"; break;
+            case '11' : $column = "(gemstone_barcode.gemstone_id=gemstone.id and task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10=2 and qc1!=1 and qc2!=1)"; break;
     } 
      
     $this->db->select("gemstone_type.id as typeid, gemstone_type.name as typename, count(*) as count");

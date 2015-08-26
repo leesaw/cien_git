@@ -116,6 +116,15 @@ $(document).ready(function()
             "bProcessing": true,
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
+            "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              { "bSearchable": false },
+            ],
             "bDeferRender": true,
             'sAjaxSource'    : '<?php echo site_url("report/ajaxGetAllBarcode_edit"); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {

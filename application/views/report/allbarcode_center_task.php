@@ -48,6 +48,7 @@
             case '8' : $column = "รอ - เจียก้น"; break;
             case '9' : $column = "รอ - QC ก้น"; break;
             case '10' : $column = "รอ - QC ออกจากโรงงาน"; break;
+            case '11' : $column = "ส่งกลับจากโคราชแล้ว"; break;
             default : $column = "";
         }
         ?>
@@ -164,6 +165,15 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "bDeferRender": true,
+            "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              { "bSearchable": false },
+            ],
             'sAjaxSource'    : '<?php echo site_url("report/ajaxGetAllBarcodeCenter_Task/".$task); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {

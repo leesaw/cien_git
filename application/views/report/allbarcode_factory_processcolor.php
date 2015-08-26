@@ -148,6 +148,13 @@ $(document).ready(function()
             "bProcessing": true,
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
+            "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              { "bSearchable": false },
+            ],
             "bDeferRender": true,
             'sAjaxSource'    : '<?php if ($process>0) echo site_url("report/ajaxGetAllBarcodeFactory_Processcolor/".$color."/".$process); 
                                       else echo site_url("report/ajaxGetAllBarcodeFactory_Processcolor_0/".$color);

@@ -123,7 +123,18 @@
 $(document).ready(function()
 {
     $("#tablebarcode").dataTable( {
-        "order": [[ 2, "desc" ]]
+        "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              { "bSearchable": false },
+            ]
     } );
     
     $('#fancyboxall').fancybox({ 

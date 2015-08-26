@@ -128,6 +128,13 @@ $(document).ready(function()
             "bProcessing": true,
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
+            "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              { "bSearchable": false },
+            ],
             "bDeferRender": true,
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {

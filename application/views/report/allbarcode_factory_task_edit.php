@@ -164,6 +164,15 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "bDeferRender": true,
+            "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              { "bSearchable": false },
+            ],
             'sAjaxSource'    : '<?php echo site_url("report/ajaxGetAllBarcodeFactory_Task_edit/".$task); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {

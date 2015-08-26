@@ -136,7 +136,20 @@ $(function() {
 $(document).ready(function()
 {
     $("#tablebarcode").dataTable( {
-
+        "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              { "bSearchable": false },
+            ]
     } );
     
     $('#fancyboxall').fancybox({ 

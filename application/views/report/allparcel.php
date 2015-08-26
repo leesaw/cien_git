@@ -160,7 +160,20 @@
 <script src="<?php echo base_url(); ?>plugins/fancybox/jquery.fancybox.js"></script>
 <script type="text/javascript">
 $(function() {
-    $('#tablebarcode').dataTable();
+    $('#tablebarcode').dataTable({
+        "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              { "bSearchable": false },
+            ]
+    });
     
     $("#datepicker").datepicker( {
         format: "mm-yyyy",
