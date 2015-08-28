@@ -98,8 +98,9 @@ if ($colorgraph>0) {
                                 <h4 class="pull-right header">จำนวนของในโรงงานทั้งหมด <u><?php echo $sum; ?></u> ชิ้น</h4><br><br>
                                 <div id="bar-type" style="height: 365px;"></div><!--<div id="bar-type" style="height: 300px;"></div> -->
                                   <hr>
-                                <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> &nbsp;&nbsp; แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;
-                                <button type="button" class="btn bg-navy" onClick="window.location.href='<?php echo site_url("report/allParcel_factory"); ?>'"> <i class="fa fa-archive"></i> &nbsp;&nbsp; แสดงชุดวัตถุดิบในโรงงาน </button>
+                                <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;
+                                <button type="button" class="btn bg-navy" onClick="window.location.href='<?php echo site_url("report/allParcel_factory"); ?>'"> <i class="fa fa-archive"></i> แสดงชุดวัตถุดิบในโรงงาน </button> &nbsp;&nbsp;
+                                <a data-toggle="modal" data-target="#myModal_process" class="btn bg-maroon" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="" data-backdrop="static" data-keyboard="false"><i class="fa fa-folder-open"></i> แสดงชุดวัตถุเข้า-ออก</a>
                               </div><!-- /.tab-pane -->
                             </div><!-- /.tab-content -->
                           </div><!-- nav-tabs-custom -->
@@ -148,7 +149,7 @@ if ($colorgraph>0) {
                                             echo "</td></tr>";
                                             $sum += $loop->count;
                                         }
-                                        //echo "<tr><th>รวมทั้งหมด</th><th>".$sum."</th></tr>";
+                                        //echo "<tr><th>รวมทั้งหมด</th><&nbsp;&nbsp; th>".$sum."</th></tr>";
                                     ?>
                                       </tbody>
                                     </table>
@@ -270,6 +271,43 @@ if ($colorgraph>0) {
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									<h4 class="modal-title">	                 	
 										<strong>เลือกช่วงวันที่ต้องการ</strong> 
+									</h4>
+								</div>            <!-- /modal-header -->
+								<div class="modal-body">
+									<form class="form-inline" role="form" action="<?php echo site_url("report/viewErrorBetween"); ?>" method="POST" target="_blank">
+									<div class="form-group">
+										<label for="">เริ่ม: </label>
+										<input type="text" class="form-control" id="startdate" name="startdate" />
+									</div>
+									<div class="form-group">
+										<label for=""> สิ้นสุด :</label>
+										<input type="text" class="form-control" id="enddate" name="enddate" />
+									</div>
+										
+								</div>            <!-- /modal-body -->
+							
+								<div class="modal-footer">
+                                    <a class="btn btn-success pull-left" href="<?php echo site_url("report/viewErrorBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a>
+										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
+										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
+								</div> 	
+								</form>								
+							</div>
+						</div>
+					</div>
+						
+                    </div>
+                    <!-- close modal -->
+                    
+                    <!-- datepicker modal for process color material -->
+						<div class="modal fade" id="myModal_process" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						
+						  <div class="modal-dialog modal-md">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">	                 	
+										<strong>เลือกข้อมูลที่ต้องการ</strong> 
 									</h4>
 								</div>            <!-- /modal-header -->
 								<div class="modal-body">
