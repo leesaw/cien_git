@@ -105,8 +105,7 @@ if ($colorgraph>0) {
                             </div><!-- /.tab-content -->
                           </div><!-- nav-tabs-custom -->
                         </section>
-                
-                
+
                         <section class="col-md-3 connectedSortable">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs pull-right">
@@ -311,21 +310,41 @@ if ($colorgraph>0) {
 									</h4>
 								</div>            <!-- /modal-header -->
 								<div class="modal-body">
-									<form class="form-inline" role="form" action="<?php echo site_url("report/viewErrorBetween"); ?>" method="POST" target="_blank">
+									<form class="form-inline" role="form" action="<?php echo site_url("report/viewInOut_process"); ?>" method="POST" target="_blank">
 									<div class="form-group">
 										<label for="">เริ่ม: </label>
-										<input type="text" class="form-control" id="startdate" name="startdate" />
+										<input type="text" class="form-control" id="startdate_process" name="startdate_process" />
 									</div>
 									<div class="form-group">
-										<label for=""> สิ้นสุด :</label>
-										<input type="text" class="form-control" id="enddate" name="enddate" />
+										<label for=""> &nbsp; &nbsp; สิ้นสุด :</label>
+										<input type="text" class="form-control" id="enddate_process" name="enddate_process" />
+									</div>
+                                    <br><br>
+                                    <div class="form-group">
+										<label for="">เลือกสี : </label>
+										<select name="gemtype_process" id="gemtype_process" class="form-control">
+                                            <option value='0'>ทั้งหมด</option>
+                                        <?php
+                                            foreach($type_array as $loop) { 
+                                                echo "<option value='".$loop->id."'>".$loop->name."</option>";
+                                            }
+                                        ?></select>
+									</div>
+                                    <div class="form-group">
+										<label for="">เลือกประเภทงาน : </label>
+										<select name="processtype_process" id="processtype_process" class="form-control">
+                                            <option value='0'>ทั้งหมด</option>
+                                        <?php
+                                            foreach($process_array as $loop) { 
+                                                echo "<option value='".$loop->id."'>".$loop->name."</option>";
+                                            }
+                                        ?></select>
 									</div>
 										
 								</div>            <!-- /modal-body -->
 							
 								<div class="modal-footer">
-                                    <a class="btn btn-success pull-left" href="<?php echo site_url("report/viewErrorBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a>
-										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
+                                   		<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
 										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
 								</div> 	
 								</form>								
@@ -426,6 +445,8 @@ $(document).ready(function()
 {
     get_datepicker("#startdate");
     get_datepicker("#enddate");
+    get_datepicker("#startdate_process");
+    get_datepicker("#enddate_process");
     
     $('#fancyboxall').fancybox({ 
     'width': '60%',

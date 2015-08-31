@@ -708,4 +708,18 @@ class Report extends CI_Controller {
         $data['title'] = "Cien|Gemstone Tracking System - View Worker";
         $this->load->view('report/showworker_barcode',$data);
     }
+    
+    function viewInOut_process()
+    {
+        $start = $this->input->post("startdate_process");
+        if ($start != "") {
+            $start = explode('/', $start);
+            $start= $start[2]."-".$start[1]."-".$start[0];
+        }
+        $end = $this->input->post("enddate_process");
+        if ($end != "") {
+            $end = explode('/', $end);
+            $end= $end[2]."-".$end[1]."-".$end[0];
+        }
+    }
 }

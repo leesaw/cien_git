@@ -33,6 +33,9 @@ class Main extends CI_Controller {
             $query = $this->gemstone_model->getProcessType();
             $data['process_array'] = $query;
             
+            $query = $this->gemstone_model->getGemstoneType();
+            $data['type_array'] =  $query;
+            
             $d = 0;
             $sevenday = array();
             for ($d=0; $d > -7; $d--) {

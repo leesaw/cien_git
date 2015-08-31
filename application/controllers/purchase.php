@@ -209,7 +209,7 @@ class Purchase extends CI_Controller {
             }else{
                 $data['size_array'] = array();
             }
-
+        
             $data['title'] = "Cien|Gemstone Tracking System - Add Gemstone";
             redirect('purchase/addgems', 'refresh');
 

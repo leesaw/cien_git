@@ -166,6 +166,7 @@ Class Gemstone_model extends CI_Model
     
  function getNumber_month($start, $end, $typeid)
  {
+    $end = $end." 23:59:59";
     $this->db->select('max(number) as _count, sum(amount) as _sum');
     $this->db->from("gemstone");
     $this->db->where('dateadd >=', $start);
@@ -178,6 +179,7 @@ Class Gemstone_model extends CI_Model
     
  function getNumber_month_purchase($start, $end, $typeid)
  {
+    $end = $end." 23:59:59";
     $this->db->select('max(number) as _count, sum(amount) as _sum');
     $this->db->from("gemstone");
     $this->db->where('datepurchase >=', $start);
