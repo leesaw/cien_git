@@ -100,7 +100,7 @@ if ($colorgraph>0) {
                                   <hr>
                                 <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;
                                 <button type="button" class="btn bg-navy" onClick="window.location.href='<?php echo site_url("report/allParcel_factory"); ?>'"> <i class="fa fa-archive"></i> แสดงชุดวัตถุดิบในโรงงาน </button> &nbsp;&nbsp;
-                                <a data-toggle="modal" data-target="#myModal_process" class="btn bg-maroon" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="" data-backdrop="static" data-keyboard="false"><i class="fa fa-folder-open"></i> แสดงชุดวัตถุเข้า-ออก</a>
+                                <a data-toggle="modal" data-target="#myModal_process" class="btn bg-maroon"><i class="fa fa-folder-open"></i> แสดงชุดวัตถุเข้า-ออก</a>
                               </div><!-- /.tab-pane -->
                             </div><!-- /.tab-content -->
                           </div><!-- nav-tabs-custom -->
@@ -256,7 +256,7 @@ if ($colorgraph>0) {
                             <div class="chart" id="bar-seven" style="height: 300px;"></div>
                         </div>
                         <div class="box-footer">
-                            <a data-toggle="modal" data-target="#myModal" class="btn btn-danger" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="" data-backdrop="static" data-keyboard="false"><i class="fa fa-bar-chart"></i> แสดงเหตุผล QC ไม่ผ่าน</a> &nbsp;&nbsp;
+                            <a data-toggle="modal" data-target="#myModal" class="btn btn-danger"><i class="fa fa-bar-chart"></i> แสดงเหตุผล QC ไม่ผ่าน</a> &nbsp;&nbsp;
                             <a class="btn bg-purple" href="<?php echo site_url("report/allBarcode_return"); ?>"><i class="fa fa-table"></i> แสดงวัตถุดิบไม่เหมาะสม</a> &nbsp;&nbsp;
                             <a class="btn bg-navy" href="<?php echo site_url("report/allBarcode_return_ok"); ?>"><i class="fa fa-rotate-left"></i> แสดงคืนวัตถุดิบ</a>
                         </div>
@@ -299,7 +299,7 @@ if ($colorgraph>0) {
                     <!-- close modal -->
                     
                     <!-- datepicker modal for process color material -->
-						<div class="modal fade" id="myModal_process" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal fade" id="myModal_process" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_process" aria-hidden="true">
 						
 						  <div class="modal-dialog modal-md">
 							<div class="modal-content">
@@ -331,7 +331,7 @@ if ($colorgraph>0) {
                                         ?></select>
 									</div>
                                     <div class="form-group">
-										<label for="">เลือกประเภทงาน : </label>
+										<label for=""> &nbsp; &nbsp; เลือกประเภทงาน : </label>
 										<select name="processtype_process" id="processtype_process" class="form-control">
                                             <option value='0'>ทั้งหมด</option>
                                         <?php
@@ -359,7 +359,6 @@ if ($colorgraph>0) {
                     </div>
                 </div>
                 </div>
-                
 
             </div>  <!-- div body -->
         </section>
@@ -439,6 +438,7 @@ if ($colorgraph>0) {
         $('#purchasing').on('click', function(){            
             window.location.replace("<?php echo site_url("main/dashboard_purchasing"); ?>");
         });
+          
     });
     
 $(document).ready(function()
@@ -456,12 +456,12 @@ $(document).ready(function()
     'transitionOut':'none', 
     'type':'iframe'}); 
 });
+    
 
 function get_datepicker(id)
 {
-
-	$(id).datepicker({ language:'th-th',format:'dd/mm/yyyy'
-		    });
+    $(id).datepicker({ language:'th-th',format: "dd/mm/yyyy" }).on('changeDate', function(ev){
+    $(this).datepicker('hide'); });
 
 }
     // tooltip demo

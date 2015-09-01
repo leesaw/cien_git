@@ -13,7 +13,7 @@ Class Gemstone_model extends CI_Model
  function getProcessType()
  {
 	$this->db->select("id, name");
-	$this->db->order_by("id", "asc");
+	$this->db->order_by("name", "asc");
 	$this->db->from('process_type');	
 	$query = $this->db->get();		
 	return $query->result();

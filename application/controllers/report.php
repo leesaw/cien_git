@@ -711,15 +711,69 @@ class Report extends CI_Controller {
     
     function viewInOut_process()
     {
+        $query = $this->gemstone_model->getProcessType();
+        $data['process_array'] = $query;
+            
+        $query = $this->gemstone_model->getGemstoneType();
+        $data['type_array'] =  $query;
+        
         $start = $this->input->post("startdate_process");
         if ($start != "") {
             $start = explode('/', $start);
             $start= $start[2]."-".$start[1]."-".$start[0];
+        }else{
+            $start = "1970-01-01";
         }
         $end = $this->input->post("enddate_process");
         if ($end != "") {
             $end = explode('/', $end);
             $end= $end[2]."-".$end[1]."-".$end[0];
+        }else{
+            $end = date('Y-m-d');
         }
+        
+        $data['start'] = $start;
+        $data['end'] = $end;
+        $data['gemtype'] = $this->input->post("gemtype_process");
+        $data['processtype'] = $this->input->post("processtype_process");
+        
+        $data['title'] = "Cien|Gemstone Tracking System - View In/Out Parcel";
+        $this->load->view('report/showinoutparcel_process',$data);
+        
+    }
+    
+    function ajaxGetParcelInOut_Process($start, $end, $gemtype, $process)
+    {
+        $start = $this->uri->segment(3);
+        $end = $this->uri->segment(4);
+        $gemtype = $this->uri->segment(5);
+        $process = $this->uri->segment(6);
+        
+        $start = $start. " 00:00:00";
+        $end = $end." 23:59:59";
+        
+        $column = "(gemstone.dateadd >='".$start."' and gemstone.dateadd <='".$end."'";
+        if (($gemtype>0) && ($process>0)) $column .= " and gemstone.type = '".$gemtype."' and gemstone.process_type = '".$process."')";
+        elseif ($gemtype>0) $column .= " and gemstone.type = '".$gemtype."')";
+        elseif ($process>0) $column .= " and gemstone.process_type = '".$process."')";
+        else $column .= ")";
+        
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("CONCAT('<span class=hide>',date_format(gemstone.dateadd,'%Y/%m/%d'),'</span>',date_format(gemstone.dateadd,'%d/%m/%Y')) as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, process_type.name as process_name, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, CONCAT('<code><b>',(amount - count(gemstone_barcode.id)),'</b></code>') as ok, gemstone.id as gemid", FALSE)
+        ->from('gemstone')
+        ->join('supplier', 'gemstone.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
+        ->join('gemstone_barcode', 'gemstone_barcode.gemstone_id=gemstone.id', 'left')
+        ->join('process_type', 'process_type.id = gemstone.process_type', 'left')
+        ->where('disable',0)
+        ->where("(pass != 0 AND pass != 3)", NULL, FALSE)
+        ->where($column)
+        ->group_by('gemstone.id')
+		->edit_column("gemid",'<div class="tooltip-demo">
+	<a href="'.site_url("report/showdetail_parcel/$1").'" class="btn btn-success btn-xs" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a></div>',"gemid");
+
+        
+		echo $this->datatables->generate(); 
     }
 }
