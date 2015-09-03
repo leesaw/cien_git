@@ -742,7 +742,7 @@ class Report extends CI_Controller {
         
     }
     
-    function ajaxGetParcelInOut_Process($start, $end, $gemtype, $process)
+    function ajaxGetParcelInOut_Process()
     {
         $start = $this->uri->segment(3);
         $end = $this->uri->segment(4);
@@ -760,7 +760,7 @@ class Report extends CI_Controller {
         
         $this->load->library('Datatables');
 		$this->datatables
-		->select("CONCAT('<span class=hide>',date_format(gemstone.dateadd,'%Y/%m/%d'),'</span>',date_format(gemstone.dateadd,'%d/%m/%Y')) as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, process_type.name as process_name, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, CONCAT('<code><b>',(amount - count(gemstone_barcode.id)),'</b></code>') as ok, gemstone.id as gemid", FALSE)
+		->select("CONCAT('<span class=hide>',date_format(gemstone.dateadd,'%Y/%m/%d'),'</span>',date_format(gemstone.dateadd,'%d/%m/%Y')) as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, process_type.name as process_name, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, (amount - count(gemstone_barcode.id)) as ok, gemstone.id as gemid", FALSE)
         ->from('gemstone')
         ->join('supplier', 'gemstone.supplier=supplier.id','left')
         ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
@@ -776,4 +776,79 @@ class Report extends CI_Controller {
         
 		echo $this->datatables->generate(); 
     }
+    
+    function exportParcelInOut_excel()
+    {
+        $start = $this->uri->segment(3);
+        $end = $this->uri->segment(4);
+        $gemtype = $this->uri->segment(5);
+        $process = $this->uri->segment(6);
+        
+        $result_array = $this->report_model->getParcelInOut_process($start,$end,$gemtype,$process);
+
+        //load our new PHPExcel library
+        $this->load->library('excel');
+        //activate worksheet number 1
+        $this->excel->setActiveSheetIndex(0);
+        //name the worksheet
+        $this->excel->getActiveSheet()->setTitle('Parcel');
+
+        //$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, 1, "ทองคำแท่ง (96.5)");
+        $this->excel->getActiveSheet()->setCellValue('A1', 'วันที่เข้า');
+        $this->excel->getActiveSheet()->setCellValue('B1', 'เลขที่');
+        $this->excel->getActiveSheet()->setCellValue('C1', 'ชนิด');
+        $this->excel->getActiveSheet()->setCellValue('D1', 'ประเภทงาน');
+        $this->excel->getActiveSheet()->setCellValue('E1', 'ส่งเข้าโรงงาน');
+        $this->excel->getActiveSheet()->setCellValue('G1', 'ออกจากโรงงาน');
+        $this->excel->getActiveSheet()->setCellValue('J1', 'เหลือในโรงงาน');
+        $this->excel->getActiveSheet()->setCellValue('E2', 'กะรัต');
+        $this->excel->getActiveSheet()->setCellValue('F2', 'เม็ด');
+        $this->excel->getActiveSheet()->setCellValue('G2', 'QC ผ่าน (เม็ด)');
+        $this->excel->getActiveSheet()->setCellValue('H2', 'QC ไม่ผ่าน (เม็ด)');
+        $this->excel->getActiveSheet()->setCellValue('I2', 'ไม่เหมาะสม (เม็ด)');
+        $this->excel->getActiveSheet()->mergeCells('E1:F1');
+        $this->excel->getActiveSheet()->mergeCells('G1:I1');
+        $this->excel->getActiveSheet()->getStyle('E1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $this->excel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+
+        // Fetching the table data
+
+        $row = 3;
+        foreach($result_array as $loop)
+        {
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, $loop->showdate);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $loop->detail);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $loop->gemtype);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $loop->process_name);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, $loop->carat);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $row, $loop->amount);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $row, $loop->okout);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, $row, $loop->nookout);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, $row, $loop->outout);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, $row, $loop->ok);
+            $row++;
+        }
+
+        $filename='cien_parcel.xlsx'; //save our workbook as this file name
+        header('Content-Type: application/vnd.ms-excel'); //mime type
+        header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+
+        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+        //if you want to save it as .XLSX Excel 2007 format
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');  
+        //force user to download the Excel file without writing it to server's HD
+        $objWriter->save('php://output');
+    }
+    
 }

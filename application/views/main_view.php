@@ -100,7 +100,7 @@ if ($colorgraph>0) {
                                   <hr>
                                 <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;
                                 <button type="button" class="btn bg-navy" onClick="window.location.href='<?php echo site_url("report/allParcel_factory"); ?>'"> <i class="fa fa-archive"></i> แสดงชุดวัตถุดิบในโรงงาน </button> &nbsp;&nbsp;
-                                <a data-toggle="modal" data-target="#myModal_process" class="btn bg-maroon"><i class="fa fa-folder-open"></i> แสดงชุดวัตถุเข้า-ออก</a>
+                                <a data-toggle="modal" data-target="#myModal_process" class="btn bg-maroon"><i class="fa fa-folder-open"></i> แสดงชุดวัตถุดิบเข้า-ออก</a>
                               </div><!-- /.tab-pane -->
                             </div><!-- /.tab-content -->
                           </div><!-- nav-tabs-custom -->
