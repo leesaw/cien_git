@@ -272,6 +272,14 @@ class Stock extends CI_Controller {
 			$data['type_array'] = array();
 		}
         
+        $this->load->model('supplier','',TRUE);
+        $query = $this->supplier->getSupplier();
+        if($query){
+            $data['supplier_array'] =  $query;
+        }else{
+            $data['supplier_array'] = array();
+        }
+        
         $data['colorid'] = 0;
         $data['stoneid'] = 0;
         $data['stock'] = $this->uri->segment(3);

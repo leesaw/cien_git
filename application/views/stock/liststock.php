@@ -15,10 +15,10 @@
         <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            List Inventory
+            Inventory List
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> List Inventory</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inventory List</a></li>
         </ol>
     </section>
 	
@@ -34,9 +34,9 @@
                 <div class="panel panel-default">
 					<div class="panel-heading">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <div class="form-group">
-                                    <label>เลือกสี</label>
+                                    <label>สี</label>
                                         <select class="form-control" name="typeid" id="typeid" onChange="listColor(this)">
                                             <option value="0" selected>All Color</option>
                                             <?php 	if(is_array($type_array)) {
@@ -46,14 +46,32 @@
                                         </select>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <div class="form-group">
-                                    <label>เลือกประเภทวัตถุดิบ</label>
+                                    <label>ประเภทวัตถุดิบ</label>
                                     <select class="form-control" name="stoneid" id="stoneid" onChange="listType(this)">
                                         <option value="0" <?php if ($stoneid==0) echo "selected"; ?>>ทั้งหมด</option>
                                         <option value="1" <?php if ($stoneid==1) echo "selected"; ?>>พลอยก้อน</option>
                                         <option value="2" <?php if ($stoneid==2) echo "selected"; ?>>พลอยสำเร็จ</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Supplier</label>
+                                    <select class="form-control" name="supplierid" id="supplierid" onChange="listSupplier(this)">
+                                            <option value="0" selected>ทั้งหมด</option>
+                                            <?php 	if(is_array($supplier_array)) {
+                                                        foreach($supplier_array as $loop){
+                                                            echo "<option value='".$loop->id."'>".$loop->name."</option>";
+                                                    } } ?>
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>เดือน</label>
+                                    <input type="text" class="form-control pull-right" name="month" id="datepicker" onChange="listMonth(this)" />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -139,6 +157,12 @@ $(document).ready(function()
                 });
             }
         });
+    
+    $("#datepicker").datepicker( {
+        format: "mm-yyyy",
+        viewMode: "months", 
+        minViewMode: "months"
+    });
     
     $('#fancyboxall').fancybox({ 
     'width': '85%',
