@@ -33,23 +33,28 @@
 			<div class="col-md-12">
                 <div class="panel panel-default">
 					<div class="panel-heading">
+                        <form action="<?php echo site_url("stock/liststock_search"); ?>" method="get">
                         <div class="row">
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label>สี</label>
-                                        <select class="form-control" name="typeid" id="typeid" onChange="listColor(this)">
-                                            <option value="0" selected>All Color</option>
+                                        <select class="form-control" name="typeid" id="typeid">
+                                            <option value="0" selected>ทั้งหมด</option>
                                             <?php 	if(is_array($type_array)) {
                                                         foreach($type_array as $loop){
-                                                            echo "<option value='".$loop->id."'>".$loop->name."</option>";
+                                                            if ($colorid == $loop->id) {
+                                                                echo "<option value='".$loop->id."' selected>".$loop->name."</option>";
+                                                            }else{
+                                                                echo "<option value='".$loop->id."'>".$loop->name."</option>";
+                                                            }
                                                     } } ?>
                                         </select>
                                 </div>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label>ประเภทวัตถุดิบ</label>
-                                    <select class="form-control" name="stoneid" id="stoneid" onChange="listType(this)">
+                                    <select class="form-control" name="stoneid" id="stoneid">
                                         <option value="0" <?php if ($stoneid==0) echo "selected"; ?>>ทั้งหมด</option>
                                         <option value="1" <?php if ($stoneid==1) echo "selected"; ?>>พลอยก้อน</option>
                                         <option value="2" <?php if ($stoneid==2) echo "selected"; ?>>พลอยสำเร็จ</option>
@@ -59,29 +64,35 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label>Supplier</label>
-                                    <select class="form-control" name="supplierid" id="supplierid" onChange="listSupplier(this)">
-                                            <option value="0" selected>ทั้งหมด</option>
-                                            <?php 	if(is_array($supplier_array)) {
-                                                        foreach($supplier_array as $loop){
+                                    <select class="form-control" name="supplierid" id="supplierid">
+                                        <option value="0" selected>ทั้งหมด</option>
+                                        <?php 	if(is_array($supplier_array)) {
+                                                    foreach($supplier_array as $loop){
+                                                        if ($supplierid == $loop->id) {
+                                                            echo "<option value='".$loop->id."' selected>".$loop->name."</option>";
+                                                        }else{
                                                             echo "<option value='".$loop->id."'>".$loop->name."</option>";
-                                                    } } ?>
-                                        </select>
+                                                        }
+                                                } } ?>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label>เดือน</label>
-                                    <input type="text" class="form-control pull-right" name="month" id="datepicker" onChange="listMonth(this)" />
+                                    <input type="text" class="form-control pull-right" name="month" id="datepicker" value="<?php echo $month; ?>"/>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                        <input type="radio" name="empty" id="instock" value="0" <?php if($stock=="instock") echo "checked"; ?>> <label class="text-green"> In Stock</label>&nbsp; &nbsp;
-                                        <input type="radio" name="empty" id="outstock" value="1" <?php if($stock=="outstock") echo "checked"; ?>> <label class="text-red"> Out of Stock</label>&nbsp; &nbsp;
-                                        <input type="radio" name="empty" id="allstock" value="2" <?php if(($stock=="allstock") || ($stock=="")) echo "checked"; ?>> <label class="text-blue"> Show All</label>&nbsp; &nbsp;
+                                    <br>
+                                    <input type="radio" name="stock" id="instock" value="0" <?php if($stock=="0") echo "checked"; ?>> <label class="text-green"> In Stock</label>&nbsp; &nbsp;
+                                    <input type="radio" name="stock" id="outstock" value="1" <?php if($stock=="1") echo "checked"; ?>> <label class="text-red"> Out of Stock</label>&nbsp; &nbsp;
+                                    <input type="radio" name="stock" id="allstock" value="2" <?php if(($stock=="2") || ($stock=="")) echo "checked"; ?>> <label class="text-blue"> Show All</label>&nbsp; &nbsp; &nbsp; &nbsp;<input type="submit" class="btn btn-primary" value="Filter"/>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
+                        </form>
                     </div>
                     <div class="panel-body">
                             <table class="table table-bordered table-striped" id="tablebarcode" width="100%">
@@ -97,7 +108,7 @@
                                         <th width="80" rowspan="2">Carat</th>
                                         <th width="80" rowspan="2">Kilogram (kg.)</th>
                                         <th colspan="2" style="text-align:center">In Stock</th>
-										<th width="120" rowspan="2"> </th>
+										<th width="150" rowspan="2"> </th>
                                     </tr>
                                     <tr>
                                         <th width="60">Quantity</th>
@@ -145,7 +156,7 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "bDeferRender": true,
-            'sAjaxSource'    : '<?php echo site_url("stock/ajaxGetListInventory/".$stock); ?>',
+            'sAjaxSource'    : '<?php echo site_url("stock/ajaxGetListInventory/".$stock."/".$colorid."/".$stoneid."/".$supplierid."/".$month); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {
                     "dataType": 'json',
@@ -197,17 +208,6 @@ $(document).ready(function()
             }
     }); 
     
-    $('#instock').on('click', function(){            
-        window.location.replace("<?php echo site_url("stock/liststock/instock"); ?>");
-    });
-          
-    $('#outstock').on('click', function(){            
-        window.location.replace("<?php echo site_url("stock/liststock/outstock"); ?>");
-    });
-    
-    $('#allstock').on('click', function(){            
-        window.location.replace("<?php echo site_url("stock/liststock/allstock"); ?>");
-    });
 });
     
 function del_confirm(val1) {
@@ -215,7 +215,6 @@ function del_confirm(val1) {
 				var currentForm = this;
 				var myurl = <?php echo json_encode($url); ?>;
             	if (result) {
-				
 					window.location.replace(myurl+"/"+val1);
 				}
 
@@ -223,29 +222,6 @@ function del_confirm(val1) {
 
 }
     
-function listColor(sel) {
-    var var1 = sel.value;
-    var stone_type = <?php echo $stoneid; ?>;
-    if (var1 == 0) {
-        if (stone_type==0) window.location.replace("<?php echo site_url("stock/liststock"); ?>");
-        else window.location.replace("<?php echo site_url("stock/liststock_color/0/".$stoneid); ?>");
-    }else{
-        window.location.replace("<?php echo site_url("stock/liststock_color"); ?>"+"/"+var1+"/"+stone_type);
-    }
-}
-    
-function listType(sel) {
-    var var1 = sel.value;
-    var colorid = <?php echo $colorid; ?>;
-    if (var1 == 0) {
-        if (colorid==0) window.location.replace("<?php echo site_url("stock/liststock"); ?>");
-        else window.location.replace("<?php echo site_url("stock/liststock_color/".$colorid."/0"); ?>");
-    }else{
-        window.location.replace("<?php echo site_url("stock/liststock_color"); ?>"+"/"+colorid+"/"+var1);
-    }
-}
-
-
 $(".alert").alert();
 window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
 
