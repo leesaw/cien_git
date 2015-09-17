@@ -236,6 +236,17 @@ class Report extends CI_Controller {
 		$this->load->view('report/allbarcode_factory_processcolor',$data);
     }
     
+    function allBarcode_stock_balance()
+    {
+        $data['colorid'] = $this->uri->segment(3);
+        
+        $result = $this->gemstone_model->getOneGemstoneType($this->uri->segment(3));
+        foreach($result as $loop) $data['colorname'] = $loop->name;
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Show Stock Balance";
+		$this->load->view('report/allbarcode_stock_balance',$data);
+    }
+    
     function ajaxGetAllBarcodeFactory()
 	{
         $this->load->library('Datatables');
@@ -742,6 +753,44 @@ class Report extends CI_Controller {
         
     }
     
+    function viewInOut_inventory()
+    {
+        $query = $this->gemstone_model->getProcessType();
+        $data['process_array'] = $query;
+            
+        $query = $this->gemstone_model->getGemstoneType();
+        $data['type_array'] =  $query;
+        
+        $this->load->model('supplier','',TRUE);
+        $query = $this->supplier->getSupplier();
+        $data['supplier_array'] =  $query;
+        
+        $start = $this->input->post("startdate_process");
+        if ($start != "") {
+            $start = explode('/', $start);
+            $start= $start[2]."-".$start[1]."-".$start[0];
+        }else{
+            $start = "1970-01-01";
+        }
+        $end = $this->input->post("enddate_process");
+        if ($end != "") {
+            $end = explode('/', $end);
+            $end= $end[2]."-".$end[1]."-".$end[0];
+        }else{
+            $end = date('Y-m-d');
+        }
+        
+        $data['start'] = $start;
+        $data['end'] = $end;
+        $data['gemtype'] = $this->input->post("gemtype");
+        $data['processtype'] = $this->input->post("processtype");
+        $data['supplier'] = $this->input->post("supplier");
+        
+        $data['title'] = "Cien|Gemstone Tracking System - View In/Out Inventory";
+        $this->load->view('report/showinout_inventory',$data);
+        
+    }
+    
     function ajaxGetParcelInOut_Process()
     {
         $start = $this->uri->segment(3);
@@ -785,6 +834,80 @@ class Report extends CI_Controller {
         $process = $this->uri->segment(6);
         
         $result_array = $this->report_model->getParcelInOut_process($start,$end,$gemtype,$process);
+
+        //load our new PHPExcel library
+        $this->load->library('excel');
+        //activate worksheet number 1
+        $this->excel->setActiveSheetIndex(0);
+        //name the worksheet
+        $this->excel->getActiveSheet()->setTitle('Parcel');
+
+        //$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, 1, "ทองคำแท่ง (96.5)");
+        $this->excel->getActiveSheet()->setCellValue('A1', 'วันที่เข้า');
+        $this->excel->getActiveSheet()->setCellValue('B1', 'เลขที่');
+        $this->excel->getActiveSheet()->setCellValue('C1', 'ชนิด');
+        $this->excel->getActiveSheet()->setCellValue('D1', 'ประเภทงาน');
+        $this->excel->getActiveSheet()->setCellValue('E1', 'ส่งเข้าโรงงาน');
+        $this->excel->getActiveSheet()->setCellValue('G1', 'ออกจากโรงงาน');
+        $this->excel->getActiveSheet()->setCellValue('J1', 'เหลือในโรงงาน');
+        $this->excel->getActiveSheet()->setCellValue('E2', 'กะรัต');
+        $this->excel->getActiveSheet()->setCellValue('F2', 'เม็ด');
+        $this->excel->getActiveSheet()->setCellValue('G2', 'QC ผ่าน (เม็ด)');
+        $this->excel->getActiveSheet()->setCellValue('H2', 'QC ไม่ผ่าน (เม็ด)');
+        $this->excel->getActiveSheet()->setCellValue('I2', 'ไม่เหมาะสม (เม็ด)');
+        $this->excel->getActiveSheet()->mergeCells('E1:F1');
+        $this->excel->getActiveSheet()->mergeCells('G1:I1');
+        $this->excel->getActiveSheet()->getStyle('E1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $this->excel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+
+        // Fetching the table data
+
+        $row = 3;
+        foreach($result_array as $loop)
+        {
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, $loop->showdate);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $loop->detail);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $loop->gemtype);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $loop->process_name);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, $loop->carat);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $row, $loop->amount);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $row, $loop->okout);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, $row, $loop->nookout);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, $row, $loop->outout);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, $row, $loop->ok);
+            $row++;
+        }
+
+        $filename='cien_parcel.xlsx'; //save our workbook as this file name
+        header('Content-Type: application/vnd.ms-excel'); //mime type
+        header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+
+        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+        //if you want to save it as .XLSX Excel 2007 format
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');  
+        //force user to download the Excel file without writing it to server's HD
+        $objWriter->save('php://output');
+    }
+    
+    function exportInOut_inventory_excel()
+    {
+        $start = $this->input->post('startdate');
+        $end = $this->input->post('enddate');
+        $gemtype = $this->input->post('gemtype');
+        $supplier = $this->input->post('supplier');
+        
+        $result_array = $this->report_model->getParcelInOut_process($start,$end,$gemtype,$supplier);
 
         //load our new PHPExcel library
         $this->load->library('excel');

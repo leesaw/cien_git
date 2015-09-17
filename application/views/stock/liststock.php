@@ -107,7 +107,7 @@
                                         <th width="60" rowspan="2">Quantity</th>
                                         <th width="80" rowspan="2">Carat</th>
                                         <th width="80" rowspan="2">Kilogram (kg.)</th>
-                                        <th colspan="2" style="text-align:center">In Stock</th>
+                                        <th colspan="2" style="text-align:center">Balance</th>
 										<th width="150" rowspan="2"> </th>
                                     </tr>
                                     <tr>

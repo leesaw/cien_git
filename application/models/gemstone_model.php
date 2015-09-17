@@ -10,6 +10,16 @@ Class Gemstone_model extends CI_Model
 	return $query->result();
  }
     
+ function getOneGemstoneType($id)
+ {
+    $this->db->select("id, name, barcode");
+	$this->db->order_by("name", "asc");
+	$this->db->from('gemstone_type');	
+    $this->db->where('id', $id);
+	$query = $this->db->get();		
+	return $query->result();
+ }
+    
  function getProcessType()
  {
 	$this->db->select("id, name");

@@ -260,6 +260,41 @@ class Stock extends CI_Controller {
         $data['title'] = "Cien|Gemstone Tracking System - Edit Stone";
         redirect('stock/out_stone', 'refresh');
 
+	}
+    
+    function editstock_split()
+	{
+        $stockid = $this->input->post("stoneid");
+        $reason = $this->input->post('reason');
+        $detail = $this->input->post('detail');
+        $amount = $this->input->post('amount');
+        $carat = $this->input->post('carat');
+        $datetime = date('Y-m-d H:i:s');
+
+        $gemstone = array(
+            'gemstone_stock_id' => $stockid,
+            'reason' => $reason,
+            'detail' => $detail,
+            'carat' => $carat,
+            'amount' => $amount,
+            'dateadd' => $datetime,
+            'userid' => $this->session->userdata('sessid')
+        );
+            
+        $result = $this->stock_model->addStockSplit($gemstone);
+        
+        // update amount_out and carat_out
+        $stock = array('carat_out' => $carat, 'amount_out' => $amount, 'id' => $stockid);
+        $this->stock_model->editAmountCaratSplit($stock, $reason, 'plus');
+        
+        if ($result){
+            $this->session->set_flashdata('showresult', 'true');
+        }else{
+            $this->session->set_flashdata('showresult', 'fail');
+        }
+
+        $data['title'] = "Cien|Gemstone Tracking System - Edit Stone";
+        redirect('stock/split_stone', 'refresh');
 
 	}
     
@@ -341,6 +376,15 @@ class Stock extends CI_Controller {
         $query = $this->stock_model->getStockCutList($id);
         $data['cut_array'] = $query;
         
+        $query = $this->stock_model->getStockSplitList($id);
+        $data['split_array'] = $query;
+        
+        $data['id'] = $id;
+        if ($this->uri->segment(4) > 0) 
+            $data['nodelete'] = $this->uri->segment(4);
+        else
+            $data['nodelete'] = 0;
+        
         $data['title'] = "Cien|Gemstone Tracking System - View Stone";
         $this->load->view('stock/view_stone',$data);
     }
@@ -416,7 +460,7 @@ class Stock extends CI_Controller {
         
         $this->load->library('Datatables');
 		$this->datatables
-		->select("CONCAT('<span class=hide>',date_format(gemstone_stock.datein,'%Y/%m/%d'),'</span>',date_format(gemstone_stock.datein,'%d/%m/%Y')) as datein, CONCAT(supplier.name,lot) as detail, gemstone_stock.stone_type as stonetype, gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg , CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remainamount,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
+		->select("CONCAT('<span class=hide>',date_format(gemstone_stock.datein,'%Y/%m/%d'),'</span>',date_format(gemstone_stock.datein,'%d/%m/%Y')) as datein, CONCAT(supplier.name,lot) as detail, gemstone_stock.stone_type as stonetype, gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg , CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out - gemstone_stock.amount_fullcolor - gemstone_stock.amount_cleansize - gemstone_stock.amount_notclean),'</b></code>') as remainamount,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out - gemstone_stock.carat_fullcolor - gemstone_stock.carat_cleansize - gemstone_stock.carat_notclean,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
 		->from('gemstone_stock')
         ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
         ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
@@ -430,6 +474,29 @@ class Stock extends CI_Controller {
 		echo $this->datatables->generate();
         
         //    <a id="fancyboxedit" href="'.site_url("stock/edit_stone/$1").'" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+	}
+    
+    function ajaxGetListInventory_view()
+	{
+        $colorid = $this->uri->segment(3);
+
+        $column = "((gemstone_stock.amount > gemstone_stock.amount_out) OR (gemstone_stock.carat - gemstone_stock.carat_out > 0.01) OR (gemstone_stock.carat=0 AND gemstone_stock.amount=0 AND gemstone_stock.kilogram>0 AND (gemstone_stock.kilogram*1000>gemstone_stock.carat_out*0.2)))";
+        
+        if ($colorid > 0) {
+            $column .= " AND gemstone_stock.type = '".$colorid."'";
+        }
+        
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("CONCAT('<span class=hide>',date_format(gemstone_stock.datein,'%Y/%m/%d'),'</span>',date_format(gemstone_stock.datein,'%d/%m/%Y')) as datein, CONCAT(supplier.name,lot) as detail, gemstone_stock.stone_type as stonetype, gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg , CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out - gemstone_stock.amount_fullcolor - gemstone_stock.amount_cleansize - gemstone_stock.amount_notclean),'</b></code>') as remainamount,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out - gemstone_stock.carat_fullcolor - gemstone_stock.carat_cleansize - gemstone_stock.carat_notclean,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
+		->from('gemstone_stock')
+        ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
+        ->where('disable',0)
+        ->where($column)
+		->edit_column("bid",'<div class="tooltip-demo">
+    <a id="fancyboxall" href="'.site_url("stock/view_stone/$1/1").'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-fullscreen"></span></a> &nbsp;&nbsp;</div>',"bid");
+		echo $this->datatables->generate();
 	}
     
     function ajaxGetListInventory_stone()
@@ -642,6 +709,22 @@ class Stock extends CI_Controller {
 		redirect('stock/liststock', 'refresh');
     }
     
+    function delete_splitstock()
+    {
+        $id = $this->uri->segment(3);
+        $stockid = $this->uri->segment(4);
+        $result = $this->stock_model->getStockSplitOne($id);
+        foreach($result as $loop) { 
+            $stock = array('carat_out' => $loop->carat, 'amount_out' => $loop->amount, 'id' => $stockid);
+            $reason = $loop->reason;
+        }
+
+		$result = $this->stock_model->delSplitStock($id);
+        $this->stock_model->editAmountCaratSplit($stock, $reason, 'minus');
+        
+		redirect('stock/view_stone/'.$stockid, 'refresh');
+    }
+    
     function liststock_select()
     {
         $query = $this->gemstone_model->getGemstoneType();
@@ -695,6 +778,17 @@ class Stock extends CI_Controller {
         
         $data['title'] = "Cien|Gemstone Tracking System - Out stone";
         $this->load->view('stock/out_stone',$data);
+    }
+    
+    function split_stone()
+    {
+        $data['stockid'] = $this->uri->segment(3);
+        
+        $query = $this->stock_model->getSplit_reason();
+        $data['reason_array'] = $query;
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Out stone";
+        $this->load->view('stock/split_stone',$data);
     }
     
 }

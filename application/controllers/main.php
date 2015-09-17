@@ -69,13 +69,21 @@ class Main extends CI_Controller {
             $data['rough1_array'] = $query;     
             
             $query = $this->report_model->getAllGemstoneInventory_instock("พลอยก้อน");
-            $data['rough2_array'] = $query;     
+            $data['rough2_array'] = $query;   
+            
+            $query = $this->gemstone_model->getProcessType();
+            $data['process_array'] = $query;
+            
+            $query = $this->gemstone_model->getGemstoneType();
+            $data['type_array'] =  $query;
+            
+            $this->load->model('supplier','',TRUE);
+            $query = $this->supplier->getSupplier();
+            $data['supplier_array'] =  $query;
 
 			$data['title'] = "Cien|Gemstone Tracking System - Main";
 			$this->load->view('main_purchasing_view',$data);
-        }
-	   else
-	   {
+        }else{
 		 //If no session, redirect to login page
 		 redirect('login', 'refresh');
 	   }

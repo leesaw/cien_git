@@ -37,7 +37,7 @@
     $count1 = 0;
     foreach($rough1_array as $loop) { 
         $count1++;
-        $dataset_rough1[] = array($loop->typename, $loop->amount, $loop->carat);
+        $dataset_rough1[] = array($loop->typename, $loop->amount, $loop->carat, $loop->stocktype);
     }
 
     $count2 = 0;
@@ -49,6 +49,13 @@
 
 ?>
         <div class="box-body">
+            <div class="row">
+                <div class="col-md-10">
+                    <a data-toggle="modal" data-target="#myModal" class="btn btn-success"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span> Excel แสดง Inventory In-Out</a>
+                    <br>
+                    <br>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-10">
                     <div class="box box-success">
@@ -81,7 +88,62 @@
             </div>  <!-- div body -->
         </section>
           
+       
           
+<!-- datepicker modal for process color material -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">	                 	
+				<strong>เลือกข้อมูลที่ต้องการ</strong> 
+				</h4>
+            </div>            <!-- /modal-header -->
+			<div class="modal-body">
+				<form class="form-inline" role="form" action="<?php echo site_url("report/exportInOut_inventory_excel"); ?>" method="POST">
+					<div class="form-group">
+					<label for="">เริ่ม: </label>
+					<input type="text" class="form-control" id="startdate" name="startdate" />
+					</div>
+					<div class="form-group">
+						<label for=""> &nbsp; &nbsp; สิ้นสุด :</label>
+						<input type="text" class="form-control" id="enddate" name="enddate" />
+					</div>
+                    <br><br>
+                    <div class="form-group">
+					   <label for="">เลือกสี : </label>
+					   <select name="gemtype" id="gemtype" class="form-control">
+                        <option value='0'>ทั้งหมด</option>
+                        <?php
+                            foreach($type_array as $loop) { 
+                                echo "<option value='".$loop->id."'>".$loop->name."</option>";
+                            }
+                        ?></select>
+					</div>
+                    <div class="form-group">
+						<label for=""> เลือก Supplier : </label>
+						<select name="supplier" id="supplier" class="form-control">
+                        <option value='0'>ทั้งหมด</option>
+                        <?php
+                            foreach($supplier_array as $loop) { 
+                                echo "<option value='".$loop->id."'>".$loop->name."</option>";
+                            }
+                        ?></select>
+					</div>
+							
+				</div>            <!-- /modal-body -->
+							
+				<div class="modal-footer">
+               		<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
+				</div> 	
+				</form>								
+			</div>
+        </div>
+    </div>				
+</div>
+<!-- close modal -->
           
       </div>
 	</div>
@@ -110,7 +172,7 @@
           resize: true,
           data: [
               <?php for($i=0; $i<$count1; $i++) { ?>
-            {y: <?php echo json_encode($dataset_rough1[$i][0]); ?>, a: <?php echo json_encode($dataset_rough1[$i][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_rough1[$i][2], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_rough1[$i][0]); ?>, a: <?php echo json_encode($dataset_rough1[$i][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_rough1[$i][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_rough1[$i][3]); ?>},
               <?php } ?>
           ],
           barColors: ['#00a65a', '#5555FF'],
@@ -119,6 +181,8 @@
           labels: ['จำนวนเม็ด', 'Carat'],
           hideHover: 'auto',
           xLabelAngle: 30
+        }).on('click', function(i, row){
+            window.open("<?php echo site_url('report/allBarcode_stock_balance'); ?>"+"/"+row.c);
         });
           
         //BAR CHART rough
@@ -165,8 +229,8 @@ $(document).ready(function()
 function get_datepicker(id)
 {
 
-	$(id).datepicker({ language:'th-th',format:'dd/mm/yyyy'
-		    });
+	$(id).datepicker({ language:'th-th',format: "dd/mm/yyyy" }).on('changeDate', function(ev){
+    $(this).datepicker('hide'); });
 
 }
     // tooltip demo

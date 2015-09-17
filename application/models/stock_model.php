@@ -13,6 +13,12 @@ Class Stock_model extends CI_Model
         return $this->db->insert_id();	
     }
     
+    function addStockSplit($gemstone)
+    {
+        $this->db->insert('stock_split', $gemstone);
+        return $this->db->insert_id();	
+    }
+    
     function editStock($temp)
     {
         $this->db->where('id', $temp['id']);
@@ -26,6 +32,13 @@ Class Stock_model extends CI_Model
         $gem = array('disable'=>1);
         $this->db->where('id',$id);
         $query = $this->db->update('gemstone_stock', $gem); 
+    }
+    
+    function delSplitStock($id=NULL)
+    {
+        $gem = array('disable'=>1);
+        $this->db->where('id',$id);
+        $query = $this->db->update('stock_split', $gem); 
     }
     
     function getStone_out($id=NULL)
@@ -54,6 +67,20 @@ Class Stock_model extends CI_Model
             $sql = "update gemstone_stock set amount_out=amount_out+".$stock['amount_out'].", carat_out=carat_out+".$stock['carat_out']." where id='".$stock['id']."'";
         }elseif ($condition=='minus') {
             $sql = "update gemstone_stock set amount_out=amount_out-".$stock['amount_out'].", carat_out=carat_out-".$stock['carat_out']." where id='".$stock['id']."'";
+        }
+        $query = $this->db->query($sql); 	
+        return $query;
+    }
+    
+    function editAmountCaratSplit($stock, $reason, $condition)
+    {
+        $reason = str_replace(" ", "", $reason);
+        $reason = strtolower($reason);
+        
+        if ($condition=='plus') {
+            $sql = "update gemstone_stock set amount_".$reason."=amount_".$reason."+".$stock['amount_out'].", carat_".$reason."=carat_".$reason."+".$stock['carat_out']." where id='".$stock['id']."'";
+        }elseif ($condition=='minus') {
+            $sql = "update gemstone_stock set amount_".$reason."=amount_".$reason."-".$stock['amount_out'].", carat_".$reason."=carat_".$reason."-".$stock['carat_out']." where id='".$stock['id']."'";
         }
         $query = $this->db->query($sql); 	
         return $query;
@@ -92,10 +119,37 @@ Class Stock_model extends CI_Model
         return $query->result();
     }
     
+    function getStockSplitList($stockid)
+    {
+        $this->db->select('id, dateadd, reason, detail, amount, carat');
+        $this->db->from('stock_split');
+        $this->db->where('disable', 0);
+        $this->db->where('gemstone_stock_id',$stockid);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
+    function getStockSplitOne($id)
+    {
+        $this->db->select('id, dateadd, reason, detail, amount, carat');
+        $this->db->from('stock_split');
+        $this->db->where('id',$id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
     function getOut_reason()
     {
         $this->db->select("id, name");
         $this->db->from("stock_cut_reason");
+        $query = $this->db->get();	
+        return $query->result();
+    }
+    
+    function getSplit_reason()
+    {
+        $this->db->select("id, name");
+        $this->db->from("stock_split_reason");
         $query = $this->db->get();	
         return $query->result();
     }

@@ -332,7 +332,7 @@ Class Report_model extends CI_Model
  function getAllGemstoneInventory_instock($rough)
  {
      if ($rough == "พลอยสำเร็จ") {
-        $this->db->select("gemstone_type.name as typename,SUM((gemstone_stock.amount-gemstone_stock.amount_out)) as amount, FORMAT(SUM(gemstone_stock.carat - gemstone_stock.carat_out),2) as carat", FALSE);
+        $this->db->select("gemstone_type.name as typename,SUM((gemstone_stock.amount-gemstone_stock.amount_out-gemstone_stock.amount_fullcolor-gemstone_stock.amount_cleansize-gemstone_stock.amount_notclean)) as amount, FORMAT(SUM(gemstone_stock.carat - gemstone_stock.carat_out- gemstone_stock.carat_fullcolor- gemstone_stock.carat_cleansize- gemstone_stock.carat_notclean),2) as carat, gemstone_stock.type as stocktype", FALSE);
      }else{
         $this->db->select("gemstone_type.name as typename,FORMAT(SUM(gemstone_stock.kilogram*1000*5-gemstone_stock.carat_out),2) as carat", FALSE);
      }
@@ -384,6 +384,30 @@ Class Report_model extends CI_Model
      $this->db->where("(pass != 0 AND pass != 3)", NULL, FALSE);
      $this->db->where($column);
      $this->db->group_by('gemstone.id');
+     
+     $query = $this->db->get();		
+	 return $query->result();
+ }
+    
+ function getInOut_inventory($start, $end, $gemtype, $supplier)
+ {
+     $start = $start. " 00:00:00";
+     $end = $end." 23:59:59";
+        
+     $column = "(gemstone_stock.datein >='".$start."' and gemstone_stock.datein <='".$end."'";
+     if (($gemtype>0) && ($supplier>0)) $column .= " and gemstone_stock.type = '".$gemtype."' and gemstone_stock.supplier = '".$supplier."'";
+     elseif ($gemtype>0) $column .= " and gemstone_stock.type = '".$gemtype."')";
+     elseif ($supplier>0) $column .= " and gemstone_stock.supplier = '".$supplier."')";
+     else $column .= ")";
+     
+     $this->db->select("date_format(gemstone_stock.datein,'%d/%m/%Y') as showdate, CONCAT(supplier.name,lot) as detail,gemstone_stock.stone_type as stonetype, gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg , (gemstone_stock.amount - gemstone_stock.amount_out - gemstone_stock.amount_fullcolor - gemstone_stock.amount_cleansize - gemstone_stock.amount_notclean) as remainamount, FORMAT(gemstone_stock.carat - gemstone_stock.carat_out - gemstone_stock.carat_fullcolor - gemstone_stock.carat_cleansize - gemstone_stock.carat_notclean,2) as remaincarat, gemstone_stock.id as bid", FALSE);
+     $this->db->from("gemstone_stock");
+     $this->db->join('gemstone', 'gemstone.stockid=gemstone_stock.id','left');
+     $this->db->join('supplier', 'gemstone_stock.supplier=supplier.id','left');
+     $this->db->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left');
+     $this->db->where('gemstone_stock.disable',0);
+     $this->db->where($column);
+     $this->db->group_by(array('gemstone.stockid', 'gemstone.process_type'));
      
      $query = $this->db->get();		
 	 return $query->result();
