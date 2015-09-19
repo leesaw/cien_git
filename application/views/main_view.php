@@ -37,7 +37,7 @@
     $dataset_seven = array();
     foreach($sevenday as $loop) {
         //echo $loop['date']."/".$loop['in']."/".$loop['outgood']."/".$loop['outfail']."<br>";
-        $dataset_seven[] = array($loop['date'], $loop['in'], $loop['outgood'], $loop['outfail'], $loop['outreturn']);
+        $dataset_seven[] = array($loop['date'], $loop['in'], $loop['outgood'], $loop['outfail'], $loop['outreturn'], $loop['backfail']);
     }
 
     //print_r($dataset_seven);
@@ -414,18 +414,18 @@ if ($colorgraph>0) {
           element: 'bar-seven',
           resize: true,
           data: [
-            {y: <?php echo json_encode($dataset_seven[6][0]); ?>, a: <?php echo json_encode($dataset_seven[6][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[6][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[6][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[6][4], JSON_NUMERIC_CHECK); ?>},
-            {y: <?php echo json_encode($dataset_seven[5][0]); ?>, a: <?php echo json_encode($dataset_seven[5][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[5][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[5][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[5][4], JSON_NUMERIC_CHECK); ?>},
-            {y: <?php echo json_encode($dataset_seven[4][0]); ?>, a: <?php echo json_encode($dataset_seven[4][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[4][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[4][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[4][4], JSON_NUMERIC_CHECK); ?>},
-            {y: <?php echo json_encode($dataset_seven[3][0]); ?>, a: <?php echo json_encode($dataset_seven[3][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[3][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[3][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[3][4], JSON_NUMERIC_CHECK); ?>},
-            {y: <?php echo json_encode($dataset_seven[2][0]); ?>, a: <?php echo json_encode($dataset_seven[2][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[2][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[2][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[2][4], JSON_NUMERIC_CHECK); ?>},
-            {y: <?php echo json_encode($dataset_seven[1][0]); ?>, a: <?php echo json_encode($dataset_seven[1][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[1][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[1][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[1][4], JSON_NUMERIC_CHECK); ?>},
-            {y: <?php echo json_encode($dataset_seven[0][0]); ?>, a: <?php echo json_encode($dataset_seven[0][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[0][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[0][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[0][4], JSON_NUMERIC_CHECK); ?>}
+            {y: <?php echo json_encode($dataset_seven[6][0]); ?>, a: <?php echo json_encode($dataset_seven[6][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[6][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[6][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[6][4], JSON_NUMERIC_CHECK); ?>, e: <?php echo json_encode($dataset_seven[6][5], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[5][0]); ?>, a: <?php echo json_encode($dataset_seven[5][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[5][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[5][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[5][4], JSON_NUMERIC_CHECK); ?>, e: <?php echo json_encode($dataset_seven[5][5], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[4][0]); ?>, a: <?php echo json_encode($dataset_seven[4][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[4][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[4][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[4][4], JSON_NUMERIC_CHECK); ?>, e: <?php echo json_encode($dataset_seven[4][5], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[3][0]); ?>, a: <?php echo json_encode($dataset_seven[3][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[3][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[3][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[3][4], JSON_NUMERIC_CHECK); ?>, e: <?php echo json_encode($dataset_seven[3][5], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[2][0]); ?>, a: <?php echo json_encode($dataset_seven[2][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[2][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[2][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[2][4], JSON_NUMERIC_CHECK); ?>, e: <?php echo json_encode($dataset_seven[2][5], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[1][0]); ?>, a: <?php echo json_encode($dataset_seven[1][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[1][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[1][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[1][4], JSON_NUMERIC_CHECK); ?>, e: <?php echo json_encode($dataset_seven[1][5], JSON_NUMERIC_CHECK); ?>},
+            {y: <?php echo json_encode($dataset_seven[0][0]); ?>, a: <?php echo json_encode($dataset_seven[0][1], JSON_NUMERIC_CHECK); ?>, b: <?php echo json_encode($dataset_seven[0][2], JSON_NUMERIC_CHECK); ?>, c: <?php echo json_encode($dataset_seven[0][3], JSON_NUMERIC_CHECK); ?>, d: <?php echo json_encode($dataset_seven[0][4], JSON_NUMERIC_CHECK); ?>, e: <?php echo json_encode($dataset_seven[0][5], JSON_NUMERIC_CHECK); ?>}
           ],
-          barColors: ['#00a65a', '#5555FF','#FF0000', '#AC58FA'],
+          barColors: ['#00a65a', '#5555FF','#FF0000','#FF5555', '#AC58FA'],
           xkey: 'y',
-          ykeys: ['a', 'b', 'c', 'd'],
-          labels: ['ของเข้า', 'QC ผ่าน', 'QC ไม่ผ่าน', 'วัตถุดิบไม่เหมาะสม'],
+          ykeys: ['a', 'b', 'c', 'e', 'd'],
+          labels: ['ของเข้า', 'QC ผ่าน', 'QC ไม่ผ่านทั้งหมด', 'วัตถุดิบไม่เหมาะสม และ QC ไม่ผ่าน', 'วัตถุดิบไม่เหมาะสม'],
           hideHover: 'auto',
           parseTime: false,
           xLabelAngle: 30

@@ -907,7 +907,26 @@ class Report extends CI_Controller {
         $gemtype = $this->input->post('gemtype');
         $supplier = $this->input->post('supplier');
         
-        $result_array = $this->report_model->getParcelInOut_process($start,$end,$gemtype,$supplier);
+        $start = $this->input->post("startdate");
+        if ($start != "") {
+            $start = explode('/', $start);
+            $start= $start[2]."-".$start[1]."-".$start[0];
+        }else{
+            $start = "1970-01-01";
+        }
+        $end = $this->input->post("enddate");
+        if ($end != "") {
+            $end = explode('/', $end);
+            $end= $end[2]."-".$end[1]."-".$end[0];
+        }else{
+            $end = date('Y-m-d');
+        }
+        
+        $result_process = $this->report_model->getInOut_process($start,$end,$gemtype,$supplier);
+        $result_array = $this->report_model->getInOut_inventory_number($start,$end,$gemtype,$supplier,$result_process);
+        
+        
+            
 
         //load our new PHPExcel library
         $this->load->library('excel');
@@ -917,52 +936,105 @@ class Report extends CI_Controller {
         $this->excel->getActiveSheet()->setTitle('Parcel');
 
         //$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, 1, "ทองคำแท่ง (96.5)");
-        $this->excel->getActiveSheet()->setCellValue('A1', 'วันที่เข้า');
-        $this->excel->getActiveSheet()->setCellValue('B1', 'เลขที่');
-        $this->excel->getActiveSheet()->setCellValue('C1', 'ชนิด');
-        $this->excel->getActiveSheet()->setCellValue('D1', 'ประเภทงาน');
-        $this->excel->getActiveSheet()->setCellValue('E1', 'ส่งเข้าโรงงาน');
-        $this->excel->getActiveSheet()->setCellValue('G1', 'ออกจากโรงงาน');
-        $this->excel->getActiveSheet()->setCellValue('J1', 'เหลือในโรงงาน');
-        $this->excel->getActiveSheet()->setCellValue('E2', 'กะรัต');
-        $this->excel->getActiveSheet()->setCellValue('F2', 'เม็ด');
-        $this->excel->getActiveSheet()->setCellValue('G2', 'QC ผ่าน (เม็ด)');
-        $this->excel->getActiveSheet()->setCellValue('H2', 'QC ไม่ผ่าน (เม็ด)');
-        $this->excel->getActiveSheet()->setCellValue('I2', 'ไม่เหมาะสม (เม็ด)');
-        $this->excel->getActiveSheet()->mergeCells('E1:F1');
-        $this->excel->getActiveSheet()->mergeCells('G1:I1');
-        $this->excel->getActiveSheet()->getStyle('E1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $this->excel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $this->excel->getActiveSheet()->setCellValue('A1', 'Date รับเข้า');
+        $this->excel->getActiveSheet()->setCellValue('B1', 'Supplier');
+        $this->excel->getActiveSheet()->setCellValue('C1', 'Order');
+        $this->excel->getActiveSheet()->setCellValue('D1', 'Color');
+        $this->excel->getActiveSheet()->setCellValue('E1', 'Size');
+        $this->excel->getActiveSheet()->setCellValue('F1', 'รับเข้า (In)');
+        $this->excel->getActiveSheet()->setCellValue('F2', 'จำนวน (Pcs.)');
+        $this->excel->getActiveSheet()->setCellValue('G2', 'น้ำหนัก (Cts.)');
+        $this->excel->getActiveSheet()->mergeCells('F1:G1');
+        $char = 'F';
+        foreach($result_process as $loop) {
+            if ($loop->pid!="") {
+                $char++;
+                $char2 = ++$char;
+                $char2++;
+                $this->excel->getActiveSheet()->setCellValue($char.'1', $loop->pname);
+                $this->excel->getActiveSheet()->setCellValue($char.'2', 'จำนวน (Pcs.)');
+                $this->excel->getActiveSheet()->setCellValue($char2.'2', 'น้ำหนัก (Cts.)');
+                $this->excel->getActiveSheet()->mergeCells($char.'1:'.$char2.'1');
+                $this->excel->getActiveSheet()->getStyle($char.'1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            }
+        }
+        
+        $char++;
+        $char2 = ++$char;
+        $char2++;
+        $this->excel->getActiveSheet()->setCellValue($char.'1', 'Full Color');
+        $this->excel->getActiveSheet()->setCellValue($char.'2', 'จำนวน (Pcs.)');
+        $this->excel->getActiveSheet()->setCellValue($char2.'2', 'น้ำหนัก (Cts.)');
+        $this->excel->getActiveSheet()->mergeCells($char.'1:'.$char2.'1');
+        $this->excel->getActiveSheet()->getStyle($char.'1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $char++;
+        $char2 = ++$char;
+        $char2++;
+        $this->excel->getActiveSheet()->setCellValue($char.'1', 'Clean Size');
+        $this->excel->getActiveSheet()->setCellValue($char.'2', 'จำนวน (Pcs.)');
+        $this->excel->getActiveSheet()->setCellValue($char2.'2', 'น้ำหนัก (Cts.)');
+        $this->excel->getActiveSheet()->mergeCells($char.'1:'.$char2.'1');
+        $this->excel->getActiveSheet()->getStyle($char.'1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        
+        $char++;
+        $char2 = ++$char;
+        $char2++;
+        $this->excel->getActiveSheet()->setCellValue($char.'1', 'Not Clean');
+        $this->excel->getActiveSheet()->setCellValue($char.'2', 'จำนวน (Pcs.)');
+        $this->excel->getActiveSheet()->setCellValue($char2.'2', 'น้ำหนัก (Cts.)');
+        $this->excel->getActiveSheet()->mergeCells($char.'1:'.$char2.'1');
+        $this->excel->getActiveSheet()->getStyle($char.'1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    
+        $char++;
+        $char2 = ++$char;
+        $char2++;
+        $this->excel->getActiveSheet()->setCellValue($char.'1', 'Balance');
+        $this->excel->getActiveSheet()->setCellValue($char.'2', 'จำนวน (Pcs.)');
+        $this->excel->getActiveSheet()->setCellValue($char2.'2', 'น้ำหนัก (Cts.)');
+        $this->excel->getActiveSheet()->mergeCells($char.'1:'.$char2.'1');
+        $this->excel->getActiveSheet()->getStyle($char.'1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
         $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
-        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
         $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
         $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
         $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
-        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
-        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
-        $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
-        $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
-
+        
         // Fetching the table data
-
         $row = 3;
         foreach($result_array as $loop)
         {
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, $loop->showdate);
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $loop->detail);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $loop->gemtype);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $loop->process_name);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, $loop->carat);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $row, $loop->amount);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $row, $loop->okout);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, $row, $loop->nookout);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, $row, $loop->outout);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, $row, $loop->ok);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $loop->order_type);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $loop->gemtype);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, $loop->gemsize);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $row, $loop->stockamount);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $row, $loop->gemcarat);
+            $i = 7;
+            $amount = "amount";
+            $carat = "carat";
+            foreach($result_process as $loop2) {
+                if ($loop2->pid!="") {
+                    $this->excel->getActiveSheet()->setCellValueByColumnAndRow($i++, $row, $loop->{$amount.$loop2->pid});
+                    $this->excel->getActiveSheet()->setCellValueByColumnAndRow($i++, $row, $loop->{$carat.$loop2->pid});
+                }
+            }
+            
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow($i++, $row, $loop->amountfull);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow($i++, $row, $loop->caratfull);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow($i++, $row, $loop->amountclean);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow($i++, $row, $loop->caratclean);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow($i++, $row, $loop->amountnot);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow($i++, $row, $loop->caratnot);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow($i++, $row, $loop->remainamount);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow($i++, $row, $loop->remaincarat);
+
             $row++;
         }
 
-        $filename='cien_parcel.xlsx'; //save our workbook as this file name
+        $filename='cien_stock.xlsx'; //save our workbook as this file name
         header('Content-Type: application/vnd.ms-excel'); //mime type
         header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
         header('Cache-Control: max-age=0'); //no cache

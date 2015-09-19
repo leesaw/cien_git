@@ -254,10 +254,10 @@ Class Report_model extends CI_Model
     $result = array();
     foreach ($day as $loop) {
         $where = "DATE(dateadd) = '".$loop."'";
-        $query = $this->db->query("select aa.date as d,aa.cc as ac,bb.cc as bc, ee.cc as ec, ff.cc as fc from (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=1 and ".$where.") as aa, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=2 and ".$where.") as bb, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=4 and ".$where.") as ff, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(sum(amount),0) as cc FROM gemstone where ".$where.") as ee");
+        $query = $this->db->query("select aa.date as d,aa.cc as ac,bb.cc as bc, ee.cc as ec, ff.cc as fc, gg.cc as gc from (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=1 and ".$where.") as aa, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=2 and ".$where.") as bb, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc where status=4 and ".$where.") as ff, (SELECT IFNULL(CAST(dateadd AS DATE),'".$loop."') as date,IFNULL(sum(amount),0) as cc FROM gemstone where ".$where.") as ee, (SELECT IFNULL(CAST(gemstone_qc.dateadd AS DATE),'".$loop."') as date,IFNULL(count(*),0) as cc FROM gemstone_qc inner join (select barcode from gemstone_qc where status=4) as tb on gemstone_qc.barcode=tb.barcode where gemstone_qc.status=2 and ".$where.") as gg");
         foreach ($query->result() as $row)
         {
-           $result[] = array("date" => $row->d, "in" => $row->ec, "outgood" => $row->ac, "outfail" => $row->bc, "outreturn" => $row->fc);
+           $result[] = array("date" => $row->d, "in" => $row->ec, "outgood" => $row->ac, "outfail" => $row->bc, "outreturn" => $row->fc, "backfail" => $row->gc);
         }
     }
      
@@ -389,7 +389,53 @@ Class Report_model extends CI_Model
 	 return $query->result();
  }
     
- function getInOut_inventory($start, $end, $gemtype, $supplier)
+ function getInOut_process($start, $end, $gemtype, $supplier)
+ {
+     $start = $start. " 00:00:00";
+     $end = $end." 23:59:59";
+        
+     $column = "(gemstone_stock.datein >='".$start."' and gemstone_stock.datein <='".$end."'";
+     if (($gemtype>0) && ($supplier>0)) $column .= " and gemstone_stock.type = '".$gemtype."' and gemstone_stock.supplier = '".$supplier."')";
+     elseif ($gemtype>0) $column .= " and gemstone_stock.type = '".$gemtype."')";
+     elseif ($supplier>0) $column .= " and gemstone_stock.supplier = '".$supplier."')";
+     else $column .= ")";
+     
+     $this->db->select("gemstone.process_type as pid, process_type.name as pname, count(*)", FALSE);
+     $this->db->from("gemstone_stock");
+     $this->db->join('gemstone', 'gemstone.stockid=gemstone_stock.id','left');
+     $this->db->join('process_type', 'gemstone.process_type=process_type.id', 'left');
+     $this->db->where('gemstone_stock.disable',0);
+     $this->db->where('gemstone.disable',0);
+     $this->db->where($column);
+     $this->db->group_by('gemstone.process_type');
+     
+     $query = $this->db->get();		
+	 return $query->result();	
+ }
+    
+ function getInOut_inventory_number($start, $end, $gemtype, $supplier, $process_array)
+ {
+     $start = $start. " 00:00:00";
+     $end = $end." 23:59:59";
+        
+     $column = "(gemstone_stock.datein >='".$start."' and gemstone_stock.datein <='".$end."'";
+     if (($gemtype>0) && ($supplier>0)) $column .= " and gemstone_stock.type = '".$gemtype."' and gemstone_stock.supplier = '".$supplier."')";
+     elseif ($gemtype>0) $column .= " and gemstone_stock.type = '".$gemtype."')";
+     elseif ($supplier>0) $column .= " and gemstone_stock.supplier = '".$supplier."')";
+     else $column .= ")";
+     
+     $sql = "select * from (select date_format(gemstone_stock.datein,'%d/%m/%Y') as showdate, CONCAT(supplier.name,gemstone_stock.lot) as detail,gemstone_stock.stone_type as stonetype, gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg , (gemstone_stock.amount - gemstone_stock.amount_out - gemstone_stock.amount_fullcolor - gemstone_stock.amount_cleansize - gemstone_stock.amount_notclean) as remainamount, FORMAT(gemstone_stock.carat - gemstone_stock.carat_out - gemstone_stock.carat_fullcolor - gemstone_stock.carat_cleansize - gemstone_stock.carat_notclean,2) as remaincarat, (CASE gemstone_stock.amount_fullcolor WHEN 0 THEN NULL ELSE FORMAT(gemstone_stock.amount_fullcolor,2) END) as amountfull, (CASE gemstone_stock.amount_cleansize WHEN 0 THEN NULL ELSE FORMAT(gemstone_stock.amount_cleansize,2) END) as amountclean, (CASE gemstone_stock.amount_notclean WHEN 0 THEN NULL ELSE FORMAT(gemstone_stock.amount_notclean,2) END) as amountnot, (CASE gemstone_stock.carat_fullcolor WHEN 0 THEN NULL ELSE FORMAT(gemstone_stock.carat_fullcolor,2) END) as caratfull, (CASE gemstone_stock.carat_cleansize WHEN 0 THEN NULL ELSE FORMAT(gemstone_stock.carat_cleansize,2) END) as caratclean, (CASE gemstone_stock.carat_notclean WHEN 0 THEN NULL ELSE FORMAT(gemstone_stock.carat_notclean,2) END) as caratnot , gemstone_stock.id as bid from gemstone_stock left join gemstone on gemstone_stock.id=gemstone.stockid left join gemstone_type on gemstone_type.id=gemstone_stock.type left join supplier on gemstone_stock.supplier=supplier.id where gemstone_stock.disable = 0 AND gemstone.disable = 0 AND ".$column." group by gemstone_stock.id) as detailtb ";
+     
+     foreach($process_array as $loop) {
+        if ($loop->pid!="")
+        $sql .= "left join (select stockid, sum(amount) as amount".$loop->pid.",FORMAT(sum(carat), 2) as carat".$loop->pid." from gemstone where disable=0 and process_type=".$loop->pid." group by stockid ) as ptb".$loop->pid." on detailtb.bid = ptb".$loop->pid.".stockid ";   
+     }
+
+     $query = $this->db->query($sql);		
+	 return $query->result();
+ }
+    
+ function getInOut_inventory($start, $end, $gemtype, $supplier, $process)
  {
      $start = $start. " 00:00:00";
      $end = $end." 23:59:59";

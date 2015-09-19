@@ -603,7 +603,7 @@ class Stock extends CI_Controller {
         
         $this->load->library('Datatables');
 		$this->datatables
-		->select("date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,' Lot ',carat) as detail,gemstone_stock.stone_type as stonetype,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg ,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out),'</b></code>') as remain,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
+		->select("date_format(gemstone_stock.datein,'%d/%m/%y') as datein, CONCAT(supplier.name,lot,' Lot ',carat) as detail,gemstone_stock.stone_type as stonetype,gemstone_type.name as gemtype, gemstone_stock.size as gemsize, order_type, gemstone_stock.amount as stockamount, gemstone_stock.carat as gemcarat, gemstone_stock.kilogram as kg ,CONCAT('<code><b>',(gemstone_stock.amount - gemstone_stock.amount_out - gemstone_stock.amount_fullcolor - gemstone_stock.amount_cleansize - gemstone_stock.amount_notclean),'</b></code>') as remain,CONCAT('<code><b>',FORMAT(gemstone_stock.carat - gemstone_stock.carat_out - gemstone_stock.carat_fullcolor - gemstone_stock.carat_cleansize - gemstone_stock.carat_notclean,2),'</b></code>') as remaincarat, gemstone_stock.id as bid", FALSE)
 		->from('gemstone_stock')
         ->join('supplier', 'gemstone_stock.supplier=supplier.id','left')
         ->join('gemstone_type', 'gemstone_type.id=gemstone_stock.type','left')
