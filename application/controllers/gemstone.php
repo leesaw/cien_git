@@ -547,10 +547,18 @@ class Gemstone extends CI_Controller {
             if ($row->status <=10) $col = 'task'.$row->status;
             else if ($row->status == 12) $col = 'qc1';
             else if ($row->status == 13) $col = 'qc2';
-            $editbarcode[$i] = array(
-                        'id' => $row->tbarcode,
-                        $col => 1
-                );
+            if ($row->gempass==4) {
+                $editbarcode[$i] = array(
+                            'id' => $row->tbarcode,
+                            'pass' => 0,
+                            $col => 1
+                    );
+            }else{
+                $editbarcode[$i] = array(
+                            'id' => $row->tbarcode,
+                            $col => 1
+                    );
+            }
             
             $i++;
             //$result2 = $this->gemstone_model->addBarcodeTask($barcode, $editbarcode);

@@ -1046,4 +1046,41 @@ class Report extends CI_Controller {
         $objWriter->save('php://output');
     }
     
+    function allBarcode_nogood()
+    {
+        $station_array = array();
+        
+        for($i=0; $i<=10; $i++) {
+            if ($i==8) continue;
+            $query = $this->report_model->getCountStation_nogood($i);
+            $station_array[] = $query;
+        }
+        
+        $data['station_array'] = $station_array;
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Show Gemstone";
+		$this->load->view('report/allbarcode_nogood',$data);
+    }
+    
+    function ajaxGetAllBarcodeFactory_nogood()
+	{
+        $this->load->library('Datatables');
+		$this->datatables
+		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone.dateadd as gemdate, gemstone_barcode.id as bid", FALSE)
+		->from('gemstone_barcode')
+        ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
+        ->join('supplier', 'gemstone.supplier=supplier.id','left')
+        ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
+        ->join('gemstone_qc', 'gemstone_barcode.id=gemstone_qc.barcode', 'inner')
+        ->where('disable',0)
+        ->where('(pass=0 OR pass=3)')
+		->where('gemstone_qc.status', 4)
+		->edit_column("bid",'<div class="tooltip-demo">
+	<a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
+	</div>',"bid");
+    
+
+		echo $this->datatables->generate(); 
+	}
+    
 }

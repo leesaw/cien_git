@@ -95,7 +95,7 @@ if ($colorgraph>0) {
                         <div class="nav-tabs-custom">
                             <div class="tab-content">
                               <div class="tab-pane active" id="tab_1-1">
-                                <h4 class="pull-right header">จำนวนของในโรงงานทั้งหมด <u><?php echo $sum; ?></u> ชิ้น</h4><br><br>
+                                <h4 class="pull-right header">จำนวนของในโรงงานทั้งหมด <u><?php echo $sum; ?></u> ชิ้น <a href="<?php echo site_url("report/allBarcode_nogood"); ?>">(วัตถุดิบไม่เหมาะสม <?php echo $nogood; ?> ชิ้น)</a></h4> <br><br>
                                 <div id="bar-type" style="height: 365px;"></div><!--<div id="bar-type" style="height: 300px;"></div> -->
                                   <hr>
                                 <button type="button" class="btn btn-success" onClick="window.location.href='<?php echo site_url("report/allBarcode_factory"); ?>'"> <i class="fa fa-barcode"></i> แสดงบาร์โค้ดในโรงงาน </button> &nbsp;&nbsp;

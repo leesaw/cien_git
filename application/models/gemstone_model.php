@@ -282,14 +282,14 @@ Class Gemstone_model extends CI_Model
  {
     switch($next) 
     {
-        case 5: $column = "(task4 = 2 or pass = 3 or task10 = 2)"; break;
-        case 3: $column = "(task5 = 2 or pass = 3 or task10 = 2)"; break;
-        case 6: $column = "(task3 = 2 or pass = 3 or task10 = 2)"; break;
-        case 12: $column = "(task6 = 2 or pass = 3 or task10 = 2)"; break;
-        case 7: $column = "(qc1 = 2 or pass = 3 or task10 = 2)"; break;
-        case 8: $column = "(task7 = 2 or pass = 3 or task10 = 2)"; break;
-        case 9: $column = "(task8 = 2 or pass = 3 or task10 = 2)"; break;
-        case 13: $column = "(task9 = 2 or pass = 3 or task10 = 2)"; break;
+        case 5: $column = "(task4 = 2 or pass = 3 or pass = 4 or task10 = 2)"; break;
+        case 3: $column = "(task5 = 2 or pass = 3 or pass = 4 or task10 = 2)"; break;
+        case 6: $column = "(task3 = 2 or pass = 3 or pass = 4 or task10 = 2)"; break;
+        case 12: $column = "(task6 = 2 or pass = 3 or pass = 4 or task10 = 2)"; break;
+        case 7: $column = "(qc1 = 2 or pass = 3 or pass = 4 or task10 = 2)"; break;
+        case 8: $column = "(task7 = 2 or pass = 3 or pass = 4 or task10 = 2)"; break;
+        case 9: $column = "(task8 = 2 or pass = 3 or pass = 4 or task10 = 2)"; break;
+        case 13: $column = "(task9 = 2 or pass = 3 or pass = 4 or task10 = 2)"; break;
         default: $column = "";
     }
      
@@ -451,7 +451,7 @@ Class Gemstone_model extends CI_Model
     
  function getTaskTemp($status=NULL,$userid=null)
  {
-	$this->db->select("tempid, gemstone_task_temp.barcode as tbarcode, no, status, gemstone_task_temp.userid as tuserid, worker, gemstone_task_temp.dateadd as tdateadd, supplier.name as supname, gemstone_type.name as typename, lot, number, gemstone.id as gemid");
+	$this->db->select("tempid, gemstone_task_temp.barcode as tbarcode, no, status, gemstone_task_temp.userid as tuserid, worker, gemstone_task_temp.dateadd as tdateadd, supplier.name as supname, gemstone_type.name as typename, lot, number, gemstone.id as gemid, gemstone_barcode.pass as gempass");
 	$this->db->from('gemstone_task_temp');
     $this->db->join('gemstone_barcode', 'gemstone_barcode.id = gemstone_task_temp.barcode','left');
     $this->db->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id','left');
@@ -698,5 +698,18 @@ Class Gemstone_model extends CI_Model
 	return $query->num_rows();
  }
     
+// count No Good material for dashboard    
+ function getNoGood_number()
+ {
+    $this->db->select("gemstone_barcode.id");
+    $this->db->from("gemstone_barcode");
+    $this->db->join("gemstone", "gemstone_barcode.gemstone_id=gemstone.id", "left");
+    $this->db->join("gemstone_qc", "gemstone_barcode.id=gemstone_qc.barcode", "inner");
+    $this->db->where('(pass=0 OR pass=3)');
+    $this->db->where('gemstone.disable',0);
+    $this->db->where('gemstone_qc.status', 4); 
+    $query = $this->db->get();
+    return $query->num_rows();
+ }
 }
 ?>

@@ -36,6 +36,8 @@ class Main extends CI_Controller {
             $query = $this->gemstone_model->getGemstoneType();
             $data['type_array'] =  $query;
             
+            $data['nogood'] = $this->gemstone_model->getNoGood_number();
+            
             $d = 0;
             $sevenday = array();
             for ($d=0; $d > -7; $d--) {

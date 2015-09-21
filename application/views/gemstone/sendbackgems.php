@@ -55,6 +55,14 @@
                                     </div>
                             </div>
                         </div>
+                        <hr><br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                    <div class="form-group">
+                                        <a href="<?php echo site_url("gemstone/sendgems_task_temp/0"); ?>"><button type="button" class="btn bg-orange btn-lg">  <span class="glyphicon glyphicon-user"></span><br><b>รับวัตถุไม่เหมาะสมเข้าส่วนกลาง</b>  </button></a>
+                                    </div>
+                            </div>
+                        </div>
 					</div>
                     <div class="box-footer">
                         

@@ -223,6 +223,35 @@ Class Report_model extends CI_Model
 	return $query->result();
  }
     
+ function getCountStation_nogood($task)
+ {
+    switch($task) {
+        case '0' : $column = "(task3!=1 and task4!=1 and task5!=1 and task6!=1 and task7!=1 and task8!=1 and task9!=1 and task10!=1 and qc1!=1 and qc2!=1)"; $select="ส่วนกลาง"; break;
+        case '1' : $column = "(task3=1)"; $select="กดหน้ากระดาน"; break;
+        case '2' : $column = "(task4=1)"; $select="ติดแชล็ก"; break;
+        case '3' : $column = "(task5=1)"; $select="บล็อกรูปร่าง"; break;
+        case '4' : $column = "(task6=1)"; $select="เจียรหน้า"; break;
+        case '5' : $column = "(task7=1)"; $select="กลับติดก้นแชล็ก"; break;
+        case '6' : $column = "(task8=1)"; $select="บล็อกก้น"; break;
+        case '7' : $column = "(task9=1)"; $select="เจียก้น"; break;
+        case '8' : $column = "(task10=1)"; $select=""; break;
+        case '9' : $column = "(qc1=1)"; $select="QC หน้า"; break;
+        case '10' : $column = "(qc2=1)"; $select="QC ก้น"; break;
+    } 
+     
+    $this->db->select("'".$select."' as one, count(*) as count", FALSE);
+    $this->db->from("gemstone_barcode");
+    $this->db->join("gemstone", "gemstone.id = gemstone_barcode.gemstone_id", "left");
+    $this->db->join("gemstone_type", "gemstone_type.id=gemstone.type", "left");
+    $this->db->join("gemstone_qc", "gemstone_barcode.id=gemstone_qc.barcode", "inner");
+    $this->db->where('disable',0);
+    $this->db->where('(pass=0 OR pass=3)');
+    $this->db->where("gemstone_qc.status", 4);
+    $this->db->where($column);
+    $query = $this->db->get();		
+	return $query->result();
+ }
+    
  function getAllGemstone_factory(){
     $this->db->select("gemstone_barcode.id as barcodeid, gemstone.id as gemid, gemstone.barcode as gembarcode, supplier.name as supname, number, lot, color, gemstone.dateadd as gemdate, gemstone_type.name as gemtype, gemstone.size_out as gemsize, no");
 	$this->db->order_by("gemstone.dateadd", "desc");

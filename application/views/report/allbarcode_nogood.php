@@ -4,60 +4,30 @@
 <?php $this->load->view('header_view'); ?>
 <link href="<?php echo base_url(); ?>plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>plugins/fancybox/jquery.fancybox.css" >
-<link href="<?php echo base_url(); ?>plugins/morris/morris.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="skin-blue">
 	<div class="wrapper">
 	<?php $this->load->view('menu'); ?>
 
-<?php 
-    $dataset_color = array();
-    $num = 0;
+<?php
+$dataset_station = array();
 
-    foreach($gemtype as $alltype) {
-        $checkcolor = 0;
-        foreach($countcolor as $loop) {
-            if ($alltype->id == $loop->typeid) { 
-                $checkcolor++;
-                $dataset_color[] = array($loop->typename, $loop->count);
-                break;
-            }
-        }
-        if($checkcolor==0) {
-            $dataset_color[] = array($alltype->name, 0);
-        }
-        $num++;
+for($i=0; $i<count($station_array); $i++) {
+    foreach($station_array[$i] as $loop) {
+        $dataset_station[] = array($loop->one,$loop->count);
     }
+}
 ?>
-	
-        
         
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
     <section class="content-header">
-        <?php 
-            switch($task) {
-            case '1' : $column = "รอ - ติดแชล็ก"; break;
-            case '2' : $column = "รอ - บล็อกรูปร่าง"; break;
-            case '3' : $column = "รอ - หน้ากระดาน"; break;
-            case '4' : $column = "รอ - เจียหน้า"; break;
-            case '5' : $column = "รอ - QC หน้า"; break;
-            case '6' : $column = "รอ - กลับติดก้นแชล็ก"; break;
-            case '7' : $column = "รอ - บล็อกก้น"; break;
-            case '8' : $column = "รอ - เจียก้น"; break;
-            case '9' : $column = "รอ - QC ก้น"; break;
-            case '10' : $column = "รอ - QC ออกจากโรงงาน"; break;
-            case '11' : $column = "ส่งกลับจากโคราชแล้ว"; break;
-            case '12' : $column = "วัตถุดิบไม่เหมาะสม"; break;
-            default : $column = "";
-        }
-        ?>
         <h1>
-            แสดงบาร์โค้ดในส่วนกลาง : <B><U><?php echo $column; ?></U></B>
+            แสดงบาร์โค้ดวัตถุดิบไม่เหมาะสมทั้งหมดในโรงงาน
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> แสดงบาร์โค้ดในส่วนกลาง : <?php echo $column; ?></a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> แสดงบาร์โค้ดวัตถุดิบไม่เหมาะสมทั้งหมดในโรงงาน</a></li>
         </ol>
     </section>
 	
@@ -66,7 +36,7 @@
             <div class="col-md-12">
                     <div class="box box-primary">
                         <div class="box-body chart-responsive">
-                            <div class="chart" id="bar-color" style="height: 300px;"></div>
+                            <div class="chart" id="bar-station" style="height: 300px;"></div>
                             <br>
                         </div>
                     </div>
@@ -78,7 +48,6 @@
 
                         
         <div class="box-body">
-            
         <div class="row">
 			<div class="col-xs-10">
                 <div class="panel panel-default">
@@ -90,10 +59,8 @@
                                         <th width="150">Barcode</th>
                                         <th>เลขที่ ลำดับ</th>
                                         <th>ชนิด</th>
-                                        <th>ประเภทงาน</th>
-                                        <th>ผู้เบิก</th>
-                                        <th>วันที่เบิก</th>
-										<th width="100">Manage</th>
+                                        <th>วันที่เข้า</th>
+										<th width="100"> </th>
                                     </tr>
                                 </thead>
                                 
@@ -154,8 +121,6 @@
 <script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.pie.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.barnumbers.js" type="text/javascript"></script>
-<script src="<?php echo base_url(); ?>plugins/morris/raphael-min.js"></script>
-<script src="<?php echo base_url(); ?>plugins/morris/morris.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function()
 {    
@@ -165,17 +130,15 @@ $(document).ready(function()
             "bProcessing": true,
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
-            "bDeferRender": true,
             "aoColumns": [
-              null,
-              null,
               null,
               null,
               null,
               null,
               { "bSearchable": false },
             ],
-            'sAjaxSource'    : '<?php echo site_url("report/ajaxGetAllBarcodeCenter_Task/".$task); ?>',
+            "bDeferRender": true,
+            'sAjaxSource'    : '<?php echo site_url("report/ajaxGetAllBarcodeFactory_nogood"); ?>',
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.ajax( {
                     "dataType": 'json',
@@ -197,10 +160,10 @@ $(document).ready(function()
     'type':'iframe'}); 
     
     var bar_type = {
-          data: <?php echo json_encode($dataset_color); ?>,
-          color: "#0174DF"
+          data: <?php echo json_encode($dataset_station); ?>,
+          color: "#81F781"
         };
-        $.plot("#bar-color", [bar_type], {
+        $.plot("#bar-station", [bar_type], {
           grid: {
             borderWidth: 1,
             borderColor: "#f3f3f3",
@@ -209,7 +172,7 @@ $(document).ready(function()
           bars: {
               show: true,
               showNumbers: true,
-              barWidth: 0.5,
+              barWidth: 0.4,
               align: "center",
               numbers : {
                     yAlign: function(y) { return y/2; }
@@ -221,7 +184,6 @@ $(document).ready(function()
           }
           
         });
-    
 });
     
 
