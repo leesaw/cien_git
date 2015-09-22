@@ -269,6 +269,16 @@ Class Gemstone_model extends CI_Model
 	return $query->num_rows();
  }
     
+ function checkBarcode_nogood($id)
+ {
+    $this->db->select('id');
+    $this->db->from('gemstone_barcode');
+    $this->db->where('id', $id);
+    $this->db->where('pass',4);
+    $query = $this->db->get();		
+	return $query->num_rows();
+ }
+    
  function checkTask_status($id)
  {
     $this->db->select('task3,task4,task5,task6,task7,task8,task9,task10,qc1,qc2,pass');

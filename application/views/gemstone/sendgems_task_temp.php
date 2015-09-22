@@ -14,24 +14,26 @@
         <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            เบิกของ > <?php switch($taskid) {
-                                    case 1: $process = "เลือกก้อนเช็ค+เช็คพลอย+เช็คสีของพลอย"; break;
-                                    case 2: $process = "เช็คความสะอาดของพลอย"; break;
-                                    case 3: $process = "กดหน้ากระดาน(เงาหน้า 100%)"; break;
-                                    case 4: $process = "ติดแชล็ก"; break;
-                                    case 5: $process = "บล็อกรูปร่าง"; break;
-                                    case 6: $process = "เจียหน้า"; break;
-                                    case 7: $process = "กลับติดก้นแชล็ก"; break;
-                                    case 8: $process = "บล็อกก้น"; break;
-                                    case 9: $process = "เจียก้น"; break;
-                                    case 10: $process = "ส่งไปโคราช"; break;
-                                    case 11: $process = "ตรวจ QA"; break;
-                                    case 12: $process = "QC หน้า"; break;
-                                    case 13: $process = "QC ก้น"; break;
-                                    default: $process = "";
-                                  }
-                                echo $process;
-                            ?>
+            <?php switch($taskid) {
+                        case 0: $process = "รับวัตถุไม่เหมาะสมเข้าส่วนกลาง"; break;
+                        case 1: $process = "เลือกก้อนเช็ค+เช็คพลอย+เช็คสีของพลอย"; break;
+                        case 2: $process = "เช็คความสะอาดของพลอย"; break;
+                        case 3: $process = "กดหน้ากระดาน(เงาหน้า 100%)"; break;
+                        case 4: $process = "ติดแชล็ก"; break;
+                        case 5: $process = "บล็อกรูปร่าง"; break;
+                        case 6: $process = "เจียหน้า"; break;
+                        case 7: $process = "กลับติดก้นแชล็ก"; break;
+                        case 8: $process = "บล็อกก้น"; break;
+                        case 9: $process = "เจียก้น"; break;
+                        case 10: $process = "ส่งไปโคราช"; break;
+                        case 11: $process = "ตรวจ QA"; break;
+                        case 12: $process = "QC หน้า"; break;
+                        case 13: $process = "QC ก้น"; break;
+                        default: $process = "";
+                    }
+                    if($taskid > 0) echo "เบิกของ > ".$process;
+                    else echo $process;
+                ?>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i>เบิกของ</a></li>
@@ -49,6 +51,7 @@
                           else if ($this->session->flashdata('showresult') == 'fail3') echo '<div class="alert-message alert alert-danger"> กรุณาสแกนผู้เบิกของ</div>';
                           else if ($this->session->flashdata('showresult') == 'fail4') echo '<div class="alert-message alert alert-danger"> Barcode นี้ยังไม่ได้รับคืน</div>';
                           else if ($this->session->flashdata('showresult') == 'fail5') echo '<div class="alert-message alert alert-danger"> Barcode นี้ออกจากโรงงานแล้ว</div>';
+                          else if ($this->session->flashdata('showresult') == 'fail6') echo '<div class="alert-message alert alert-danger"> Barcode นี้ไม่ใช่วัตถุดิบไม่เหมาะสม</div>';
 					      else if ($this->session->flashdata('showresult') == 'fail_seq5') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 3 ติดแชล็ก</div>';
                           else if ($this->session->flashdata('showresult') == 'fail_seq3') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 4 บล็อกรูปร่าง</div>';
                           else if ($this->session->flashdata('showresult') == 'fail_seq6') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 5 กดหน้ากระดาน</div>';
@@ -85,7 +88,7 @@
 						</div>
                         
                         
-                        <?php if($taskid!=10) { ?>
+                        <?php if(($taskid!=10)&&($taskid!=0)) { ?>
                         <div class="row">
                             <div class="col-md-8">
                                     <div class="form-group has-error">

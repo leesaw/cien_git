@@ -1066,14 +1066,16 @@ class Report extends CI_Controller {
 	{
         $this->load->library('Datatables');
 		$this->datatables
-		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone.dateadd as gemdate, gemstone_barcode.id as bid", FALSE)
+		->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, gemstone_task.dateadd as gemdate, gemstone_barcode.id as bid", FALSE)
 		->from('gemstone_barcode')
         ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
         ->join('supplier', 'gemstone.supplier=supplier.id','left')
         ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
         ->join('gemstone_qc', 'gemstone_barcode.id=gemstone_qc.barcode', 'inner')
+        ->join('gemstone_task', 'gemstone_task.barcode=gemstone_barcode.id', 'left')
         ->where('disable',0)
         ->where('(pass=0 OR pass=3)')
+        ->where('gemstone_task.status', 0)
 		->where('gemstone_qc.status', 4)
 		->edit_column("bid",'<div class="tooltip-demo">
 	<a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>

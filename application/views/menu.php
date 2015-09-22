@@ -11,6 +11,7 @@
           </a>
           <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
+            <!--
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">แสดงตามสี <?php echo date('F Y'); ?><span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
@@ -33,6 +34,7 @@
                   <li><a href="<?php echo site_url("report/allparcel_color/Aqumarine"); ?>">Aqumarine</a></li>
                 </ul>
               </li>
+            -->
             </ul>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">

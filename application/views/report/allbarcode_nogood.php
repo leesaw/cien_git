@@ -59,7 +59,7 @@ for($i=0; $i<count($station_array); $i++) {
                                         <th width="150">Barcode</th>
                                         <th>เลขที่ ลำดับ</th>
                                         <th>ชนิด</th>
-                                        <th>วันที่เข้า</th>
+                                        <th>วันที่กลับเข้าโรงงาน</th>
 										<th width="100"> </th>
                                     </tr>
                                 </thead>

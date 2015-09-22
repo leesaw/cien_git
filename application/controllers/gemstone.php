@@ -325,10 +325,12 @@ class Gemstone extends CI_Controller {
             $query = $this->gemstone_model->getBarcode($barcodeid);
             $center = $this->gemstone_model->checkBarcode_center($barcodeid);
             $insystem = $this->gemstone_model->checkBarcode_out($barcodeid);
-            
+            $nogood = $this->gemstone_model->checkBarcode_nogood($barcodeid);
+            /*
             foreach ($query as $loop) {
                 $barcode = $loop->gemsbarcode;
             }
+            */
             
             $row_temp = $this->gemstone_model->checkBarcode_Temp($barcodeid, $status);
             
@@ -358,42 +360,46 @@ class Gemstone extends CI_Controller {
                 }else{
                     if ($center ==0) {
                         if ($insystem >0) {
-                            
-                            // check previous task
-                            $this->load->model('config_model','',TRUE);
-                            $query = $this->config_model->getConfig('LOCK_SEQ_TASK');
-                            foreach($query as $loop) { $config_value = $loop->value; }
-                            
-                            if ($config_value==1) {
-                                $pretask = $this->gemstone_model->checkPreTask_status($barcodeid, $status);
+                            if (($status==0)&&($nogood==0)) { 
+                                $this->session->set_flashdata('showresult', 'fail6');
+                                redirect(current_url());
                             }else{
-                                $pretask = 1;   
-                            }
-                            
-                            if ($pretask>0) {
-                                // get max tempid and increment for new tempid
-                                $result = $this->gemstone_model->getTempID();
-                                foreach ($result as $loop)
-                                {
-                                    $tempid = $loop->tempid;
+                                // check previous task
+                                $this->load->model('config_model','',TRUE);
+                                $query = $this->config_model->getConfig('LOCK_SEQ_TASK');
+                                foreach($query as $loop) { $config_value = $loop->value; }
+
+                                if ($config_value==1) {
+                                    $pretask = $this->gemstone_model->checkPreTask_status($barcodeid, $status);
+                                }else{
+                                    $pretask = 1;   
                                 }
-                                $tempid++;
 
-                                $datetime = date('Y-m-d H:i:s');
+                                if ($pretask>0) {
+                                    // get max tempid and increment for new tempid
+                                    $result = $this->gemstone_model->getTempID();
+                                    foreach ($result as $loop)
+                                    {
+                                        $tempid = $loop->tempid;
+                                    }
+                                    $tempid++;
 
-                                $barcode = array(
-                                    'barcode' => $barcodeid,
-                                    'tempid' => $tempid,
-                                    'status' => $status,
-                                    'dateadd' => $datetime,
-                                    'worker' => $workerid,
-                                    'userid' => $this->session->userdata('sessid')
-                                );
-                                $result2 = $this->gemstone_model->addBarcodeTemp($barcode);
-                                redirect(current_url());
-                            }else{
-                                $this->session->set_flashdata('showresult', 'fail_seq'.$status);
-                                redirect(current_url());
+                                    $datetime = date('Y-m-d H:i:s');
+
+                                    $barcode = array(
+                                        'barcode' => $barcodeid,
+                                        'tempid' => $tempid,
+                                        'status' => $status,
+                                        'dateadd' => $datetime,
+                                        'worker' => $workerid,
+                                        'userid' => $this->session->userdata('sessid')
+                                    );
+                                    $result2 = $this->gemstone_model->addBarcodeTemp($barcode);
+                                    redirect(current_url());
+                                }else{
+                                    $this->session->set_flashdata('showresult', 'fail_seq'.$status);
+                                    redirect(current_url());
+                                }
                             }
                         }else{
                             $this->session->set_flashdata('showresult', 'fail5');
@@ -548,11 +554,18 @@ class Gemstone extends CI_Controller {
             else if ($row->status == 12) $col = 'qc1';
             else if ($row->status == 13) $col = 'qc2';
             if ($row->gempass==4) {
-                $editbarcode[$i] = array(
+                if ($row->status>0) {
+                    $editbarcode[$i] = array(
                             'id' => $row->tbarcode,
                             'pass' => 0,
                             $col => 1
                     );
+                }else{
+                    $editbarcode[$i] = array(
+                            'id' => $row->tbarcode,
+                            'pass' => 0
+                    );
+                }
             }else{
                 $editbarcode[$i] = array(
                             'id' => $row->tbarcode,
