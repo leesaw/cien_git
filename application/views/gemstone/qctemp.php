@@ -90,13 +90,13 @@
 			</div>	
 		</div>
                 <?php if ($taskid==1) { ?>
-                    <form method="post" action="<?php echo site_url('gemstone/saveTemptoQC/'.$taskid); ?>">
+                    <form method="post" action="<?php echo site_url('gemstone/saveTemptoQC/'.$taskid); ?>" onSubmit="return chk_double(this)">
                 <?php } else if ($taskid==2) { ?>
                     <div class="row">
                         <div class="col-md-5">
                                     <div class="form-group">
                                         <label>เพราะ (ต้องระบุอาการในข้อต่อไปนี้)</label>
-                                        <form method="post" action="<?php echo site_url('gemstone/saveTemptoQC/'.$taskid); ?>" onSubmit="return chk_error()">
+                                        <form method="post" action="<?php echo site_url('gemstone/saveTemptoQC/'.$taskid); ?>" onSubmit="return chk_error(this)">
                                         <select class="form-control" name="error" id="error">
                                         <option value=""></option>
 										<?php 	if(is_array($error_array)) {
@@ -118,7 +118,7 @@
                         <div class="col-md-5">
                                     <div class="form-group">
                                         <label>ขั้นตอนที่ซ่อม</label>
-                                        <form method="post" action="<?php echo site_url('gemstone/saveTemptoQC/'.$taskid); ?>" onSubmit="return chk_error()">
+                                        <form method="post" action="<?php echo site_url('gemstone/saveTemptoQC/'.$taskid); ?>" onSubmit="return chk_error(this)">
                                         <select class="form-control" name="error" id="error">
                                         <option value=""></option>
                                         <option value="กดหน้ากระดาน(เงาหน้า 100%)">กดหน้ากระดาน(เงาหน้า 100%)</option>
@@ -144,7 +144,7 @@
                         <div class="col-md-5">
                                     <div class="form-group">
                                         <label>รายละเอียด</label>
-                                        <form method="post" action="<?php echo site_url('gemstone/saveTemptoQC/'.$taskid); ?>" onSubmit="return chk_error()">
+                                        <form method="post" action="<?php echo site_url('gemstone/saveTemptoQC/'.$taskid); ?>" onSubmit="return chk_error(this)">
                                         <input type="text" class="form-control" name="detail" id="detail" value="">
                                     </div>
 				        </div>
@@ -152,7 +152,7 @@
                 <?php } ?>
 					</div>
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button>
+                        <button type="submit" name="submitbtn" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button>
                         </form>
                         &nbsp; &nbsp; &nbsp; &nbsp; 
                         <button type="button" class="btn btn-danger btn-lg" onClick="window.location.href='<?php echo site_url("gemstone/cleartemp_QC/".$taskid); ?>'"><span class="glyphicon glyphicon-repeat"></span>&nbsp;<b> เริ่มต้นใหม่ทั้งหมด </b></button>
@@ -192,15 +192,25 @@ function del_confirm(val1,val2) {
 
 }
     
-function chk_error()
+function chk_error(form)
 {
     var error=$('#error').val();
     if(error==""){
         alert('กรุณาระบุอาการ');
         $('#error').focus();
         return false;
+    }else{
+        form.submitbtn.disabled = true;
+        return true;   
     }
 }
+    
+function chk_double(form) // Submit button clicked
+  {
+
+    form.submitbtn.disabled = true;
+    return true;
+  }
 
 
 $(".alert").alert();

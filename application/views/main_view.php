@@ -256,10 +256,48 @@ if ($colorgraph>0) {
                             <div class="chart" id="bar-seven" style="height: 300px;"></div>
                         </div>
                         <div class="box-footer">
+                            <a data-toggle="modal" data-target="#myModal_pass" class="btn btn-success"><i class="fa fa-bar-chart"></i> แสดง QC ผ่าน</a> &nbsp;&nbsp;
                             <a data-toggle="modal" data-target="#myModal" class="btn btn-danger"><i class="fa fa-bar-chart"></i> แสดงเหตุผล QC ไม่ผ่าน</a> &nbsp;&nbsp;
                             <a class="btn bg-purple" href="<?php echo site_url("report/allBarcode_return"); ?>"><i class="fa fa-table"></i> แสดงวัตถุดิบไม่เหมาะสม</a> &nbsp;&nbsp;
                             <a class="btn bg-navy" href="<?php echo site_url("report/allBarcode_return_ok"); ?>"><i class="fa fa-rotate-left"></i> แสดงคืนวัตถุดิบ</a>
                         </div>
+                        
+                        <!-- datepicker modal for QC pass -->
+						<div class="modal fade" id="myModal_pass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_pass" aria-hidden="true">
+						
+						  <div class="modal-dialog modal-md">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">	                 	
+										<strong>เลือกช่วงวันที่ต้องการ</strong> 
+									</h4>
+								</div>            <!-- /modal-header -->
+								<div class="modal-body">
+									<form class="form-inline" role="form" action="<?php echo site_url("report/viewQCpassBetween"); ?>" method="POST" target="_blank">
+									<div class="form-group">
+										<label for="">เริ่ม: </label>
+										<input type="text" class="form-control" id="startdate" name="startdate" />
+									</div>
+									<div class="form-group">
+										<label for=""> สิ้นสุด :</label>
+										<input type="text" class="form-control" id="enddate" name="enddate" />
+									</div>
+										
+								</div>            <!-- /modal-body -->
+							
+								<div class="modal-footer">
+                                    <a class="btn btn-success pull-left" href="<?php echo site_url("report/viewQCpassBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a>
+										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
+										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
+								</div> 	
+								</form>								
+							</div>
+						</div>
+					</div>
+						
+                    </div>
+                    <!-- close modal -->
                         
                         <!-- datepicker modal for error -->
 						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

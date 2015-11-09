@@ -133,7 +133,7 @@
                         
 					</div>
                     <div class="box-footer">
-                        <a href="<?php echo site_url("gemstone/saveTemptoBack/".$taskid);  ?>" onClick="return chk_add_worker()"><button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button></a>
+                        <a href="<?php echo site_url("gemstone/saveTemptoBack/".$taskid);  ?>" onClick="return chk_add_worker()"><button type="button" name="submitbtn" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button></a>
                         &nbsp; &nbsp; &nbsp; &nbsp; 
                         <button type="button" class="btn btn-danger btn-lg" onClick="window.location.href='<?php echo site_url("gemstone/cleartemp_back/".$taskid); ?>'"><span class="glyphicon glyphicon-repeat"></span>&nbsp;<b> เริ่มต้นใหม่ทั้งหมด </b></button>
                     </div>
@@ -183,7 +183,11 @@ window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
 				alert('กรุณาสแกนผู้คืนของ');
 				$('#worker_name').focus();
 				return false;
-			}
+			}else{
+                form.submitbtn.disabled = true;
+                form.submitbtn.value = "Please wait...";
+                return true;   
+            }
 		}
 </script>
 </body>

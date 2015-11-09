@@ -304,6 +304,35 @@ Class Report_model extends CI_Model
 	return $query->result(); 
  }
     
+ function getQCpassBetween_color($start, $end)
+ {
+    $this->db->select('gemstone_type.name as typename, count(*) as count');
+    $this->db->from('gemstone_qc');
+    $this->db->join('gemstone_barcode', 'gemstone_barcode.id=gemstone_qc.barcode', 'left');
+    $this->db->join('gemstone', 'gemstone.id=gemstone_barcode.gemstone_id', 'left');
+    $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type', 'left');
+    $this->db->where('disable', 0);
+    $this->db->where('status', 1);
+    $this->db->where("gemstone_qc.dateadd between '".$start." 00:00:00' AND '".$end." 23:59:59'", NULL, FALSE);
+    $this->db->group_by('gemstone_type.id');
+    $query = $this->db->get();		
+	return $query->result(); 
+ }
+    
+ function getQCpassAll_color()
+ {
+    $this->db->select('gemstone_type.name as typename, count(*) as count');
+    $this->db->from('gemstone_qc');
+    $this->db->join('gemstone_barcode', 'gemstone_barcode.id=gemstone_qc.barcode', 'left');
+    $this->db->join('gemstone', 'gemstone.id=gemstone_barcode.gemstone_id', 'left');
+    $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type', 'left');
+    $this->db->where('disable', 0);
+    $this->db->where('status', 1);
+    $this->db->group_by('gemstone_type.id');
+    $query = $this->db->get();		
+	return $query->result();
+ }
+    
  function getErrorAll($error)
  {
     $this->db->select('count(*) as count');
@@ -403,14 +432,14 @@ Class Report_model extends CI_Model
      elseif ($process>0) $column .= " and gemstone.process_type = '".$process."')";
      else $column .= ")";
      
-     $this->db->select("date_format(gemstone.dateadd,'%d/%m/%Y') as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, process_type.name as process_name, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, (amount - count(gemstone_barcode.id)) as ok, gemstone.id as gemid", FALSE);
+     $this->db->select("date_format(gemstone.dateadd,'%d/%m/%Y') as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, process_type.name as process_name, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, (amount - sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END)) as ok, gemstone.id as gemid", FALSE);
      $this->db->from("gemstone");
      $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
      $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
      $this->db->join('gemstone_barcode', 'gemstone_barcode.gemstone_id=gemstone.id', 'left');
      $this->db->join('process_type', 'process_type.id = gemstone.process_type', 'left');
      $this->db->where('disable',0);
-     $this->db->where("(pass != 0 AND pass != 3)", NULL, FALSE);
+     //$this->db->where("(pass != 0 AND pass != 3)", NULL, FALSE);
      $this->db->where($column);
      $this->db->group_by('gemstone.id');
      
