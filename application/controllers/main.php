@@ -38,6 +38,12 @@ class Main extends CI_Controller {
             
             $data['nogood'] = $this->gemstone_model->getNoGood_number();
             
+            // counting station every single day
+            $data['korat_count'] = $this->report_model->getSummary_station_branch_everyday(10);
+            $data['bkk_count_block'] = $this->report_model->getSummary_station_branch_everyday(5);
+            $data['bkk_count_front'] = $this->report_model->getSummary_station_branch_everyday(6);
+            $data['bkk_count_tail'] = $this->report_model->getSummary_station_branch_everyday(9);
+            
             $d = 0;
             $sevenday = array();
             for ($d=0; $d > -7; $d--) {

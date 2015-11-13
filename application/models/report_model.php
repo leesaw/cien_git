@@ -517,5 +517,29 @@ Class Report_model extends CI_Model
 	 return $query->result();
  }
     
+ // counting finished 
+ 
+ function getSummary_station_branch_everyday($status)
+ {
+     $current= date('Y-m-d');
+     $yesterday = date('Y-m-d', strtotime('-1 day', strtotime($current)));
+     
+     $end = $current." 10:00:00";
+     $start = $yesterday." 10:00:01";
+     
+     $this->db->select("process_type.name as pname, COUNT(*) as sum1");
+     $this->db->from('gemstone_back');
+     $this->db->join('gemstone_barcode', 'gemstone_barcode.id=gemstone_back.barcode','left');
+     $this->db->join('gemstone', 'gemstone.id=gemstone_barcode.gemstone_id','left');
+     $this->db->join('process_type', 'process_type.id=gemstone.process_type','left');
+     $this->db->where('gemstone_back.status', $status);
+     $this->db->where('gemstone.disable',0);
+     $this->db->where("gemstone_back.dateadd between '".$start."' AND '".$end."'", NULL, FALSE);
+     $this->db->group_by('process_type.id');
+     
+     $query = $this->db->get();		
+	 return $query->result();
+ }
+    
 }
 ?>
