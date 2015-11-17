@@ -15,7 +15,10 @@
     <section class="content-header">
         <h1>
             คืนของ <?php switch($taskid) {
-                                    case 1: $process = "เลือกก้อนเช็ค+เช็คพลอย+เช็คสีของพลอย"; break;
+                                    
+                                    case 1: $process = "<label class='text-green'>ผ่าน</label>";
+                                            //$process = "เลือกก้อนเช็ค+เช็คพลอย+เช็คสีของพลอย"; 
+                                            break;
                                     case 2: $process = "เช็คความสะอาดของพลอย"; break;
                                     case 3: $process = "กดหน้ากระดาน(เงาหน้า 100%)"; break;
                                     case 4: $process = "ติดแชล็ก"; break;
@@ -28,7 +31,7 @@
                                     case 11: $process = "ตรวจ QA"; break;
                                     case 12: $process = "QC หน้า"; break;
                                     case 13: $process = "QC ก้น"; break;
-                                    default: $process = "";
+                                    default: $process = "<label class='text-red'>ไม่ผ่าน</label>";
                                   }
                                 echo $process;
                             ?>
@@ -76,7 +79,7 @@
                                                if(($task4==1) && ($getall == 0)) {
                                               
                                 ?> 
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='<?php echo site_url('gemstone/sendgems_back_temp_shlek/'.$worker_id); ?>'><button type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มทั้งชุด</b>  </button></a> <?php } } ?>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='<?php echo site_url('gemstone/sendgems_back_temp_shlek/'.$taskid."/".$worker_id); ?>'><button type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มทั้งชุด</b>  </button></a> <?php } } ?>
                                 
                                     </div>
 							</div>
@@ -94,7 +97,6 @@
 							</div>
 						</div>   
                         <?php } ?>
-                        
         <div class="row">
 			<div class="col-lg-12">
                 <div class="panel panel-default">

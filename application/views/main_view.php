@@ -91,46 +91,6 @@ if ($colorgraph>0) {
 ?>
         <div class="box-body">
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="box box-success">
-                        <div class="box-body">
-                            วันที่ <?php 
-                    $current= date('Y-m-d');
-                    $current = date('d/m/Y', strtotime('-1 day', strtotime($current)));
-                    echo $current;
-                            ?>
-                            <h5 class="header">กรุงเทพ | <label class="text-green"><b>บล็อกรูปร่าง</b>
-                            <?php $sum = 0; foreach($bkk_count_block as $loop) {
-                                $sum += $loop->sum1;
-                                echo "[ <b>".$loop->pname."</b> <u>".$loop->sum1."</u> ] ";
-                            } ?>
-                            [รวม <u><?php echo $sum; ?></u>]
-                            </label>    
-                            <label class="text-blue"><b>เจียรหน้า</b>
-                            <?php $sum = 0; foreach($bkk_count_front as $loop) {
-                                $sum += $loop->sum1;
-                                echo "[ <b>".$loop->pname."</b> <u>".$loop->sum1."</u> ]";
-                            } ?>
-                            [รวม <u><?php echo $sum; ?></u>]
-                            </label>
-                            <label class="text-red"><b>เจียรก้น</b>
-                            <?php $sum = 0; foreach($bkk_count_tail as $loop) {
-                                $sum += $loop->sum1;
-                                echo "[ <b>".$loop->pname."</b> <u>".$loop->sum1."</u> ]";
-                            } ?>
-                            [รวม <u><?php echo $sum; ?></u>]
-                            </label>
-                            </h5>
-                            <h5 class="header">โคราช 
-                            <?php foreach($korat_count as $loop) {
-                                echo "[ <b>".$loop->pname."</b> <u>".$loop->sum1."</u> ]";
-                            } ?>
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <section class="col-md-9 connectedSortable">
                         <div class="nav-tabs-custom">
                             <div class="tab-content">

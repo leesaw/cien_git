@@ -439,11 +439,15 @@ Class Gemstone_model extends CI_Model
 	return $query->num_rows();
  }
     
- function getTempCount_back($status=NULL,$userid=null)
+ function getTempCount_back($status=NULL,$userid=null,$pass=null)
  {
 	$this->db->select("tempid");
-	$this->db->from('gemstone_back_temp');		
-	//$this->db->where('status', $status);
+	$this->db->from('gemstone_back_temp');
+     
+	if($status==10) $this->db->where('status', $status);
+    else $this->db->where('status !=', 10);
+     
+    $this->db->where('pass', $pass);
     $this->db->where('userid',$userid);
 	$query = $this->db->get();		
 	return $query->num_rows();
@@ -473,15 +477,19 @@ Class Gemstone_model extends CI_Model
 	return $query->result();
  }
     
- function getBackTemp($status=NULL,$userid=null)
+ function getBackTemp($status=NULL,$userid=null,$pass=null)
  {
-	$this->db->select("tempid, gemstone_back_temp.barcode as tbarcode, no, status, gemstone_back_temp.userid as tuserid, worker, gemstone_back_temp.dateadd as tdateadd, supplier.name as supname, gemstone_type.name as typename, lot, number, task4, gemstone.id as gemid");
+	$this->db->select("tempid, gemstone_back_temp.barcode as tbarcode, no, status, gemstone_back_temp.userid as tuserid, worker, gemstone_back_temp.dateadd as tdateadd, supplier.name as supname, gemstone_type.name as typename, lot, number, task4, gemstone.id as gemid, gemstone_back_temp.pass as pass");
 	$this->db->from('gemstone_back_temp');
     $this->db->join('gemstone_barcode', 'gemstone_barcode.id = gemstone_back_temp.barcode','left');
     $this->db->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id','left');
     $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
     $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
+     
+    if ($status==10) $this->db->where('status', $status);
+    else $this->db->where('status !=', 10);
 	//$this->db->where('status', $status);
+    $this->db->where('gemstone_back_temp.pass', $pass);
     $this->db->where('userid',$userid);
 	$query = $this->db->get();		
 	return $query->result();
@@ -520,9 +528,12 @@ Class Gemstone_model extends CI_Model
 	$this->db->delete('gemstone_back_temp'); 
  }
     
- function delAllBackTemp($status=NULL,$userid=null)
+ function delAllBackTemp($status=NULL,$userid=null,$pass=null)
  {
-	//$this->db->where('status', $status);
+	if($status==10) $this->db->where('status', $status);
+    else $this->db->where('status !=', 10);
+     
+    $this->db->where('pass', $pass);
     $this->db->where('userid',$userid);
 	$this->db->delete('gemstone_back_temp'); 
  }
@@ -552,10 +563,16 @@ Class Gemstone_model extends CI_Model
     
  function editBackWorkerTemp($temp=NULL)
  {
-	//$this->db->where('status', $temp['status']);
+	$this->db->where('pass', $temp['pass']);
     $this->db->where('userid', $temp['userid']);
-	//unset($temp['status']);
+    if($temp['status']==10) { 
+        $this->db->where('status', $temp['status']);
+    }else{
+        $this->db->where('status !=', 10);
+    }
+	unset($temp['status']);
     unset($temp['userid']);
+    unset($temp['pass']);
 	$query = $this->db->update('gemstone_back_temp', $temp); 	
 	return $query;
  }
@@ -573,13 +590,18 @@ Class Gemstone_model extends CI_Model
 	return $query->result();
  }
     
- function getWorkerTemp_back($status, $userid)
+ function getWorkerTemp_back($status, $userid,$pass)
  {
 	$this->db->select("worker.id as workid ,worker_id, firstname, lastname");
 	$this->db->order_by("gemstone_back_temp.tempid", "asc");
 	$this->db->from('gemstone_back_temp');
     $this->db->join('worker', 'gemstone_back_temp.worker=worker.id','left');
+     
+    if ($status==10) $this->db->where('status', $status);
+    else $this->db->where('status !=', 10);
+     
     //$this->db->where('status', $status);
+    $this->db->where('pass', $pass);
     $this->db->where('userid', $userid);
     $this->db->limit(1);
 	$query = $this->db->get();		

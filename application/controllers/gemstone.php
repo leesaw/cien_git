@@ -600,9 +600,11 @@ class Gemstone extends CI_Controller {
         
         $status = $this->uri->segment(3);
         if ($status !=10) { 
-            $status = 0;
+            $pass = $status;
+            //$status = 0;
         }else{
             $data['taskid'] = $status;   
+            $pass = 1;
         }
 		
 		if($this->form_validation->run() == TRUE) {
@@ -652,7 +654,8 @@ class Gemstone extends CI_Controller {
                 }
                 $worker_array = array(
                         'worker' => $workerid,
-                        //'status' => $status,
+                        'status' => $status,
+                        'pass' => $pass,
                         'userid' => $this->session->userdata('sessid')
                     );
                 $result2 = $this->gemstone_model->editBackWorkerTemp($worker_array);
@@ -682,6 +685,7 @@ class Gemstone extends CI_Controller {
                             'status' => $status,
                             'dateadd' => $datetime,
                             'worker' => $workerid,
+                            'pass' => $pass,
                             'userid' => $this->session->userdata('sessid')
                         );
                         $result2 = $this->gemstone_model->addBarcodeTemp_back($barcode);
@@ -697,14 +701,14 @@ class Gemstone extends CI_Controller {
 			}
 		}
 		
-		$data['count'] = $this->gemstone_model->getTempCount_back($status,$this->session->userdata('sessid'));
-		$query = $this->gemstone_model->getBackTemp($status,$this->session->userdata('sessid'));
+		$data['count'] = $this->gemstone_model->getTempCount_back($status,$this->session->userdata('sessid'),$pass);
+		$query = $this->gemstone_model->getBackTemp($status,$this->session->userdata('sessid'),$pass);
 		if($query){
 			$data['temp_array'] =  $query;
 		}else{
 			$data['temp_array'] = array();
 		}
-        $query = $this->gemstone_model->getWorkerTemp_back($status,$this->session->userdata('sessid'));
+        $query = $this->gemstone_model->getWorkerTemp_back($status,$this->session->userdata('sessid'),$pass);
 		if($query){
 			$data['worker_array'] =  $query;
 		}else{
@@ -719,9 +723,10 @@ class Gemstone extends CI_Controller {
     function sendgems_back_temp_shlek()
     {
         $status = 4;
-        $workerid = $this->uri->segment(3);
+        $pass2 = $this->uri->segment(3);
+        $workerid = $this->uri->segment(4);
         
-        $query = $this->gemstone_model->getBackTemp($status,$this->session->userdata('sessid'));
+        $query = $this->gemstone_model->getBackTemp($status,$this->session->userdata('sessid'),$pass2);
         $gemid=0;
         $i = 0;
         foreach ($query as $loop) {
@@ -760,6 +765,7 @@ class Gemstone extends CI_Controller {
                             'barcode' => $loopall->gemid,
                             'tempid' => $tempid,
                             'status' => $status,
+                            'pass' => $pass2,
                             'dateadd' => $datetime,
                             'worker' => $workerid,
                             'userid' => $this->session->userdata('sessid')
@@ -770,21 +776,21 @@ class Gemstone extends CI_Controller {
             //redirect(current_url());
         }
         
-        $data['count'] = $this->gemstone_model->getTempCount_back($status,$this->session->userdata('sessid'));
-		$query = $this->gemstone_model->getBackTemp($status,$this->session->userdata('sessid'));
+        $data['count'] = $this->gemstone_model->getTempCount_back($status,$this->session->userdata('sessid'),$pass2);
+		$query = $this->gemstone_model->getBackTemp($status,$this->session->userdata('sessid'),$pass2);
 		if($query){
 			$data['temp_array'] =  $query;
 		}else{
 			$data['temp_array'] = array();
 		}
-        $query = $this->gemstone_model->getWorkerTemp_back($status,$this->session->userdata('sessid'));
+        $query = $this->gemstone_model->getWorkerTemp_back($status,$this->session->userdata('sessid'),$pass2);
 		if($query){
 			$data['worker_array'] =  $query;
 		}else{
 			$data['worker_array'] = array();
 		}
 		$data['title'] = "Cien|Gemstone Tracking System - Scan Barcode";
-        $data['taskid'] = $status;
+        $data['taskid'] = $pass2;
         $data['getall'] = 1;
 		$this->load->view("gemstone/sendgems_back_temp", $data);
         
@@ -808,17 +814,22 @@ class Gemstone extends CI_Controller {
     function cleartemp_back()
 	{
 		$taskid = $this->uri->segment(3);
-		$result = $this->gemstone_model->delAllBackTemp($taskid,$this->session->userdata('sessid'));
+        if($taskid==10) $pass=1;
+        else $pass=$taskid;
+		$result = $this->gemstone_model->delAllBackTemp($taskid,$this->session->userdata('sessid'),$pass);
 		redirect('gemstone/sendgems_back_temp/'.$taskid, 'refresh');
 	}
     
     function saveTemptoBack()
     {
         $taskid = $this->uri->segment(3);
-        $query = $this->gemstone_model->getBackTemp($taskid,$this->session->userdata('sessid'));
+        if($taskid==10) $pass=1;
+        else $pass=$taskid;
         
-        $count = $this->gemstone_model->getTempCount_back($taskid,$this->session->userdata('sessid'));
-        $this->gemstone_model->delAllBackTemp($taskid,$this->session->userdata('sessid'));
+        $query = $this->gemstone_model->getBackTemp($taskid,$this->session->userdata('sessid'),$pass);
+        
+        $count = $this->gemstone_model->getTempCount_back($taskid,$this->session->userdata('sessid'),$pass);
+        $this->gemstone_model->delAllBackTemp($taskid,$this->session->userdata('sessid'),$pass);
         $i=0;
         $barcode = array();
         $editbarcode = array();
@@ -826,6 +837,7 @@ class Gemstone extends CI_Controller {
             $barcode[$i] = array(
                         'barcode' => $row->tbarcode,
                         'status' => $row->status,
+                        'pass' => $row->pass,
                         'dateadd' => $row->tdateadd,
                         'worker' => $row->worker,
                         'userid' => $row->tuserid

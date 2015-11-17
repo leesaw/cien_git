@@ -106,9 +106,9 @@
             if ($this->session->userdata('sessstatus') == 3) {
             ?>
             <li><a href="<?php echo site_url("stock/liststock"); ?>"><i class="fa fa-diamond"></i> Inventory List</a></li>
-            <?php    
+            <?php 
             }
-                if ($this->session->userdata('sessstatus') <= 2) { ?>
+            if ($this->session->userdata('sessstatus') <= 2) { ?>
             <li>
               <a href="<?php echo site_url("purchase/createbarcode");  //echo site_url("gemstone/addgems"); ?>">
                 <i class="fa fa-file-text-o"></i> <span>พิมพ์บาร์โค้ด</span>
@@ -141,6 +141,11 @@
                 <i class="fa fa-exclamation-triangle"></i> <span>บาร์โค้ดที่ต้องซ่อม</span>
               </a>
             </li>
+            <?php    
+            }
+            if (($this->session->userdata('sessstatus') == 3)||($this->session->userdata('sessstatus') ==1 ) ) {
+            ?>
+            <li><a href="<?php echo site_url("kpi/viewmain"); ?>"><i class="fa fa-street-view"></i> KPI</a></li>
             <?php } ?>
           </ul>
         </section>

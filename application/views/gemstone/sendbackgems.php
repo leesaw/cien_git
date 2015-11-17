@@ -36,7 +36,9 @@
                             </div>
                             <div class="col-md-6">
                                     <div class="form-group">
-                                        <a href="<?php echo site_url("gemstone/sendgems_back_temp"); ?>"><button type="button" class="btn btn-danger btn-lg btn-block"><b>คืนของ</b>  </button></a>
+                                        <a href="<?php echo site_url("gemstone/sendgems_back_temp/1"); ?>"><button type="button" class="btn btn-success btn-lg btn-block"><b>คืนของ (<u>ผ่าน</u>)</b>  </button></a>
+                                        <br><br>
+                                        <a href="<?php echo site_url("gemstone/sendgems_back_temp/0"); ?>"><button type="button" class="btn btn-danger btn-lg btn-block"><b>คืนของ (<u>ไม่ผ่าน</u>)</b>  </button></a>
                                     </div>
                             </div>
 
@@ -51,7 +53,7 @@
                             </div>
                             <div class="col-md-6">
                                     <div class="form-group">
-                                        <a href="<?php echo site_url("gemstone/sendgems_back_temp/10"); ?>"><button type="button" class="btn btn-success btn-lg btn-block">  <span class="glyphicon glyphicon-repeat"></span><br><b>รับคืนจากโคราช</b>  </button></a>
+                                        <a href="<?php echo site_url("gemstone/sendgems_back_temp/10"); ?>"><button type="button" class="btn bg-olive btn-lg btn-block">  <span class="glyphicon glyphicon-repeat"></span><br><b>รับคืนจากโคราช</b>  </button></a>
                                     </div>
                             </div>
                         </div>
