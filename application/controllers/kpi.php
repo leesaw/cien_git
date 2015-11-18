@@ -198,10 +198,31 @@ class Kpi extends CI_Controller {
         $start = $current."-01";
         $end = $current."-31";
         
-        $kpi_array = array();
+        // per person
+        $result = array();
+        $query = $this->kpi_model->getAllstaff_station($status, $start, $end);
+        foreach($query as $loop) {
+            $query_temp = $this->kpi_model->getStation_process_worker($loop->workerid, $start, $end);
+            foreach($query_temp as $loop2) {
+                $result[] = array("worker" => $loop->firstname." ".$loop->lastname, 
+                                  "pid" => $loop2->pid,
+                                  "pname" => $loop2->pname,
+                                  "sum1" => $loop2->sum1
+                                 );
+            }
+            
+        }
+        
+        $this->load->model('gemstone_model','',TRUE);
+        $data['process_list'] = $this->gemstone_model->getProcessType();
+        
+        $data['table_array'] = $result;
+        // per process type
         $query = $this->kpi_model->getAllstaff_station($status, $start, $end);
         if($query){
-			$kpi_array = array_push($kpi_array,$query);
+			$data['process_array'] =  $query;
+		}else{
+			$data['process_array'] = array();
 		}
         
         $data['title'] = "Cien|Gemstone Tracking System - Show KPI";

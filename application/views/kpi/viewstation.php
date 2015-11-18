@@ -59,220 +59,45 @@
                 </div>
             </div>
             <div class="row">
-            <div class="col-md-3">
+            <div class="col-xs-12">
                 <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/4"); ?>">ติดแชล็ก</a></h3>
+                    <h3 class="box-title">ติดแชล็ก</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
-                  <div class="box-body">
-                      <?php $sum=0; foreach($station4_array as $loop) { $sum+=$loop->sum1; }?>   
+                  <div class="box-body">   
                       <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
+                          <thead><tr><th>ชื่อ-สกุล</th>
+                        <?php
+                              foreach($process_list as $loop => $process_result) {
+                                  for($i=0; $i<count($table_array); $i++) {
+                                      if ($process_result->id==$table_array[$i]['pid']) {
+                                          echo "<th>".$process_result->name."</th>";
+                                          unset($process_list[$loop]);
+                                          break;
+                                      }
+                                  }
+                              }
+                        ?>
+                              </tr></thead>
                           <tbody>
-                        <?php foreach($station4_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
+                        <?php 
+                                for($i=0; $i<count($table_array); $i++) { 
+                                    echo "<tr><td>".$table_array[$i]['worker']."</td>";
+                                    foreach($process_list as $loop) { 
+                                        
+                                    }
+                        ?>
                         <?php } ?>
-                          <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
+                          </tbody>
                       </table>
                 </div><!-- /.box-body -->
               </div>
                 </div> 
                         
             </div>  
-            <div class="col-md-3">
-                <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/5"); ?>">บล็อกรูปร่าง</a></h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <div class="box-body">
-                      <?php $sum=0; foreach($station5_array as $loop) { $sum+=$loop->sum1; }?>   
-                      <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
-                          <tbody>
-                        <?php foreach($station5_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
-                        <?php } ?>
-                          <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
-                      </table>
-                </div><!-- /.box-body -->
-              </div>
-                </div> 
-                        
-            </div>  
-            <div class="col-md-3">
-                <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/3"); ?>">กดหน้ากระดาน</a></h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <div class="box-body">
-                      <?php $sum=0; foreach($station3_array as $loop) { $sum+=$loop->sum1; }?>   
-                      <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
-                          <tbody>
-                        <?php foreach($station3_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
-                        <?php } ?>
-                          <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
-                      </table>
-                </div><!-- /.box-body -->
-              </div>
-                </div> 
-                        
-            </div>  
-                
-            <div class="col-md-3">
-                <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/6"); ?>">เจียรหน้า</a></h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <div class="box-body">
-                      <?php $sum=0; foreach($station6_array as $loop) { $sum+=$loop->sum1; }?>   
-                      <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
-                          <tbody>
-                        <?php foreach($station6_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
-                        <?php } ?>
-                          <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
-                      </table>
-                </div>
-              </div>
-                </div> 
-                </div>
-            </div>  <!-- /div row -->
-            
-            <div class="row">
-            <div class="col-md-3">
-                <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/12"); ?>">QC หน้า</a></h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <div class="box-body">
-                      <?php $sum=0; foreach($station12_array as $loop) { $sum+=$loop->sum1; }?>   
-                      <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
-                          <tbody>
-                        <?php foreach($station12_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
-                        <?php } ?>
-                          <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
-                      </table>
-                </div><!-- /.box-body -->
-              </div>
-                </div> 
-                        
-            </div>  
-            <div class="col-md-3">
-                <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/7"); ?>">กลับติดก้นแชล็ก</a></h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <div class="box-body">
-                      <?php $sum=0; foreach($station7_array as $loop) { $sum+=$loop->sum1; }?>   
-                      <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
-                          <tbody>
-                        <?php foreach($station7_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
-                        <?php } ?>
-                          <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
-                      </table>
-                </div><!-- /.box-body -->
-              </div>
-                </div> 
-                        
-            </div>  
-            <div class="col-md-3">
-                <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/8"); ?>">บล็อกก้น</a></h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <div class="box-body">
-                      <?php $sum=0; foreach($station8_array as $loop) { $sum+=$loop->sum1; }?>   
-                      <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
-                          <tbody>
-                        <?php foreach($station8_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
-                        <?php } ?>
-                          <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
-                      </table>
-                </div><!-- /.box-body -->
-              </div>
-                </div> 
-                        
-            </div>  
-                
-            <div class="col-md-3">
-                <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/9"); ?>">เจียรก้น</a></h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <div class="box-body">
-                      <?php $sum=0; foreach($station9_array as $loop) { $sum+=$loop->sum1; }?>   
-                      <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
-                          <tbody>
-                        <?php foreach($station9_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
-                        <?php } ?>
-                          <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
-                      </table>
-                </div>
-              </div>
-                </div> 
-                </div>
             </div>  <!-- /div row -->
 
-            <div class="row">
-            <div class="col-md-3">
-                <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/13"); ?>">QC ก้น</a></h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <div class="box-body">
-                      <?php $sum=0; foreach($station13_array as $loop) { $sum+=$loop->sum1; }?>   
-                      <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
-                          <tbody>
-                        <?php foreach($station13_array as $loop) { ?>     
-                          <tr><tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
-                        <?php } ?>
-                          <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
-                      </table>
-                </div><!-- /.box-body -->
-              </div>
-                </div> 
-                        
-            </div>  
-            </div>  <!-- /div row -->
 
             </div>  <!-- div body -->
         </section>
