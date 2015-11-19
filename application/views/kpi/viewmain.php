@@ -71,7 +71,7 @@
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station4_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
                           <td><?php echo $loop->sum1; ?></td>
                           <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
@@ -94,7 +94,7 @@
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station5_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
                           <td><?php echo $loop->sum1; ?></td>
                           <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
@@ -117,7 +117,7 @@
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station3_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
                           <td><?php echo $loop->sum1; ?></td>
                           <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
@@ -141,7 +141,7 @@
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station6_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
                           <td><?php echo $loop->sum1; ?></td>
                           <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
@@ -166,7 +166,7 @@
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station12_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
                           <td><?php echo $loop->sum1; ?></td>
                           <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
@@ -189,7 +189,7 @@
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station7_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
                           <td><?php echo $loop->sum1; ?></td>
                           <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
@@ -212,7 +212,7 @@
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station8_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
                           <td><?php echo $loop->sum1; ?></td>
                           <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
@@ -236,7 +236,7 @@
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station9_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
                           <td><?php echo $loop->sum1; ?></td>
                           <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
@@ -261,7 +261,7 @@
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station13_array as $loop) { ?>     
-                          <tr><tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
                           <td><?php echo $loop->sum1; ?></td>
                           <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>

@@ -53,6 +53,8 @@
 				        </div>
                         &nbsp;&nbsp;
                         <button type="submit" class="btn btn-success">Filter</button>
+                        &nbsp;&nbsp;
+                        <a href="<?php echo site_url("kpi/viewmain"); ?>" class="btn btn-primary">ล่าสุด</a>
                         </form>
                     </div>
                     </div>

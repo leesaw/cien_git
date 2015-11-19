@@ -41,37 +41,11 @@
                 <div class="col-xs-12">
                     <div class="box box-primary">
                     <div class="box-header with-border">
-                    <h3 class="box-title">รายงาน <?php switch($taskid) {
-                                    
-                                    case 1: $process = "<label class='text-green'>ผ่าน</label>";
-                                            //$process = "เลือกก้อนเช็ค+เช็คพลอย+เช็คสีของพลอย"; 
-                                            break;
-                                    case 2: $process = "เช็คความสะอาดของพลอย"; break;
-                                    case 3: $process = "กดหน้ากระดาน(เงาหน้า 100%)"; break;
-                                    case 4: $process = "ติดแชล็ก"; break;
-                                    case 5: $process = "บล็อกรูปร่าง"; break;
-                                    case 6: $process = "เจียหน้า"; break;
-                                    case 7: $process = "กลับติดก้นแชล็ก"; break;
-                                    case 8: $process = "บล็อกก้น"; break;
-                                    case 9: $process = "เจียก้น"; break;
-                                    case 10: $process = "รับคืนจากโคราช"; break;
-                                    case 11: $process = "ตรวจ QA"; break;
-                                    case 12: $process = "QC หน้า"; break;
-                                    case 13: $process = "QC ก้น"; break;
-                                    default: $process = "<label class='text-red'>ไม่ผ่าน</label>";
-                                  }
-                                echo $process;
-                            ?> 
-                        ประจำวันที่ 
-                        <?php 
-                        $current= date('Y-m-d');
-                        $current = date('d/m/Y', strtotime('-1 day', strtotime($current)));
-                        echo $current;
-                        ?>
+                    <h3 class="box-title">รายงาน <?php echo $workername; ?>
                     </h3>
                         </div>
                     <div class="box-body">
-                        <form class="form-inline" role="form" action="<?php echo site_url("kpi/viewstation_between")."/".$taskid; ?>" method="POST">
+                        <form class="form-inline" role="form" action="<?php echo site_url("kpi/viewworker_between")."/".$workerid; ?>" method="POST">
                         เลือกช่วงเวลา : &nbsp; &nbsp;&nbsp; &nbsp;
                         
 				        <div class="form-group">
@@ -85,7 +59,7 @@
                         &nbsp;&nbsp;
                         <button type="submit" class="btn btn-success">Filter</button>
                         &nbsp;&nbsp;
-                        <a href="<?php echo site_url("kpi/viewstation")."/".$taskid; ?>" class="btn btn-primary">ล่าสุด</a>
+                        <a href="<?php echo site_url("kpi/viewworker")."/".$workerid; ?>" class="btn btn-primary">ล่าสุด</a>
                         </form>
                         
                     </div>
@@ -113,7 +87,7 @@
                 <div class="box-body no-padding">
                   <div class="box-body">   
                       <table class="table table-bordered">
-                          <thead><tr><th>ชื่อ-สกุล</th>
+                          <thead><tr><th>วันที่</th>
                         <?php
                               $column_no = array();
                               $j = 0;
@@ -140,15 +114,17 @@
                             $sum_col = array();
                             for($i=0; $i<count($table_array); $i++) { 
                                 if($worker_id == 0) {
-                                    echo "<tr><td><a class='text-green' href='". site_url("kpi/viewworker/")."/".$table_array[$i]['workerid']."'>".$table_array[$i]['worker']."</a></td>";
+                                    $day1 = explode('-', $table_array[$i]['day1']);
+                                    $day1= $day1[2]."/".$day1[1]."/".$day1[0];
+                                    echo "<tr><td>".$day1."</td>";
                                     for($j=0; $j<count($column_no); $j++) {
                                         $collect_column[$j] = "<td> </td>";
                                         $sum_col[$j] = 0;
                                     }
                                     
-                                    $worker_id = $table_array[$i]['workerid'];
-                                }elseif ($worker_id!=$table_array[$i]['workerid']) {
-                                    $worker_id = $table_array[$i]['workerid'];
+                                    $worker_id = $table_array[$i]['day1'];
+                                }elseif ($worker_id!=$table_array[$i]['day1']) {
+                                    $worker_id = $table_array[$i]['day1'];
                                     for($j=0; $j<count($column_no); $j++) {
                                         echo $collect_column[$j];
                                         $collect_column[$j] = "<td> </td>";
@@ -156,7 +132,9 @@
                                     echo "<th>".$sum_row."</th>";
                                     //$sum_total += $sum_row;
                                     $sum_row = 0;
-                                    echo "<tr><td><a class='text-green' href='". site_url("kpi/viewworker/")."/".$table_array[$i]['workerid']."'>".$table_array[$i]['worker']."</a></td>";
+                                    $day1 = explode('-', $table_array[$i]['day1']);
+                                    $day1= $day1[2]."/".$day1[1]."/".$day1[0];
+                                    echo "</tr><tr><td>".$day1."</td>";
                                 }
                                 
                                 

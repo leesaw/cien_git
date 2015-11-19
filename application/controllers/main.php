@@ -171,14 +171,31 @@ class Main extends CI_Controller {
     function saveconfig()
     {
         $lock_seq_task = $this->input->post('LOCK_SEQ_TASK');
+        
+        $KPI_STATION3 = $this->input->post('KPI_STATION3');
+        $KPI_STATION4 = $this->input->post('KPI_STATION4');
+        $KPI_STATION5 = $this->input->post('KPI_STATION5');
+        $KPI_STATION6 = $this->input->post('KPI_STATION6');
+        $KPI_STATION7 = $this->input->post('KPI_STATION7');
+        $KPI_STATION8 = $this->input->post('KPI_STATION8');
+        $KPI_STATION9 = $this->input->post('KPI_STATION9');
+        $KPI_STATION12 = $this->input->post('KPI_STATION12');
+        $KPI_STATION13 = $this->input->post('KPI_STATION13');
+        
+        $MEAN_STATION3 = $this->input->post('MEAN_STATION3');
+        $MEAN_STATION4 = $this->input->post('MEAN_STATION4');
+        $MEAN_STATION5 = $this->input->post('MEAN_STATION5');
+        $MEAN_STATION6 = $this->input->post('MEAN_STATION6');
+        $MEAN_STATION7 = $this->input->post('MEAN_STATION7');
+        $MEAN_STATION8 = $this->input->post('MEAN_STATION8');
+        $MEAN_STATION9 = $this->input->post('MEAN_STATION9');
+        $MEAN_STATION12 = $this->input->post('MEAN_STATION12');
+        $MEAN_STATION13 = $this->input->post('MEAN_STATION13');
+        
         $config_array = array("config" => "LOCK_SEQ_TASK", "value" => $lock_seq_task);
         $this->load->model('config_model','',TRUE);
         $result = $this->config_model->editConfig($config_array);
-        if ($result){
-            $this->session->set_flashdata('showresult', 'true');
-        }else{
-            $this->session->set_flashdata('showresult', 'fail');
-        }
+        
         $data["config_array"] = $this->config_model->getAllconfig();
         $data['title'] = "Cien|Gemstone Tracking System - Configuration";
         redirect('main/config', 'refresh');
