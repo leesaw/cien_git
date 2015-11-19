@@ -383,13 +383,13 @@ class Kpi extends CI_Controller {
 		}
         
         $this->load->model('config_model','',TRUE);
-        $temp = "KPI_STATION".$worker_status;
+        $temp = "KPI_WORKER".$worker_status;
         $query = $this->config_model->getConfig($temp);
         foreach($query as $loop) {
             $data['kpi_max'] = $loop->value;
         }
         
-        $temp = "MEAN_STATION".$worker_status;
+        $temp = "MEAN_WORKER".$worker_status;
         $query = $this->config_model->getConfig($temp);
         foreach($query as $loop) {
             $data['kpi_mean'] = $loop->value;
@@ -482,13 +482,13 @@ class Kpi extends CI_Controller {
         
         
         $this->load->model('config_model','',TRUE);
-        $temp = "KPI_STATION".$worker_status;
+        $temp = "KPI_WORKER".$worker_status;
         $query = $this->config_model->getConfig($temp);
         foreach($query as $loop) {
             $data['kpi_max'] = $loop->value;
         }
         
-        $temp = "MEAN_STATION".$worker_status;
+        $temp = "MEAN_WORKER".$worker_status;
         $query = $this->config_model->getConfig($temp);
         foreach($query as $loop) {
             $data['kpi_mean'] = $loop->value;
