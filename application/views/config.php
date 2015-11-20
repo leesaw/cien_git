@@ -56,6 +56,7 @@
                         case "KPI_STATION9": $text = "จำนวนเป้าหมาย เจียก้น"; break;
                         case "KPI_STATION12": $text = "จำนวนเป้าหมาย QC หน้า"; break;
                         case "KPI_STATION13": $text = "จำนวนเป้าหมาย QC ก้น"; break;
+                            
                         case "MEAN_STATION3": $text = "จำนวนเฉลี่ย กดหน้ากระดาน"; break;
                         case "MEAN_STATION4": $text = "จำนวนเฉลี่ย ติดแชล็ก"; break;
                         case "MEAN_STATION5": $text = "จำนวนเฉลี่ย บล็อกรูปร่าง"; break;
@@ -65,6 +66,26 @@
                         case "MEAN_STATION9": $text = "จำนวนเฉลี่ย เจียก้น"; break;
                         case "MEAN_STATION12": $text = "จำนวนเฉลี่ย QC หน้า"; break;
                         case "MEAN_STATION13": $text = "จำนวนเฉลี่ย QC ก้น"; break;
+                            
+                        case "KPI_WORKER3": $text = "จำนวนเป้าหมายต่อคน กดหน้ากระดาน"; break;
+                        case "KPI_WORKER4": $text = "จำนวนเป้าหมายต่อคน ติดแชล็ก"; break;
+                        case "KPI_WORKER5": $text = "จำนวนเป้าหมายต่อคน บล็อกรูปร่าง"; break;
+                        case "KPI_WORKER6": $text = "จำนวนเป้าหมายต่อคน เจียหน้า"; break;
+                        case "KPI_WORKER7": $text = "จำนวนเป้าหมายต่อคน กลับติดก้นแชล็ก"; break;
+                        case "KPI_WORKER8": $text = "จำนวนเป้าหมายต่อคน บล็อกก้น"; break;
+                        case "KPI_WORKER9": $text = "จำนวนเป้าหมายต่อคน เจียก้น"; break;
+                        case "KPI_WORKER12": $text = "จำนวนเป้าหมายต่อคน QC หน้า"; break;
+                        case "KPI_WORKER13": $text = "จำนวนเป้าหมายต่อคน QC ก้น"; break;
+                            
+                        case "MEAN_WORKER3": $text = "จำนวนเฉลี่ยต่อคน กดหน้ากระดาน"; break;
+                        case "MEAN_WORKER4": $text = "จำนวนเฉลี่ยต่อคน ติดแชล็ก"; break;
+                        case "MEAN_WORKER5": $text = "จำนวนเฉลี่ยต่อคน บล็อกรูปร่าง"; break;
+                        case "MEAN_WORKER6": $text = "จำนวนเฉลี่ยต่อคน เจียหน้า"; break;
+                        case "MEAN_WORKER7": $text = "จำนวนเฉลี่ยต่อคน กลับติดก้นแชล็ก"; break;
+                        case "MEAN_WORKER8": $text = "จำนวนเฉลี่ยต่อคน บล็อกก้น"; break;
+                        case "MEAN_WORKER9": $text = "จำนวนเฉลี่ยต่อคน เจียก้น"; break;
+                        case "MEAN_WORKER12": $text = "จำนวนเฉลี่ยต่อคน QC หน้า"; break;
+                        case "MEAN_WORKER13": $text = "จำนวนเฉลี่ยต่อคน QC ก้น"; break;
                         default: $text = "ไม่สามารถแสดงข้อความได้";
                     }
                 ?>

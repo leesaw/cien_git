@@ -243,7 +243,7 @@ $(document).ready(function()
       parseTime: false,
       goals: [<?php echo json_encode($kpi_max); ?>, <?php echo json_encode($kpi_mean); ?>],
       goalStrokeWidth: 2.0,
-      goalLineColors: ['red', 'green']
+      goalLineColors: ['green', 'red']
     });
     
 });
