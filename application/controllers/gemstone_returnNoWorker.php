@@ -678,13 +678,16 @@ class Gemstone extends CI_Controller {
                         $tempid++;
 
                         $datetime = date('Y-m-d H:i:s');
+                        
+                        $worker_query = $this->gemstone_model->getBackWorker($barcodeid);
+                        foreach($worker_query as $worker_loop) $back_workerid = $worker_loop->worker;
 
                         $barcode = array(
                             'barcode' => $barcodeid,
                             'tempid' => $tempid,
                             'status' => $status,
                             'dateadd' => $datetime,
-                            'worker' => $workerid,
+                            'worker' => $back_workerid,
                             'pass' => $pass,
                             'userid' => $this->session->userdata('sessid')
                         );
@@ -760,6 +763,9 @@ class Gemstone extends CI_Controller {
                         $tempid++;
 
                         $datetime = date('Y-m-d H:i:s');
+                    
+                        $worker_query = $this->gemstone_model->getBackWorker($barcodeid);
+                        foreach($worker_query as $worker_loop) $back_workerid = $worker_loop->worker;
 
                         $barcode = array(
                             'barcode' => $loopall->gemid,
@@ -767,7 +773,7 @@ class Gemstone extends CI_Controller {
                             'status' => $status,
                             'pass' => $pass2,
                             'dateadd' => $datetime,
-                            'worker' => $workerid,
+                            'worker' => $back_workerid,
                             'userid' => $this->session->userdata('sessid')
                         );
                         $result2 = $this->gemstone_model->addBarcodeTemp_back($barcode);
@@ -834,12 +840,16 @@ class Gemstone extends CI_Controller {
         $barcode = array();
         $editbarcode = array();
         foreach ($query as $row) {
+            //$worker_query = $this->gemstone_model->getBackWorker($row->tbarcode);
+            //foreach($worker_query as $worker_loop) $back_workerid = $worker_loop->worker;
+            
             $barcode[$i] = array(
                         'barcode' => $row->tbarcode,
                         'status' => $row->status,
                         'pass' => $row->pass,
                         'dateadd' => $row->tdateadd,
                         'worker' => $row->worker,
+                        //'worker' => $back_workerid,
                         'userid' => $row->tuserid
                 );
             
