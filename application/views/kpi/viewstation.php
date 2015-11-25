@@ -20,11 +20,22 @@
         //echo $loop['date']."/".$loop['in']."/".$loop['outgood']."/".$loop['outfail']."<br>";
         $day1 = explode('-', $loop->day1);
         $day1= $day1[2]."/".$day1[1]."/".$day1[0];
-        $dataset_seven[] = array($day1, $loop->sum1);
+        if ($point_status == 0) $dataset_seven[] = array($day1, $loop->sum1);
+        else $dataset_seven[] = array($day1, $loop->sum2);
     }
         
         
 ?>
+    <?php if ($between_status == 1) { ?>
+    <form style="display: hidden" action="<?php echo site_url("kpi/viewstation_between")."/".$taskid; ?>" method="POST" id="form1">
+      <input type="hidden" id="startdate_kpi" name="startdate_kpi" value="<?php echo date('d/m/Y', strtotime($start_date)); ?>"/>
+      <input type="hidden" id="enddate_kpi" name="enddate_kpi" value="<?php echo date('d/m/Y', strtotime($end_date)); ?>"/>
+    </form>
+    <form style="display: hidden" action="<?php echo site_url("kpi/viewstation_point_between")."/".$taskid; ?>" method="POST" id="form2">
+      <input type="hidden" id="startdate_kpi" name="startdate_kpi" value="<?php echo date('d/m/Y', strtotime($start_date)); ?>"/>
+      <input type="hidden" id="enddate_kpi" name="enddate_kpi" value="<?php echo date('d/m/Y', strtotime($end_date)); ?>"/>
+    </form>
+    <?php } ?>
 	
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -64,9 +75,15 @@
                             ?> 
                         ประจำวันที่ 
                         <?php 
-                        $current= date('Y-m-d');
-                        $current = date('d/m/Y', strtotime('-1 day', strtotime($current)));
-                        echo $current;
+                        if ($between_status==0) {
+                            $current= date('Y-m-d');
+                            $current = date('d/m/Y', strtotime('-1 day', strtotime($current)));
+                            echo $current;
+                        }elseif ($between_status==1) {
+                            $start = date('d/m/Y', strtotime($start_date));
+                            $end = date('d/m/Y', strtotime($end_date));
+                            echo $start." ถึง ".$end;
+                        }
                         ?>
                     </h3>
                         </div>
@@ -95,11 +112,24 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-success">
+                        <div class="row">
+                        <div class="col-xs-12">
                         <div class="box-header with-border">
-                             <h3 class="box-title">แสดงจำนวน <?php echo count($dataset_seven); ?> วันล่าสุด</h3>
+                            <h3 class="box-title">แสดงจำนวน <?php echo count($dataset_seven); ?> วันล่าสุด</h3> &nbsp; &nbsp;&nbsp; &nbsp;
+                            <input type="radio" name="empty" id="rawdata" value="0" <?php if($point_status==0) echo "checked"; ?>> <label class="text-green"> ข้อมูลดิบ (จำนวนเม็ด)</label>&nbsp; &nbsp;
+            <input type="radio" name="empty" id="calculate" value="1" <?php if($point_status==1) echo "checked"; ?>> <label class="text-red" > คำนวณตามประเภทงาน (คะแนน)</label>
                         </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-xs-8">
                         <div class="box-body chart-responsive">
                             <div class="chart" id="graph_sevenday" style="height: 300px;"></div>
+                        </div>
+                        </div>
+                        <div class="col-xs-4">
+                            
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -239,11 +269,19 @@ $(document).ready(function()
       ],
       xkey: 'y',
       ykeys: ['a'],
-      labels: ['จำนวนที่ได้'],
+      labels: ['จำนวนที่ได้','จำนวนที่ต้องทำเพิ่ม'],
       parseTime: false,
       goals: [<?php echo json_encode($kpi_max); ?>, <?php echo json_encode($kpi_mean); ?>],
       goalStrokeWidth: 2.0,
       goalLineColors: ['green', 'red']
+    });
+    
+    $('#rawdata').on('click', function(){            
+        <?php if ($between_status==0) echo 'window.location.replace("'.site_url("kpi/viewstation")."/".$taskid.'");'; else echo '$("#form1").submit();'; ?>
+    });
+
+    $('#calculate').on('click', function(){            
+        <?php if ($between_status==0) echo 'window.location.replace("'.site_url("kpi/viewstation_point")."/".$taskid.'");'; else echo '$("#form2").submit();'; ?>
     });
     
 });

@@ -14,7 +14,16 @@
 	<div class="wrapper">
 	<?php $this->load->view('menu'); ?>
 	
-	
+	<?php if ($between_status == 1) { ?>
+    <form style="display: hidden" action="<?php echo site_url("kpi/viewallstation_between"); ?>" method="POST" id="form1">
+      <input type="hidden" id="startdate_kpi" name="startdate_kpi" value="<?php echo date('d/m/Y', strtotime($start_date)); ?>"/>
+      <input type="hidden" id="enddate_kpi" name="enddate_kpi" value="<?php echo date('d/m/Y', strtotime($end_date)); ?>"/>
+    </form>
+    <form style="display: hidden" action="<?php echo site_url("kpi/viewallstation_point_between"); ?>" method="POST" id="form2">
+      <input type="hidden" id="startdate_kpi" name="startdate_kpi" value="<?php echo date('d/m/Y', strtotime($start_date)); ?>"/>
+      <input type="hidden" id="enddate_kpi" name="enddate_kpi" value="<?php echo date('d/m/Y', strtotime($end_date)); ?>"/>
+    </form>
+    <?php } ?>
 	
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -33,9 +42,15 @@
                     <div class="box-header with-border">
                     <h3 class="box-title">รายงานประจำวันที่ 
                         <?php 
-                        $startdate = date('d/m/Y', strtotime($startdate));
-                        $enddate = date('d/m/Y', strtotime($enddate));
-                        echo $startdate." - ".$enddate;
+                        if ($between_status==0) {
+                            $current= date('Y-m-d');
+                            $current = date('d/m/Y', strtotime('-1 day', strtotime($current)));
+                            echo $current;
+                        }elseif ($between_status==1) {
+                            $start = date('d/m/Y', strtotime($start_date));
+                            $end = date('d/m/Y', strtotime($end_date));
+                            echo $start." ถึง ".$end;
+                        }
                         ?>
                     </h3>
                         </div>
@@ -53,9 +68,11 @@
 				        </div>
                         &nbsp;&nbsp;
                         <button type="submit" class="btn btn-success">Filter</button>
-                        &nbsp;&nbsp;
-                        <a href="<?php echo site_url("kpi/viewmain"); ?>" class="btn btn-primary">ล่าสุด</a>
+                        &nbsp; &nbsp;&nbsp; &nbsp;
+                            <input type="radio" name="empty" id="rawdata" value="0" <?php if($point_status==0) echo "checked"; ?>> <label class="text-green"> ข้อมูลดิบ (จำนวนเม็ด)</label>&nbsp; &nbsp;
+            <input type="radio" name="empty" id="calculate" value="1" <?php if($point_status==1) echo "checked"; ?>> <label class="text-red" > คำนวณตามประเภทงาน (คะแนน)</label>
                         </form>
+                        
                     </div>
                     </div>
                 </div>
@@ -64,18 +81,18 @@
             <div class="col-md-3">
                 <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/9"); ?>">ติดแชล็ก</a></h3>
+                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/4"); ?>">ติดแชล็ก</a></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">
-                      <?php $sum=0; foreach($station4_array as $loop) { $sum+=$loop->sum1; }?>   
+                      <?php $sum=0; foreach($station4_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>   
                       <table class="table no-margin">
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station4_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
+                          <td><?php if($point_status==0) echo $loop->sum1; else echo $loop->sum2; ?></td>
+                          <td><?php if($point_status==0) echo number_format($loop->sum1/$sum*100, 2, '.', ''); else echo number_format($loop->sum2/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
                           <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
                       </table>
@@ -87,18 +104,18 @@
             <div class="col-md-3">
                 <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/9"); ?>">บล็อกรูปร่าง</a></h3>
+                  <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/5"); ?>">บล็อกรูปร่าง</a></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">
-                      <?php $sum=0; foreach($station5_array as $loop) { $sum+=$loop->sum1; }?>   
+                      <?php $sum=0; foreach($station5_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station5_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
+                          <td><?php if($point_status==0) echo $loop->sum1; else echo $loop->sum2; ?></td>
+                          <td><?php if($point_status==0) echo number_format($loop->sum1/$sum*100, 2, '.', ''); else echo number_format($loop->sum2/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
                           <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
                       </table>
@@ -110,18 +127,18 @@
             <div class="col-md-3">
                 <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/9"); ?>">กดหน้ากระดาน</a></h3>
+                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/3"); ?>">กดหน้ากระดาน</a></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">
-                      <?php $sum=0; foreach($station3_array as $loop) { $sum+=$loop->sum1; }?>   
+                      <?php $sum=0; foreach($station3_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station3_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
+                          <td><?php if($point_status==0) echo $loop->sum1; else echo $loop->sum2; ?></td>
+                          <td><?php if($point_status==0) echo number_format($loop->sum1/$sum*100, 2, '.', ''); else echo number_format($loop->sum2/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
                           <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
                       </table>
@@ -134,18 +151,18 @@
             <div class="col-md-3">
                 <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/9"); ?>">เจียรหน้า</a></h3>
+                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/6"); ?>">เจียรหน้า</a></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">
-                      <?php $sum=0; foreach($station6_array as $loop) { $sum+=$loop->sum1; }?>   
+                      <?php $sum=0; foreach($station6_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station6_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
+                          <td><?php if($point_status==0) echo $loop->sum1; else echo $loop->sum2; ?></td>
+                          <td><?php if($point_status==0) echo number_format($loop->sum1/$sum*100, 2, '.', ''); else echo number_format($loop->sum2/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
                           <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
                       </table>
@@ -159,18 +176,18 @@
             <div class="col-md-3">
                 <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/9"); ?>">QC หน้า</a></h3>
+                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/12"); ?>">QC หน้า</a></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">
-                      <?php $sum=0; foreach($station12_array as $loop) { $sum+=$loop->sum1; }?>   
+                      <?php $sum=0; foreach($station12_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?> 
                       <table class="table no-margin">
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station12_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
+                          <td><?php if($point_status==0) echo $loop->sum1; else echo $loop->sum2; ?></td>
+                          <td><?php if($point_status==0) echo number_format($loop->sum1/$sum*100, 2, '.', ''); else echo number_format($loop->sum2/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
                           <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
                       </table>
@@ -182,18 +199,18 @@
             <div class="col-md-3">
                 <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/9"); ?>">กลับติดก้นแชล็ก</a></h3>
+                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/7"); ?>">กลับติดก้นแชล็ก</a></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">
-                      <?php $sum=0; foreach($station7_array as $loop) { $sum+=$loop->sum1; }?>   
+                      <?php $sum=0; foreach($station7_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station7_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
+                          <td><?php if($point_status==0) echo $loop->sum1; else echo $loop->sum2; ?></td>
+                          <td><?php if($point_status==0) echo number_format($loop->sum1/$sum*100, 2, '.', ''); else echo number_format($loop->sum2/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
                           <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
                       </table>
@@ -205,18 +222,18 @@
             <div class="col-md-3">
                 <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/9"); ?>">บล็อกก้น</a></h3>
+                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/8"); ?>">บล็อกก้น</a></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">
-                      <?php $sum=0; foreach($station8_array as $loop) { $sum+=$loop->sum1; }?>   
+                      <?php $sum=0; foreach($station8_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station8_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
+                          <td><?php if($point_status==0) echo $loop->sum1; else echo $loop->sum2; ?></td>
+                          <td><?php if($point_status==0) echo number_format($loop->sum1/$sum*100, 2, '.', ''); else echo number_format($loop->sum2/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
                           <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
                       </table>
@@ -233,14 +250,14 @@
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">
-                      <?php $sum=0; foreach($station9_array as $loop) { $sum+=$loop->sum1; }?>   
+                      <?php $sum=0; foreach($station9_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station9_array as $loop) { ?>     
-                          <tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
+                          <td><?php if($point_status==0) echo $loop->sum1; else echo $loop->sum2; ?></td>
+                          <td><?php if($point_status==0) echo number_format($loop->sum1/$sum*100, 2, '.', ''); else echo number_format($loop->sum2/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
                           <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
                       </table>
@@ -254,18 +271,18 @@
             <div class="col-md-3">
                 <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/9"); ?>">QC ก้น</a></h3>
+                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/13"); ?>">QC ก้น</a></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">
-                      <?php $sum=0; foreach($station13_array as $loop) { $sum+=$loop->sum1; }?>   
+                      <?php $sum=0; foreach($station13_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?> 
                       <table class="table no-margin">
                           <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station13_array as $loop) { ?>     
-                          <tr><tr><td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
-                          <td><?php echo $loop->sum1; ?></td>
-                          <td><?php echo number_format($loop->sum1/$sum*100, 2, '.', ''); ?></td></tr>
+                          <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
+                          <td><?php if($point_status==0) echo $loop->sum1; else echo $loop->sum2; ?></td>
+                          <td><?php if($point_status==0) echo number_format($loop->sum1/$sum*100, 2, '.', ''); else echo number_format($loop->sum2/$sum*100, 2, '.', ''); ?></td></tr>
                         <?php } ?>
                           <tr><th>Total</th><th><?php echo $sum; ?></th><td> </td></tr></tbody>
                       </table>
@@ -309,7 +326,15 @@ $(document).ready(function()
     'autoScale':false,
     'transitionIn':'none', 
     'transitionOut':'none', 
-    'type':'iframe'}); 
+    'type':'iframe'});
+    
+    $('#rawdata').on('click', function(){            
+        <?php if ($between_status==0) echo 'window.location.replace("'.site_url("kpi/viewmain").'");'; else echo '$("#form1").submit();'; ?>
+    });
+
+    $('#calculate').on('click', function(){            
+        <?php if ($between_status==0) echo 'window.location.replace("'.site_url("kpi/viewmain_point").'");'; else echo '$("#form2").submit();'; ?>
+    });
 });
     
 

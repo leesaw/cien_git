@@ -20,11 +20,23 @@
         //echo $loop['date']."/".$loop['in']."/".$loop['outgood']."/".$loop['outfail']."<br>";
         $day1 = explode('-', $loop->day1);
         $day1= $day1[2]."/".$day1[1]."/".$day1[0];
-        $dataset_seven[] = array($day1, $loop->sum1);
+        if ($point_status == 0) $dataset_seven[] = array($day1, $loop->sum1);
+        else $dataset_seven[] = array($day1, $loop->sum2);
     }
         
         
 ?>
+        
+    <?php if ($between_status == 1) { ?>
+    <form style="display: hidden" action="<?php echo site_url("kpi/viewworker_between")."/".$workerid; ?>" method="POST" id="form1">
+      <input type="hidden" id="startdate_kpi" name="startdate_kpi" value="<?php echo date('d/m/Y', strtotime($start_date)); ?>"/>
+      <input type="hidden" id="enddate_kpi" name="enddate_kpi" value="<?php echo date('d/m/Y', strtotime($end_date)); ?>"/>
+    </form>
+    <form style="display: hidden" action="<?php echo site_url("kpi/viewworker_point_between")."/".$workerid; ?>" method="POST" id="form2">
+      <input type="hidden" id="startdate_kpi" name="startdate_kpi" value="<?php echo date('d/m/Y', strtotime($start_date)); ?>"/>
+      <input type="hidden" id="enddate_kpi" name="enddate_kpi" value="<?php echo date('d/m/Y', strtotime($end_date)); ?>"/>
+    </form>
+    <?php } ?>
 	
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -42,6 +54,19 @@
                     <div class="box box-primary">
                     <div class="box-header with-border">
                     <h3 class="box-title">รายงาน <?php echo $workername; ?>
+                        ประจำวันที่ 
+                        <?php 
+                        if ($between_status==0) {
+                            $current= date('Y-m-d');
+                            $current1 = date('d/m/Y', strtotime('-1 day', strtotime($current)));
+                            $current2 = date('d/m/Y', strtotime('-7 day', strtotime($current)));
+                            echo $current2." ถึง ".$current1;
+                        }elseif ($between_status==1) {
+                            $start = date('d/m/Y', strtotime($start_date));
+                            $end = date('d/m/Y', strtotime($end_date));
+                            echo $start." ถึง ".$end;
+                        }
+                        ?>
                     </h3>
                         </div>
                     <div class="box-body">
@@ -70,7 +95,9 @@
                 <div class="col-xs-12">
                     <div class="box box-success">
                         <div class="box-header with-border">
-                             <h3 class="box-title">แสดงจำนวน <?php echo count($dataset_seven); ?> วันล่าสุด</h3>
+                             <h3 class="box-title">แสดงจำนวน <?php echo count($dataset_seven); ?> วันล่าสุด</h3>&nbsp; &nbsp;&nbsp; &nbsp;
+                            <input type="radio" name="empty" id="rawdata" value="0" <?php if($point_status==0) echo "checked"; ?>> <label class="text-green"> ข้อมูลดิบ (จำนวนเม็ด)</label>&nbsp; &nbsp;
+            <input type="radio" name="empty" id="calculate" value="1" <?php if($point_status==1) echo "checked"; ?>> <label class="text-red" > คำนวณตามประเภทงาน (คะแนน)</label>
                         </div>
                         <div class="box-body chart-responsive">
                             <div class="chart" id="graph_sevenday" style="height: 300px;"></div>
@@ -222,6 +249,14 @@ $(document).ready(function()
       goals: [<?php echo json_encode($kpi_max); ?>, <?php echo json_encode($kpi_mean); ?>],
       goalStrokeWidth: 2.0,
       goalLineColors: ['green', 'red']
+    });
+    
+    $('#rawdata').on('click', function(){            
+        <?php if ($between_status==0) echo 'window.location.replace("'.site_url("kpi/viewworker")."/".$workerid.'");'; else echo '$("#form1").submit();'; ?>
+    });
+
+    $('#calculate').on('click', function(){            
+        <?php if ($between_status==0) echo 'window.location.replace("'.site_url("kpi/viewworker_point")."/".$workerid.'");'; else echo '$("#form2").submit();'; ?>
     });
     
 });
