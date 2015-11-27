@@ -48,6 +48,7 @@
             case '9' : $column = "เจียก้น"; break;
             case '12' : $column = "QC หน้า"; break;
             case '13' : $column = "QC ก้น"; break;
+            case '10' : $column = "โคราช"; break;
             default : $column = "";
         }
         ?>
@@ -89,9 +90,10 @@
                                         <th>เลขที่ ลำดับ</th>
                                         <th>ชนิด</th>
                                         <th>ประเภทงาน</th>
+                                        <th>Size ออก</th>
                                         <th>ผู้เบิก</th>
                                         <th>วันที่เบิก</th>
-										<th width="100">Manage</th>
+                                        <th width="50">Manage</th>
                                     </tr>
                                 </thead>
                                 
@@ -164,6 +166,7 @@ $(document).ready(function()
             "sPaginationType": "simple_numbers",
             'bServerSide'    : false,
             "aoColumns": [
+              null,
               null,
               null,
               null,

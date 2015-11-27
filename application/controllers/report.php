@@ -328,15 +328,15 @@ class Report extends CI_Controller {
         $this->load->library('Datatables');
         if ($task !=16) {
             $this->datatables
-            ->select("cc.barcodeid as barcodeid, CONCAT(cc.sname, lot, '-', number, '#', no) as detail, cc.gemtype as gemtype, cc.processname as processname,CONCAT(cc.firstname,' ', cc.lastname) as workername, gemdate, cc.bid as bid", FALSE)
-            ->from("(select * from (SELECT gemstone_barcode.id as barcodeid, supplier.name as sname, lot, number, no, gemstone_type.name as gemtype, gemstone_barcode.id as bid, process_type.name as processname FROM (`gemstone_barcode`) LEFT JOIN `gemstone` ON `gemstone`.`id` = `gemstone_barcode`.`gemstone_id` LEFT JOIN `supplier` ON `gemstone`.`supplier`=`supplier`.`id` LEFT JOIN `gemstone_type` ON `gemstone_type`.`id`=`gemstone`.`type` LEFT JOIN `process_type` ON `process_type`.`id`=`gemstone`.`process_type` WHERE `disable` = 0 AND (pass=0 OR pass=3) AND ".$column." ) as aa left join (SELECT gemstone_task.barcode as gbarcode, firstname,lastname, gemstone_task.dateadd as gemdate FROM `gemstone_task` LEFT JOIN `worker` ON `worker`.`id`=`gemstone_task`.`worker` where gemstone_task.status=".$task.") as bb on aa.barcodeid = bb.gbarcode order by gemdate desc) as cc")
+            ->select("cc.barcodeid as barcodeid, CONCAT(cc.sname, lot, '-', number, '#', no) as detail, cc.gemtype as gemtype, cc.processname as processname, cc.size_out,CONCAT(cc.firstname,' ', cc.lastname) as workername, gemdate, cc.bid as bid", FALSE)
+            ->from("(select * from (SELECT gemstone_barcode.id as barcodeid, supplier.name as sname, lot, number, no, gemstone_type.name as gemtype, gemstone_barcode.id as bid, process_type.name as processname,size_out FROM (`gemstone_barcode`) LEFT JOIN `gemstone` ON `gemstone`.`id` = `gemstone_barcode`.`gemstone_id` LEFT JOIN `supplier` ON `gemstone`.`supplier`=`supplier`.`id` LEFT JOIN `gemstone_type` ON `gemstone_type`.`id`=`gemstone`.`type` LEFT JOIN `process_type` ON `process_type`.`id`=`gemstone`.`process_type` WHERE `disable` = 0 AND (pass=0 OR pass=3) AND ".$column." ) as aa left join (SELECT gemstone_task.barcode as gbarcode, firstname,lastname, gemstone_task.dateadd as gemdate FROM `gemstone_task` LEFT JOIN `worker` ON `worker`.`id`=`gemstone_task`.`worker` where gemstone_task.status=".$task.") as bb on aa.barcodeid = bb.gbarcode order by gemdate desc) as cc")
             ->group_by('barcodeid')
             ->edit_column("bid",'<div class="tooltip-demo">
         <a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
         </div>',"bid");
         }else{                  // center
             $this->datatables
-            ->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, process_type.name, 'ส่วนกลาง',' ' , gemstone_barcode.id as bid", FALSE)
+            ->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, process_type.name, size_out, 'ส่วนกลาง',' ' , gemstone_barcode.id as bid", FALSE)
             ->from('gemstone_barcode')
             ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
             ->join('supplier', 'gemstone.supplier=supplier.id','left')
@@ -425,15 +425,15 @@ class Report extends CI_Controller {
         $this->load->library('Datatables');
         if ($task !=16) {
             $this->datatables
-            ->select("aa.barcodeid as barcodeid, CONCAT(aa.sname, lot, '-', number, '#', no) as detail, aa.gemtype as gemtype, aa.processname as processname, CONCAT(aa.firstname,' ', aa.lastname) as workername, gemdate, aa.bid as bid", FALSE)
-            ->from("(SELECT gemstone_barcode.id as barcodeid, supplier.name as sname, lot, number, no, gemstone_type.name as gemtype, gemstone_task.dateadd as gemdate, gemstone_barcode.id as bid, firstname, lastname, process_type.name as processname FROM (`gemstone_barcode`) LEFT JOIN `gemstone` ON `gemstone`.`id` = `gemstone_barcode`.`gemstone_id` LEFT JOIN `supplier` ON `gemstone`.`supplier`=`supplier`.`id` LEFT JOIN `gemstone_type` ON `gemstone_type`.`id`=`gemstone`.`type` LEFT JOIN `gemstone_task` ON `gemstone_barcode`.`id`=`gemstone_task`.`barcode` LEFT JOIN `worker` ON `worker`.`id`=`gemstone_task`.`worker` LEFT JOIN `process_type` ON `process_type`.`id`=`gemstone`.`process_type` WHERE `disable` = 0 AND pass = 3 AND ".$column." order by gemstone_task.dateadd desc) as aa")
+            ->select("aa.barcodeid as barcodeid, CONCAT(aa.sname, lot, '-', number, '#', no) as detail, aa.gemtype as gemtype, aa.processname as processname, aa.size_out as size_out, CONCAT(aa.firstname,' ', aa.lastname) as workername, gemdate, aa.bid as bid", FALSE)
+            ->from("(SELECT gemstone_barcode.id as barcodeid, supplier.name as sname, lot, number, no, gemstone_type.name as gemtype, gemstone_task.dateadd as gemdate, gemstone_barcode.id as bid, firstname, lastname, process_type.name as processname, size_out FROM (`gemstone_barcode`) LEFT JOIN `gemstone` ON `gemstone`.`id` = `gemstone_barcode`.`gemstone_id` LEFT JOIN `supplier` ON `gemstone`.`supplier`=`supplier`.`id` LEFT JOIN `gemstone_type` ON `gemstone_type`.`id`=`gemstone`.`type` LEFT JOIN `gemstone_task` ON `gemstone_barcode`.`id`=`gemstone_task`.`barcode` LEFT JOIN `worker` ON `worker`.`id`=`gemstone_task`.`worker` LEFT JOIN `process_type` ON `process_type`.`id`=`gemstone`.`process_type` WHERE `disable` = 0 AND pass = 3 AND ".$column." order by gemstone_task.dateadd desc) as aa")
             ->group_by('barcodeid')
             ->edit_column("bid",'<div class="tooltip-demo">
         <a href="'.site_url("gemstone/showdetail_barcode/$1").'" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="ดูรายละเอียด"><span class="glyphicon glyphicon-fullscreen"></span></a>
         </div>',"bid");
         }else{
             $this->datatables
-            ->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, process_type.name, 'ส่วนกลาง',' ' , gemstone_barcode.id as bid", FALSE)
+            ->select("gemstone_barcode.id as barcodeid,CONCAT(supplier.name,lot,'-',number,'#',no) as detail,gemstone_type.name as gemtype, process_type.name,size_out, 'ส่วนกลาง',' ' , gemstone_barcode.id as bid", FALSE)
             ->from('gemstone_barcode')
             ->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id', 'left')
             ->join('supplier', 'gemstone.supplier=supplier.id','left')

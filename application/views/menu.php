@@ -120,6 +120,11 @@
               </a>
             </li>
             <li>
+              <a href="<?php echo site_url("report/taken_back"); ?>">
+                <i class="fa fa-exclamation-triangle"></i> <span>รายการเบิก-คืนประจำวัน</span>
+              </a>
+            </li>
+            <li>
               <a href="<?php echo site_url("gemstone/qcgems"); ?>">
                 <i class="fa fa-check-square-o"></i> <span>QC ออกจากโรงงาน</span>
               </a>

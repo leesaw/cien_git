@@ -81,7 +81,7 @@
                   <div class="box-body">
                       <?php $sum=0; foreach($station4_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>   
                       <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
+                          <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station4_array as $loop) { ?>     
                           <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
@@ -104,7 +104,7 @@
                   <div class="box-body">
                       <?php $sum=0; foreach($station5_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
+                          <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station5_array as $loop) { ?>     
                           <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
@@ -127,7 +127,7 @@
                   <div class="box-body">
                       <?php $sum=0; foreach($station3_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
+                          <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station3_array as $loop) { ?>     
                           <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
@@ -151,7 +151,7 @@
                   <div class="box-body">
                       <?php $sum=0; foreach($station6_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
+                          <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station6_array as $loop) { ?>     
                           <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
@@ -176,7 +176,7 @@
                   <div class="box-body">
                       <?php $sum=0; foreach($station12_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?> 
                       <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
+                          <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station12_array as $loop) { ?>     
                           <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
@@ -199,7 +199,7 @@
                   <div class="box-body">
                       <?php $sum=0; foreach($station7_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
+                          <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station7_array as $loop) { ?>     
                           <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
@@ -222,7 +222,7 @@
                   <div class="box-body">
                       <?php $sum=0; foreach($station8_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
+                          <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station8_array as $loop) { ?>     
                           <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
@@ -246,7 +246,7 @@
                   <div class="box-body">
                       <?php $sum=0; foreach($station9_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?>    
                       <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
+                          <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station9_array as $loop) { ?>     
                           <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker/")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
@@ -271,7 +271,7 @@
                   <div class="box-body">
                       <?php $sum=0; foreach($station13_array as $loop) { if($point_status==0) $sum+=$loop->sum1; else $sum+=$loop->sum2; }?> 
                       <table class="table no-margin">
-                          <thead><tr><th>ชื่อ-สกุล</th><th>จำนวน</th><th>% Percent</th></tr></thead>
+                          <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th><th>% Percent</th></tr></thead>
                           <tbody>
                         <?php foreach($station13_array as $loop) { ?>     
                           <tr><td><a class="text-green" href="<?php echo site_url("kpi/viewworker")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>

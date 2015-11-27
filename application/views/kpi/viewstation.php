@@ -115,7 +115,7 @@
                         <div class="row">
                         <div class="col-xs-12">
                         <div class="box-header with-border">
-                            <h3 class="box-title">แสดงจำนวน <?php echo count($dataset_seven); ?> วันล่าสุด</h3> &nbsp; &nbsp;&nbsp; &nbsp;
+                            <h3 class="box-title">แสดง <?php echo count($dataset_seven); ?> วันล่าสุด</h3> &nbsp; &nbsp;&nbsp; &nbsp;
                             <input type="radio" name="empty" id="rawdata" value="0" <?php if($point_status==0) echo "checked"; ?>> <label class="text-green"> ข้อมูลดิบ (จำนวนเม็ด)</label>&nbsp; &nbsp;
             <input type="radio" name="empty" id="calculate" value="1" <?php if($point_status==1) echo "checked"; ?>> <label class="text-red" > คำนวณตามประเภทงาน (คะแนน)</label>
                         </div>
@@ -138,7 +138,7 @@
             <div class="col-xs-12">
                 <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">จำนวนแยกตามประเภทงาน</h3>
+                    <h3 class="box-title"><th><?php if($point_status==0) echo "จำนวนแยกตามประเภทงาน"; else echo "คะแนนแยกตามประเภทงาน"; ?></th></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">   
@@ -269,7 +269,7 @@ $(document).ready(function()
       ],
       xkey: 'y',
       ykeys: ['a'],
-      labels: ['จำนวนที่ได้','จำนวนที่ต้องทำเพิ่ม'],
+      labels: ['<?php if($point_status==0) echo "จำนวนที่ได้"; else echo "คะแนนที่ได้"; ?>','จำนวนที่ต้องทำเพิ่ม'],
       parseTime: false,
       goals: [<?php echo json_encode($kpi_max); ?>, <?php echo json_encode($kpi_mean); ?>],
       goalStrokeWidth: 2.0,
