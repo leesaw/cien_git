@@ -417,12 +417,37 @@ class Kpi extends CI_Controller {
         
         $data['table_array'] = $result;
         // per process type
+        /*
+        $d = 0;
+        $sevenday = array();
+        $seven_query = array();
+        for ($d=0; $d > -7; $d--) {
+            $current= date('Y-m-d');
+            $current = date('Y-m-d', strtotime('-1 day', strtotime($current)));
+            $date = strtotime($current);
+            $date = strtotime($d." day", $date);
+            $sevenday[] = date('Y-m-d',$date);
+        }
+        
+        foreach($sevenday as $loop) {
+            $query = $this->kpi_model->getStation_date($status, $loop, $loop);
+            if ($query) {
+                foreach($query as $loop2) {
+                    $seven_query[] = array("day1" => $loop, "sum1" => $loop2->sum1);
+                }
+            }else{
+                $seven_query[] = array("day1" => $loop, "sum1" => 0);
+            }
+        }
+        */
         $query = $this->kpi_model->getStation_date($status, $lastseven, $yesterday);
         if($query){
 			$data['date_array'] =  $query;
 		}else{
 			$data['date_array'] = array();
 		}
+        
+        //$data['date_array'] = $seven_query;
         
         $this->load->model('config_model','',TRUE);
         $temp = "KPI_STATION".$status;

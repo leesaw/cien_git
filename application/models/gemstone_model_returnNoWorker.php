@@ -479,26 +479,30 @@ Class Gemstone_model extends CI_Model
     
  function getBackTemp($status=NULL,$userid=null,$pass=null)
  {
-<<<<<<< HEAD
-	$this->db->select("tempid, gemstone_back_temp.barcode as tbarcode, no, status, gemstone_back_temp.userid as tuserid, worker, gemstone_back_temp.dateadd as tdateadd, supplier.name as supname, gemstone_type.name as typename, lot, number, task4, gemstone.id as gemid, gemstone_back_temp.pass as pass, worker.firstname, worker.lastname, taken_workerid");
-=======
-	$this->db->select("tempid, gemstone_back_temp.barcode as tbarcode, no, status, gemstone_back_temp.userid as tuserid, worker, gemstone_back_temp.dateadd as tdateadd, supplier.name as supname, gemstone_type.name as typename, lot, number, task4, gemstone.id as gemid, gemstone_back_temp.pass as pass");
->>>>>>> c6a26463bf2886864c252abf36640bfdcfebac32
+	$this->db->select("tempid, gemstone_back_temp.barcode as tbarcode, no, status, gemstone_back_temp.userid as tuserid, worker.firstname, worker.lastname, gemstone_back_temp.dateadd as tdateadd,gemstone_back_temp.worker, supplier.name as supname, gemstone_type.name as typename, lot, number, task4, gemstone.id as gemid, gemstone_back_temp.pass as pass");
 	$this->db->from('gemstone_back_temp');
     $this->db->join('gemstone_barcode', 'gemstone_barcode.id = gemstone_back_temp.barcode','left');
     $this->db->join('gemstone', 'gemstone.id = gemstone_barcode.gemstone_id','left');
     $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
     $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');
-<<<<<<< HEAD
-    $this->db->join('worker', 'worker.id=gemstone_back_temp.taken_workerid','left');
-=======
->>>>>>> c6a26463bf2886864c252abf36640bfdcfebac32
+    $this->db->join('worker', 'worker.id=gemstone_back_temp.worker','left');
      
     if ($status==10) $this->db->where('status', $status);
     else $this->db->where('status !=', 10);
 	//$this->db->where('status', $status);
     $this->db->where('gemstone_back_temp.pass', $pass);
     $this->db->where('userid',$userid);
+	$query = $this->db->get();		
+	return $query->result();
+ }
+    
+ function getBackWorker($barcode=null)
+ {
+	$this->db->select("worker");
+	$this->db->from('gemstone_task');
+    $this->db->where('barcode',$barcode);
+    $this->db->order_by('dateadd','desc');
+    $this->db->limit(1);
 	$query = $this->db->get();		
 	return $query->result();
  }
@@ -750,18 +754,6 @@ Class Gemstone_model extends CI_Model
     $this->db->where('gemstone_qc.status', 4); 
     $query = $this->db->get();
     return $query->num_rows();
- }
-    
-//  get worker id who withdrawn 
- function getBackWorker($barcode=null)
- {
-	$this->db->select("worker");
-	$this->db->from('gemstone_task');
-    $this->db->where('barcode',$barcode);
-    $this->db->order_by('dateadd','desc');
-    $this->db->limit(1);
-	$query = $this->db->get();		
-	return $query->result();
  }
 }
 ?>

@@ -86,7 +86,7 @@
 						</div>
                         
                         
-                        <?php if($taskid!=10) { ?>
+                        <?php /*if($taskid!=10) { ?>
                         <div class="row">
                             <div class="col-md-8">
                                     <div class="form-group has-error">
@@ -96,7 +96,7 @@
                                     </div>
 							</div>
 						</div>   
-                        <?php } ?>
+                        <?php } */ ?>
         <div class="row">
 			<div class="col-lg-12">
                 <div class="panel panel-default">
@@ -108,41 +108,17 @@
                                     <tr>
 										<th>No.</th>
                                         <th>Barcode</th>
+                                        <th>ผู้เบิกของ</th>
 										<th>Delete</th>
                                     </tr>
                                 </thead>
 								<tbody>
-								<?php if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop_index => $loop) { if ($loop->taken_workerid != $loop->worker) {
-                                    
-								?>
-									<td><?php echo $i; ?></td>
-									<td><?php echo "<b class='text-red'><u>".$loop->tbarcode."</u></b>-".$loop->supname.$loop->lot."-".$loop->number."(#".$loop->no.")"." ".$loop->typename; ?></td>
-                                    <td><?php 
-                                    if ($loop->taken_workerid != $loop->worker) 
-                                        echo "<b class='text-red'><u>".$loop->firstname." ".$loop->lastname."</u></b>";
-                                    else
-                                        echo $loop->firstname." ".$loop->lastname; ?>
-                                    </td>
-									<td width="50">
-									<button type="button" class="btnDelete btn btn-danger btn-xs" onclick="del_confirm(<?php echo $loop->tempid; ?>,<?php echo $taskid; ?>)" data-title="Delete" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล"><span class="glyphicon glyphicon-remove"></span></button>
-									</td>
-									</tr>
-								<?php $i++; unset($temp_array[$loop_index]); } } }?>
-                            
-                                <?php if(isset($temp_array)) { foreach($temp_array as $loop) {
+								<?php if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop) { 
                                     
 								?>
 									<td><?php echo $i; ?></td>
 									<td><?php echo $loop->tbarcode."-".$loop->supname.$loop->lot."-".$loop->number."(#".$loop->no.")"." ".$loop->typename; ?></td>
-<<<<<<< HEAD
-                                    <td><?php 
-                                    if ($loop->taken_workerid != $loop->worker) 
-                                        echo "<b class='text-red'>".$loop->firstname." ".$loop->lastname."</b>";
-                                    else
-                                        echo $loop->firstname." ".$loop->lastname; ?>
-                                    </td>
-=======
->>>>>>> c6a26463bf2886864c252abf36640bfdcfebac32
+                                    <td><?php echo $loop->firstname." ".$loop->lastname; ?></td>
 									<td width="50">
 									<button type="button" class="btnDelete btn btn-danger btn-xs" onclick="del_confirm(<?php echo $loop->tempid; ?>,<?php echo $taskid; ?>)" data-title="Delete" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล"><span class="glyphicon glyphicon-remove"></span></button>
 									</td>
