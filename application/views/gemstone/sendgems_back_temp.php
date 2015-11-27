@@ -108,6 +108,7 @@
                                     <tr>
 										<th>No.</th>
                                         <th>Barcode</th>
+                                        <th>ผู้เบิกของ</th>
 										<th>Delete</th>
                                     </tr>
                                 </thead>
@@ -134,15 +135,12 @@
 								?>
 									<td><?php echo $i; ?></td>
 									<td><?php echo $loop->tbarcode."-".$loop->supname.$loop->lot."-".$loop->number."(#".$loop->no.")"." ".$loop->typename; ?></td>
-<<<<<<< HEAD
                                     <td><?php 
                                     if ($loop->taken_workerid != $loop->worker) 
                                         echo "<b class='text-red'>".$loop->firstname." ".$loop->lastname."</b>";
                                     else
                                         echo $loop->firstname." ".$loop->lastname; ?>
                                     </td>
-=======
->>>>>>> c6a26463bf2886864c252abf36640bfdcfebac32
 									<td width="50">
 									<button type="button" class="btnDelete btn btn-danger btn-xs" onclick="del_confirm(<?php echo $loop->tempid; ?>,<?php echo $taskid; ?>)" data-title="Delete" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล"><span class="glyphicon glyphicon-remove"></span></button>
 									</td>

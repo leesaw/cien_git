@@ -678,12 +678,9 @@ class Gemstone extends CI_Controller {
                         $tempid++;
 
                         $datetime = date('Y-m-d H:i:s');
-<<<<<<< HEAD
                         
                         $worker_query = $this->gemstone_model->getBackWorker($barcodeid);
                         foreach($worker_query as $worker_loop) $taken_workerid = $worker_loop->worker;
-=======
->>>>>>> c6a26463bf2886864c252abf36640bfdcfebac32
 
                         $barcode = array(
                             'barcode' => $barcodeid,
@@ -691,10 +688,7 @@ class Gemstone extends CI_Controller {
                             'status' => $status,
                             'dateadd' => $datetime,
                             'worker' => $workerid,
-<<<<<<< HEAD
                             'taken_workerid' => $taken_workerid,
-=======
->>>>>>> c6a26463bf2886864c252abf36640bfdcfebac32
                             'pass' => $pass,
                             'userid' => $this->session->userdata('sessid')
                         );
