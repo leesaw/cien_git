@@ -1160,4 +1160,10 @@ class Report extends CI_Controller {
 		echo $this->datatables->generate(); 
 	}
     
+    function taken_back()
+    {
+        $current= date('Y-m-d');
+        
+    }
+    
 }
