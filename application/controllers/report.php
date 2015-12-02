@@ -1164,6 +1164,10 @@ class Report extends CI_Controller {
     {
         $current= date('Y-m-d');
         
+        $query = $this->report_model->getGemstone_takenback_date($current,1);
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Today";
+		$this->load->view('report/showgems_takenback',$data);
     }
     
 }

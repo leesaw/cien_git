@@ -541,5 +541,10 @@ Class Report_model extends CI_Model
 	 return $query->result();
  }
     
+ function getGemstone_takenback_date($date, $status)
+ {
+     
+ }
+    
 }
 ?>

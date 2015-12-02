@@ -143,8 +143,11 @@
                 <div class="box-body no-padding">
                   <div class="box-body">   
                       <table class="table table-bordered">
-                          <thead><tr><th>ชื่อ-สกุล</th>
+                          <thead><tr>
+                        <?php if($taskid!=10) { ?>      
+                        <th>ชื่อ-สกุล</th>
                         <?php
+                              }
                               $column_no = array();
                               $j = 0;
                               foreach($process_list as $loop => $process_result) {
@@ -168,7 +171,13 @@
                             $sum_row = 0;
                             $sum_total = 0;
                             $sum_col = array();
-                            for($i=0; $i<count($table_array); $i++) { 
+
+                        for($i=0; $i<count($table_array); $i++) { 
+                            if($taskid==10) {
+                                echo "<tr>";
+                                
+                            }else{
+                                    
                                 if($worker_id == 0) {
                                     echo "<tr><td><a class='text-green' href='". site_url("kpi/viewworker/")."/".$table_array[$i]['workerid']."'>".$table_array[$i]['worker']."</a></td>";
                                     for($j=0; $j<count($column_no); $j++) {
@@ -189,6 +198,8 @@
                                     echo "<tr><td><a class='text-green' href='". site_url("kpi/viewworker/")."/".$table_array[$i]['workerid']."'>".$table_array[$i]['worker']."</a></td>";
                                 }
                                 
+                            }
+                                
                                 
                                 
 
@@ -197,22 +208,29 @@
                                         $collect_column[$j] = "<td>".$table_array[$i]['sum1']."</td>";
                                         $sum_row += $table_array[$i]['sum1'];
                                         $sum_total += $table_array[$i]['sum1'];
-                                        $sum_col[$j] += $table_array[$i]['sum1'];
+                                        if ($taskid!=10) {
+                                            $sum_col[$j] += $table_array[$i]['sum1'];
+                                        }
                                     }
                                 }
                                 
                                           
                         ?>
-                        <?php }  for($j=0; $j<count($column_no); $j++) {
+                        <?php }
+                            for($j=0; $j<count($column_no); $j++) {
                                         echo $collect_column[$j];
                                     }
                                     echo "<th>".$sum_row."</th>";
-                                    echo "</tr>"; ?>
+                                    echo "</tr>"; 
+                        if ($taskid!=10) {    
+                              ?>
+                        
                               <tr><th>รวม</th>
                               <?php for($j=0; $j<count($sum_col); $j++) { 
                                         echo "<th>".$sum_col[$j]."</th>";
                                     }
                                     echo "<th>".$sum_total."</th>";
+                         }
                               ?>
                               </tr>
                           </tbody>

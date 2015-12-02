@@ -285,6 +285,31 @@
                 </div> 
                         
             </div>  
+            <?php if ($point_status==0) { ?>
+            <div class="col-md-3">
+                <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><a href="<?php echo site_url("kpi/viewstation/10"); ?>">โคราช</a></h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                  <div class="box-body">
+                      <?php $sum=0; foreach($station10_array as $loop) { $sum+=$loop->sum1; } ?>    
+                      <table class="table no-margin">
+                          <thead><tr><th> </th><th>จำนวน</th></tr></thead>
+                          <tbody>
+                        <?php foreach($station10_array as $loop) { ?>     
+                          <tr><td>ส่งกลับจากโคราช</td>
+                          <td><?php echo $loop->sum1; ?></td>
+                          </tr>
+                        <?php } ?>
+                          <tr><th>Total</th><th><?php echo $sum; ?></th></tr></tbody>
+                      </table>
+                </div>
+              </div>
+                </div> 
+                </div>
+            <?php } ?>
+                
             </div>  <!-- /div row -->
 
             </div>  <!-- div body -->

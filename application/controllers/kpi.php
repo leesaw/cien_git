@@ -90,6 +90,14 @@ class Kpi extends CI_Controller {
 			$data['station13_array'] = array();
 		}
         
+        // korat
+        $query = $this->kpi_model->getStation_date(10,$yesterday,$yesterday);
+		if($query){
+			$data['station10_array'] =  $query;
+		}else{
+			$data['station10_array'] = array();
+		}
+        
         $data['between_status'] = 0;
         $data['point_status'] = 0;
         
@@ -172,6 +180,14 @@ class Kpi extends CI_Controller {
 			$data['station13_array'] =  $query;
 		}else{
 			$data['station13_array'] = array();
+		}
+        
+         // korat
+        $query = $this->kpi_model->getStation_date(10,$yesterday,$yesterday);
+		if($query){
+			$data['station10_array'] =  $query;
+		}else{
+			$data['station10_array'] = array();
 		}
         
         $data['between_status'] = 0;
@@ -268,6 +284,14 @@ class Kpi extends CI_Controller {
 			$data['station13_array'] =  $query;
 		}else{
 			$data['station13_array'] = array();
+		}
+        
+         // korat
+        $query = $this->kpi_model->getStation_date(10,$start,$end);
+		if($query){
+			$data['station10_array'] =  $query;
+		}else{
+			$data['station10_array'] = array();
 		}
         
         $data['between_status'] = 1;
@@ -398,18 +422,28 @@ class Kpi extends CI_Controller {
         
         // per person
         $result = array();
-        $query = $this->kpi_model->getAllstaff_station($status, $yesterday, $yesterday);
-        foreach($query as $loop) {
-            $query_temp = $this->kpi_model->getStation_process_worker($status, $loop->workerid, $yesterday, $yesterday);
+        if ($status==10) {
+            $query_temp = $this->kpi_model->getStation_process_worker($status, 0, $yesterday, $yesterday);
             foreach($query_temp as $loop2) {
-                $result[] = array("worker" => $loop->firstname." ".$loop->lastname, 
-                                  "workerid" => $loop->workerid,
-                                  "pid" => $loop2->pid,
+                $result[] = array("pid" => $loop2->pid,
                                   "pname" => $loop2->pname,
                                   "sum1" => $loop2->sum1
                                  );
             }
-            
+        }else{
+            $query = $this->kpi_model->getAllstaff_station($status, $yesterday, $yesterday);
+            foreach($query as $loop) {
+                $query_temp = $this->kpi_model->getStation_process_worker($status, $loop->workerid, $yesterday, $yesterday);
+                foreach($query_temp as $loop2) {
+                    $result[] = array("worker" => $loop->firstname." ".$loop->lastname, 
+                                      "workerid" => $loop->workerid,
+                                      "pid" => $loop2->pid,
+                                      "pname" => $loop2->pname,
+                                      "sum1" => $loop2->sum1
+                                     );
+                }
+
+            }
         }
         
         $this->load->model('gemstone_model','',TRUE);
