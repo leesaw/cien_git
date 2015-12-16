@@ -844,7 +844,7 @@ class Report extends CI_Controller {
         
         $this->load->library('Datatables');
 		$this->datatables
-		->select("CONCAT('<span class=hide>',date_format(gemstone.dateadd,'%Y/%m/%d'),'</span>',date_format(gemstone.dateadd,'%d/%m/%Y')) as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, process_type.name as process_name, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, (amount - sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END)) as ok, gemstone.id as gemid", FALSE)
+		->select("CONCAT('<span class=hide>',date_format(gemstone.dateadd,'%Y/%m/%d'),'</span>',date_format(gemstone.dateadd,'%d/%m/%Y')) as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, process_type.name as process_name, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, sum(CASE WHEN pass = 5 THEN 1 ELSE 0 END) as outreturn, (amount - sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 5 THEN 1 ELSE 0 END)) as ok, gemstone.id as gemid", FALSE)
         ->from('gemstone')
         ->join('supplier', 'gemstone.supplier=supplier.id','left')
         ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
@@ -884,14 +884,15 @@ class Report extends CI_Controller {
         $this->excel->getActiveSheet()->setCellValue('D1', 'ประเภทงาน');
         $this->excel->getActiveSheet()->setCellValue('E1', 'ส่งเข้าโรงงาน');
         $this->excel->getActiveSheet()->setCellValue('G1', 'ออกจากโรงงาน');
-        $this->excel->getActiveSheet()->setCellValue('J1', 'เหลือในโรงงาน');
+        $this->excel->getActiveSheet()->setCellValue('K1', 'เหลือในโรงงาน');
         $this->excel->getActiveSheet()->setCellValue('E2', 'กะรัต');
         $this->excel->getActiveSheet()->setCellValue('F2', 'เม็ด');
         $this->excel->getActiveSheet()->setCellValue('G2', 'QC ผ่าน (เม็ด)');
         $this->excel->getActiveSheet()->setCellValue('H2', 'QC ไม่ผ่าน (เม็ด)');
         $this->excel->getActiveSheet()->setCellValue('I2', 'ไม่เหมาะสม (เม็ด)');
+        $this->excel->getActiveSheet()->setCellValue('J2', 'คืนวัตถุดิบ (เม็ด)');
         $this->excel->getActiveSheet()->mergeCells('E1:F1');
-        $this->excel->getActiveSheet()->mergeCells('G1:I1');
+        $this->excel->getActiveSheet()->mergeCells('G1:J1');
         $this->excel->getActiveSheet()->getStyle('E1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $this->excel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
@@ -904,7 +905,7 @@ class Report extends CI_Controller {
         $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
         $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
         $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
-
+        $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(15);
         // Fetching the table data
 
         $row = 3;
@@ -919,7 +920,8 @@ class Report extends CI_Controller {
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $row, $loop->okout);
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, $row, $loop->nookout);
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, $row, $loop->outout);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, $row, $loop->ok);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, $row, $loop->outreturn);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(10, $row, $loop->ok);
             $row++;
         }
 

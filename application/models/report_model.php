@@ -432,7 +432,7 @@ Class Report_model extends CI_Model
      elseif ($process>0) $column .= " and gemstone.process_type = '".$process."')";
      else $column .= ")";
      
-     $this->db->select("date_format(gemstone.dateadd,'%d/%m/%Y') as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, process_type.name as process_name, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, (amount - sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END)) as ok, gemstone.id as gemid", FALSE);
+     $this->db->select("date_format(gemstone.dateadd,'%d/%m/%Y') as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, process_type.name as process_name, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, sum(CASE WHEN pass = 5 THEN 1 ELSE 0 END) as outreturn, (amount - sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 5 THEN 1 ELSE 0 END)) as ok, gemstone.id as gemid", FALSE);
      $this->db->from("gemstone");
      $this->db->join('supplier', 'gemstone.supplier=supplier.id','left');
      $this->db->join('gemstone_type', 'gemstone_type.id=gemstone.type','left');

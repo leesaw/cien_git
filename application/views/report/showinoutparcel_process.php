@@ -33,15 +33,16 @@
                                         <th width="80" rowspan="2" style="text-align:center">ชนิด</th>
                                         <th width="100" rowspan="2" style="text-align:center">ประเภทงาน</th>
                                         <th colspan="2" style="text-align:center">ส่งเข้าโรงงาน</th>
-                                        <th colspan="3" style="text-align:center">ออกจากโรงงาน</th>
+                                        <th colspan="4" style="text-align:center">ออกจากโรงงาน</th>
                                         <th width="40" rowspan="2" style="text-align:center">เหลือในโรงงาน</th>
                                         <th width="40" rowspan="2" style="text-align:center">จัดการ</th>
                                     </tr>
-                                    <tr><th width="60" style="text-align:center">กะรัต</th><th width="60" style="text-align:center">เม็ด</th><th width="60" style="text-align:center">QC ผ่าน</th><th width="60" style="text-align:center">QC ไม่ผ่าน</th><th width="60" style="text-align:center">ไม่เหมาะสม</th></tr>
+                                    <tr><th width="60" style="text-align:center">กะรัต</th><th width="60" style="text-align:center">เม็ด</th><th width="60" style="text-align:center">QC ผ่าน</th><th width="60" style="text-align:center">QC ไม่ผ่าน</th><th width="60" style="text-align:center">ไม่เหมาะสม</th><th width="60" style="text-align:center">คืนวัตถุดิบ</th></tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
                                         <th colspan="4" style="text-align:right">รวมทั้งหมด :</th>
+                                        <th></th>
                                         <th></th>
                                         <th></th>
                                         <th></th>
@@ -85,6 +86,7 @@ $(document).ready(function()
               null,
               null,
               null,
+              null,
               { "bSearchable": false },
             ],
             "bDeferRender": true,
@@ -110,6 +112,7 @@ $(document).ready(function()
                     var total4 = 0;
                     var total5 = 0;
                     var total6 = 0;
+                    var total7 = 0;
                     for ( var i=0 ; i<aaData.length ; i++ )
                     {
                         total1 += parseFloat(aaData[i][4]);
@@ -118,6 +121,7 @@ $(document).ready(function()
                         total4 += parseInt(aaData[i][7]);
                         total5 += parseInt(aaData[i][8]);
                         total6 += parseInt(aaData[i][9]);
+                        total7 += parseInt(aaData[i][10]);
                     }
 
                     /* Calculate the market share for browsers on this page */
@@ -127,6 +131,7 @@ $(document).ready(function()
                     var page4 = 0;
                     var page5 = 0;
                     var page6 = 0;
+                    var page7 = 0;
                     for ( var i=iStart ; i<iEnd ; i++ )
                     {
                         page1 += parseFloat(aaData[ aiDisplay[i] ][4]);
@@ -135,6 +140,7 @@ $(document).ready(function()
                         page4 += parseInt(aaData[ aiDisplay[i] ][7]);
                         page5 += parseInt(aaData[ aiDisplay[i] ][8]);
                         page6 += parseInt(aaData[ aiDisplay[i] ][9]);
+                        page7 += parseInt(aaData[ aiDisplay[i] ][10]);
                     }
 
                     /* Modify the footer row to match what we want */
@@ -146,6 +152,7 @@ $(document).ready(function()
                     nCells[4].innerHTML = total4;
                     nCells[5].innerHTML = total5;
                     nCells[6].innerHTML = total6;
+                    nCells[7].innerHTML = total7;
                 }
             
         });
