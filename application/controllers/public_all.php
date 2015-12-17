@@ -9,7 +9,7 @@ class Public_all extends CI_Controller {
 	}
 	function index()
 	{
-	 
+	    $this->viewstation();
 	}
     
     function viewmain()
@@ -184,6 +184,89 @@ class Public_all extends CI_Controller {
         
         $data['title'] = "Cien|Gemstone Tracking System - Show KPI";
 		$this->load->view('kpi/viewworker',$data);
+    }
+    
+    function viewstation()
+    {
+        $status = $this->uri->segment(3);
+        
+        if ($status<1) $status=3;
+        
+        $current= date('Y-m-d');
+        $yesterday = date('Y-m-d', strtotime('-1 day', strtotime($current)));
+        $lastseven = date('Y-m-d', strtotime('-14 day', strtotime($current)));
+        
+        // last month
+        $lastmonth = explode('-', $current);
+        $lastmonth = $lastmonth[2]."-".$lastmonth[1]."-01";
+        
+        // per person
+        $result = array();
+        if ($status==10) {
+            $query_temp = $this->kpi_model->getStation_process_worker($status, 0, $yesterday, $yesterday);
+            foreach($query_temp as $loop2) {
+                $result[] = array("pid" => $loop2->pid,
+                                  "pname" => $loop2->pname,
+                                  "sum1" => $loop2->sum1
+                                 );
+            }
+        }else{
+            $query = $this->kpi_model->getAllstaff_station($status, $yesterday, $yesterday);
+            foreach($query as $loop) {
+                $query_temp = $this->kpi_model->getStation_process_worker($status, $loop->workerid, $yesterday, $yesterday);
+                foreach($query_temp as $loop2) {
+                    $result[] = array("worker" => $loop->firstname." ".$loop->lastname, 
+                                      "workerid" => $loop->workerid,
+                                      "pid" => $loop2->pid,
+                                      "pname" => $loop2->pname,
+                                      "sum1" => $loop2->sum1
+                                     );
+                }
+
+            }
+        }
+        
+        $this->load->model('gemstone_model','',TRUE);
+        $data['process_list'] = $this->gemstone_model->getProcessType();
+        
+        $data['table_array'] = $result;
+        // per process type
+        $query = $this->kpi_model->getStation_date($status, $lastseven, $yesterday);
+        if($query){
+			$data['date_array'] =  $query;
+		}else{
+			$data['date_array'] = array();
+		}
+        
+        $this->load->model('config_model','',TRUE);
+        $temp = "KPI_STATION".$status;
+        $query = $this->config_model->getConfig($temp);
+        foreach($query as $loop) {
+            $data['kpi_max'] = $loop->value;
+        }
+        
+        $temp = "MEAN_STATION".$status;
+        $query = $this->config_model->getConfig($temp);
+        foreach($query as $loop) {
+            $data['kpi_mean'] = $loop->value;
+        }
+        
+        // last month view
+        $query = $this->kpi_model->getAllstaff_station($status,$lastseven,$yesterday);
+        if($query){
+            $data['month_array'] =  $query;
+        }else{
+            $data['month_array'] = array();
+        }
+        
+        $data['taskid'] = $status;
+        $data['between_status'] = 0;
+        $data['point_status'] = 0;
+        
+        
+        
+        $data['title'] = "Cien|Gemstone Tracking System - Show KPI";
+		$this->load->view('kpi/public_station_lastday',$data);
     }
 
     

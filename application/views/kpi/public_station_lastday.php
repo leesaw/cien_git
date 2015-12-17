@@ -7,12 +7,13 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>plugins/datepicker/datepicker3.css" >
 <style type="text/css">
 .datepicker {z-index: 1151 !important;}
+.lockscreen {
+  background: #d2d6de;
+}
 </style>
 </head>
 
-<body class="skin-blue">
-	<div class="wrapper">
-	<?php $this->load->view('menu'); ?>
+<body class="skin-blue sidebar-collapse fixed lockscreen">
 	
 <?php
     $dataset_seven = array();
@@ -24,35 +25,17 @@
         else $dataset_seven[] = array($day1, $loop->sum2);
     }
         
-        
+    
 ?>
-    <?php if ($between_status == 1) { ?>
-    <form style="display: hidden" action="<?php echo site_url("kpi/viewstation_between")."/".$taskid; ?>" method="POST" id="form1">
-      <input type="hidden" id="startdate_kpi" name="startdate_kpi" value="<?php echo date('d/m/Y', strtotime($start_date)); ?>"/>
-      <input type="hidden" id="enddate_kpi" name="enddate_kpi" value="<?php echo date('d/m/Y', strtotime($end_date)); ?>"/>
-    </form>
-    <form style="display: hidden" action="<?php echo site_url("kpi/viewstation_point_between")."/".$taskid; ?>" method="POST" id="form2">
-      <input type="hidden" id="startdate_kpi" name="startdate_kpi" value="<?php echo date('d/m/Y', strtotime($start_date)); ?>"/>
-      <input type="hidden" id="enddate_kpi" name="enddate_kpi" value="<?php echo date('d/m/Y', strtotime($end_date)); ?>"/>
-    </form>
-    <?php } ?>
-	
-      <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> KPI</a></li>
-          </ol>
-        </section>
 
-        <!-- Main content -->
-        <section class="content">
+    <!-- Main content -->
+    <section class="content">
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-primary">
                     <div class="box-header with-border">
-                    <h3 class="box-title">รายงาน <?php switch($taskid) {
+                    <h3 class="box-title"><b>รายงาน <?php switch($taskid) {
                                     
                                     case 1: $process = "<label class='text-green'>ผ่าน</label>";
                                             //$process = "เลือกก้อนเช็ค+เช็คพลอย+เช็คสีของพลอย"; 
@@ -85,57 +68,14 @@
                             echo $start." ถึง ".$end;
                         }
                         ?>
-                    </h3>
-                        </div>
-                    <div class="box-body">
-                        <form class="form-inline" role="form" action="<?php echo site_url("kpi/viewstation_between")."/".$taskid; ?>" method="POST">
-                        เลือกช่วงเวลา : &nbsp; &nbsp;&nbsp; &nbsp;
-                        
-				        <div class="form-group">
-				        เริ่ม
-						<input type="text" class="form-control" id="startdate" name="startdate_kpi" />
-						</div>
-						<div class="form-group">
-						&nbsp; &nbsp; สิ้นสุด 
-						<input type="text" class="form-control" id="enddate" name="enddate_kpi" />
-				        </div>
-                        &nbsp;&nbsp;
-                        <button type="submit" class="btn btn-success">Filter</button>
-                        &nbsp;&nbsp;
-                        <a href="<?php echo site_url("kpi/viewstation")."/".$taskid; ?>" class="btn btn-primary">ล่าสุด</a>
-                        </form>
-                        
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box box-success">
-                        <div class="row">
-                        <div class="col-xs-12">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">แสดง <?php echo count($dataset_seven); ?> วันล่าสุด</h3> &nbsp; &nbsp;&nbsp; &nbsp;
-                            <input type="radio" name="empty" id="rawdata" value="0" <?php if($point_status==0) echo "checked"; ?>> <label class="text-green"> ข้อมูลดิบ (จำนวนเม็ด)</label>&nbsp; &nbsp;
-            <input type="radio" name="empty" id="calculate" value="1" <?php if($point_status==1) echo "checked"; ?>> <label class="text-red" > คำนวณตามประเภทงาน (คะแนน)</label>
-                        </div>
-                        </div>
-                        </div>
-                        <div class="row">
-                        <div class="col-xs-8">
-                        <div class="box-body chart-responsive">
-                            <div class="chart" id="graph_sevenday" style="height: 300px;"></div>
-                        </div>
-                        </div>
-                        <div class="col-xs-4">
-                            
-                        </div>
+                    </b></h3>
                         </div>
                     </div>
                 </div>
             </div>
+            
             <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-8">
                 <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title"><th><?php if($point_status==0) echo "จำนวนแยกตามประเภทงาน"; else echo "คะแนนแยกตามประเภทงาน"; ?></th></h3>
@@ -240,16 +180,72 @@
                 </div> 
                         
             </div>  
+                
+            <div class="col-xs-4">
+                <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><th><?php if($point_status==0) echo "จำนวนยอดของเดือน ".date("m"); else echo "คะแนนรวมของเดือน ".date("m"); ?></th></h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                  <div class="box-body">   
+                      <table class="table table-bordered">     
+                        <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th></tr></thead>
+                          <tbody>
+                        <?php 
+                        $count_row = 1;   
+                        $sum_month = 0;
+                        $etc = 0;
+                        foreach($month_array as $loop) { 
+                            if($point_status==0) $sum_month+=$loop->sum1; else $sum_month +=$loop->sum2;
+                            if (($count_row>10) || ($loop->sum1 < 10)) {
+                                if($point_status==0) $etc+=$loop->sum1; else $etc +=$loop->sum2;
+                                continue;  
+                            }
+                              ?>     
+                          <tr><td><a class="text-blue" href="<?php echo site_url("kpi/viewworker")."/".$loop->workerid; ?>"><?php echo $loop->firstname." ".$loop->lastname; ?></a></td>
+                          <td><?php if($point_status==0) echo $loop->sum1; else echo $loop->sum2; ?></td>
+</tr>
+                        <?php $count_row++; } 
+                              
+                            if ($etc>0) {      
+                        ?>
+                          <tr><td>อื่น ๆ</td><td><?php echo $etc; ?></td></tr>
+                        <?php } ?>
+                          <tr><th>รวม</th><th><?php echo $sum_month; ?></th><td> </td></tr></tbody>
+                      </table>
+                </div><!-- /.box-body -->
+              </div>
+                </div> 
+                        
+            </div>  
             </div>  <!-- /div row -->
 
-
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-success">
+                        <div class="row">
+                        <div class="col-xs-12">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">แสดง <?php echo count($dataset_seven); ?> วันล่าสุด</h3> &nbsp; &nbsp;&nbsp; &nbsp;
+                            <input type="radio" name="empty" id="rawdata" value="0" <?php if($point_status==0) echo "checked"; ?>> <label class="text-green"> ข้อมูลดิบ (จำนวนเม็ด)</label>&nbsp; &nbsp;
+            <!-- <input type="radio" name="empty" id="calculate" value="1" <?php if($point_status==1) echo "checked"; ?>> <label class="text-red" > คำนวณตามประเภทงาน (คะแนน)
+-->
+</label>
+                        </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-xs-12">
+                        <div class="box-body chart-responsive">
+                            <div class="chart" id="graph_sevenday" style="height: 300px;"></div>
+                        </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>  <!-- div body -->
         </section>
-          
-          
-          
-      </div>
-	</div>
 
 <?php $this->load->view('js_footer'); ?>
 <script src="<?php echo base_url(); ?>plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
@@ -286,6 +282,7 @@ $(document).ready(function()
         <?php } ?>
       ],
       xkey: 'y',
+      xLabelAngle: 90,
       ykeys: ['a'],
       labels: ['<?php if($point_status==0) echo "จำนวนที่ได้"; else echo "คะแนนที่ได้"; ?>','จำนวนที่ต้องทำเพิ่ม'],
       parseTime: false,
@@ -302,8 +299,19 @@ $(document).ready(function()
         <?php if ($between_status==0) echo 'window.location.replace("'.site_url("kpi/viewstation_point")."/".$taskid.'");'; else echo '$("#form2").submit();'; ?>
     });
     
+    setTimeout(redirect, 10000);
+    
 });
     
+function redirect(){
+   <?php 
+    if ($taskid==9) $next=12;
+    elseif ($taskid==13) $next=3;
+    else $next = ++$taskid;
+        
+    echo 'window.location.replace("'.site_url("public_all/viewstation")."/".$next.'");'; ?>
+}
+
 
 function get_datepicker(id)
 {
