@@ -113,7 +113,9 @@
                                     </tr>
                                 </thead>
 								<tbody>
-								<?php if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop_index => $loop) { if ($loop->taken_workerid != $loop->worker) {
+								<?php 
+                                    $error_worker = 0;
+                                    if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop_index => $loop) { if ($loop->taken_workerid != $loop->worker) { $error_worker++;
                                     
 								?>
 									<td><?php echo $i; ?></td>
@@ -205,11 +207,15 @@ window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
         function chk_add_worker()
 		{
 			var worker_name=$('#worker_name').val();
+            var error_worker = <?php echo $error_worker; ?>;
 			if(worker_name==0){
 				alert('กรุณาสแกนผู้คืนของ');
 				$('#worker_name').focus();
 				return false;
-			}else{
+			}else if (error_worker>0) {
+                alert("ชื่อผู้คืนของไม่ตรงกับของที่มาคืน !!! \n\nกรุณาตรวจสอบรายการที่มีแสดงเป็นสีแดงด้านบน");
+                return false;
+            }else{
                 form.submitbtn.disabled = true;
                 form.submitbtn.value = "Please wait...";
                 return true;   

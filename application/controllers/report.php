@@ -618,12 +618,12 @@ class Report extends CI_Controller {
             }
             $data['start'] = 1;
         }else{
-            $start = $this->input->post("startdate");
+            $start = $this->input->post("startdate_nopass");
             if ($start != "") {
                 $start = explode('/', $start);
                 $start= $start[2]."-".$start[1]."-".$start[0];
             }
-            $end = $this->input->post("enddate");
+            $end = $this->input->post("enddate_nopass");
             if ($end != "") {
                 $end = explode('/', $end);
                 $end= $end[2]."-".$end[1]."-".$end[0];
@@ -844,7 +844,7 @@ class Report extends CI_Controller {
         
         $this->load->library('Datatables');
 		$this->datatables
-		->select("CONCAT('<span class=hide>',date_format(gemstone.dateadd,'%Y/%m/%d'),'</span>',date_format(gemstone.dateadd,'%d/%m/%Y')) as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, process_type.name as process_name, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, sum(CASE WHEN pass = 5 THEN 1 ELSE 0 END) as outreturn, (amount - sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 5 THEN 1 ELSE 0 END)) as ok, gemstone.id as gemid", FALSE)
+		->select("CONCAT('<span class=hide>',date_format(gemstone.dateadd,'%Y/%m/%d'),'</span>',date_format(gemstone.dateadd,'%d/%m/%Y')) as showdate, CONCAT(supplier.name,lot,'-',number,'#',no) as detail, gemstone_type.name as gemtype, CONCAT(process_type.name,' / <span style=color:blue>', size_in, '</span> / <span style=color:green>', size_out, '</span>') as detail2, carat, amount, sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) as okout, sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) as nookout, sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) as outout, sum(CASE WHEN pass = 5 THEN 1 ELSE 0 END) as outreturn, (amount - sum(CASE WHEN pass = 1 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 2 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 4 THEN 1 ELSE 0 END) - sum(CASE WHEN pass = 5 THEN 1 ELSE 0 END)) as ok, gemstone.id as gemid", FALSE)
         ->from('gemstone')
         ->join('supplier', 'gemstone.supplier=supplier.id','left')
         ->join('gemstone_type', 'gemstone_type.id=gemstone.type','left')
@@ -882,19 +882,21 @@ class Report extends CI_Controller {
         $this->excel->getActiveSheet()->setCellValue('B1', 'เลขที่');
         $this->excel->getActiveSheet()->setCellValue('C1', 'ชนิด');
         $this->excel->getActiveSheet()->setCellValue('D1', 'ประเภทงาน');
-        $this->excel->getActiveSheet()->setCellValue('E1', 'ส่งเข้าโรงงาน');
-        $this->excel->getActiveSheet()->setCellValue('G1', 'ออกจากโรงงาน');
-        $this->excel->getActiveSheet()->setCellValue('K1', 'เหลือในโรงงาน');
-        $this->excel->getActiveSheet()->setCellValue('E2', 'กะรัต');
-        $this->excel->getActiveSheet()->setCellValue('F2', 'เม็ด');
-        $this->excel->getActiveSheet()->setCellValue('G2', 'QC ผ่าน (เม็ด)');
-        $this->excel->getActiveSheet()->setCellValue('H2', 'QC ไม่ผ่าน (เม็ด)');
-        $this->excel->getActiveSheet()->setCellValue('I2', 'ไม่เหมาะสม (เม็ด)');
-        $this->excel->getActiveSheet()->setCellValue('J2', 'คืนวัตถุดิบ (เม็ด)');
-        $this->excel->getActiveSheet()->mergeCells('E1:F1');
-        $this->excel->getActiveSheet()->mergeCells('G1:J1');
-        $this->excel->getActiveSheet()->getStyle('E1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $this->excel->getActiveSheet()->setCellValue('E1', 'Size เข้า');
+        $this->excel->getActiveSheet()->setCellValue('F1', 'Size ออก');
+        $this->excel->getActiveSheet()->setCellValue('G1', 'ส่งเข้าโรงงาน');
+        $this->excel->getActiveSheet()->setCellValue('I1', 'ออกจากโรงงาน');
+        $this->excel->getActiveSheet()->setCellValue('M1', 'เหลือในโรงงาน');
+        $this->excel->getActiveSheet()->setCellValue('G2', 'กะรัต');
+        $this->excel->getActiveSheet()->setCellValue('H2', 'เม็ด');
+        $this->excel->getActiveSheet()->setCellValue('I2', 'QC ผ่าน (เม็ด)');
+        $this->excel->getActiveSheet()->setCellValue('J2', 'QC ไม่ผ่าน (เม็ด)');
+        $this->excel->getActiveSheet()->setCellValue('K2', 'ไม่เหมาะสม (เม็ด)');
+        $this->excel->getActiveSheet()->setCellValue('L2', 'คืนวัตถุดิบ (เม็ด)');
+        $this->excel->getActiveSheet()->mergeCells('G1:H1');
+        $this->excel->getActiveSheet()->mergeCells('I1:L1');
         $this->excel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $this->excel->getActiveSheet()->getStyle('I1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
         $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
         $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
@@ -906,6 +908,7 @@ class Report extends CI_Controller {
         $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
         $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
         $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('L')->setWidth(15);
         // Fetching the table data
 
         $row = 3;
@@ -915,13 +918,15 @@ class Report extends CI_Controller {
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $loop->detail);
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $loop->gemtype);
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $loop->process_name);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, $loop->carat);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $row, $loop->amount);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $row, $loop->okout);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, $row, $loop->nookout);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, $row, $loop->outout);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, $row, $loop->outreturn);
-            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(10, $row, $loop->ok);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, $loop->size_in);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $row, $loop->size_out);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $row, $loop->carat);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, $row, $loop->amount);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, $row, $loop->okout);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, $row, $loop->nookout);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(10, $row, $loop->outout);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(11, $row, $loop->outreturn);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(12, $row, $loop->ok);
             $row++;
         }
 
@@ -1170,6 +1175,91 @@ class Report extends CI_Controller {
         
         $data['title'] = "Cien|Gemstone Tracking System - Today";
 		$this->load->view('report/showgems_takenback',$data);
+    }
+    
+    function exportErrorQC_inventory_excel()
+    {
+        $start = $this->input->post('start');
+        $end = $this->input->post('end');
+        $error = array();
+        $table = array();
+        $error_query = $this->gemstone_model->getGemstoneError();
+        $i = 0;
+        foreach($error_query as $loop) {
+            $query = $this->report_model->getErrorBetween($loop->name, $start, $end);
+            foreach($query as $loop2) {
+                $error[$i] = array("id" => $loop->id, "name" => $loop->name, "count" => $loop2->count);
+            }
+            $query = $this->report_model->getErrorBetween_barcode($loop->name, $start, $end);
+            foreach($query as $loop2) {
+                $table[] = array("barcodeid" => $loop2->barcodeid,
+                                   "supname" => $loop2->supname,
+                                   "number" => $loop2->number,
+                                   "lot" => $loop2->lot,
+                                   "no" => $loop2->no,
+                                   "gemtype" => $loop2->gemtype,
+                                   "errordetail" => $loop2->errordetail,
+                                   "pname" => $loop2->pname
+                                  );
+            }
+            $i++;
+        }
+
+        //load our new PHPExcel library
+        $this->load->library('excel');
+        //activate worksheet number 1
+        $this->excel->setActiveSheetIndex(0);
+        //name the worksheet
+        $this->excel->getActiveSheet()->setTitle('Parcel');
+        
+        $this->excel->getActiveSheet()->setCellValue('A1', 'แสดง QC ไม่ผ่านตั้งแต่วันที่ '.$start. ' ถึง '.$end);
+        $this->excel->getActiveSheet()->mergeCells('A1:C1');
+        
+        $this->excel->getActiveSheet()->setCellValue('A3', 'เหตุผลที่ QC ไม่ผ่าน');
+        $this->excel->getActiveSheet()->setCellValue('B3', 'จำนวน');
+        
+        // summary the table data
+        $row = 4;
+        foreach($error as $loop) {
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, $loop['name']);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $loop['count']);
+            $row++;
+        }
+        $row++;
+        $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, "Barcode");
+        $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, "เลขที่ ลำดับ");
+        $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, "ชนิด");
+        $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, "ประเภทงาน");
+        $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, "สาเหตุ");
+        $row++;
+
+        $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+        
+        // Fetching the table data
+        foreach($table as $loop)
+        {
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, $loop['barcodeid']);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $loop['supname'].$loop['lot']."-".$loop['number']."#".$loop['no']);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $loop['gemtype']);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $loop['pname']);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, $loop['errordetail']);
+            $row++;
+        }
+
+        $filename='cien_qc_error.xlsx'; //save our workbook as this file name
+        header('Content-Type: application/vnd.ms-excel'); //mime type
+        header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+
+        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+        //if you want to save it as .XLSX Excel 2007 format
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');  
+        //force user to download the Excel file without writing it to server's HD
+        $objWriter->save('php://output');
     }
     
 }

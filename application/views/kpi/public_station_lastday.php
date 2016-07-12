@@ -10,6 +10,12 @@
 .lockscreen {
   background: #d2d6de;
 }
+    .font1 {
+        font-size: 36px;
+    }
+    .font2 {
+        font-size: 18px;
+    }
 </style>
 </head>
 
@@ -35,7 +41,7 @@
                 <div class="col-xs-12">
                     <div class="box box-primary">
                     <div class="box-header with-border">
-                    <h3 class="box-title"><b>รายงาน <?php switch($taskid) {
+                    <h3 class="box-title"><br><b class="font1">แผนก &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php switch($taskid) {
                                     
                                     case 1: $process = "<label class='text-green'>ผ่าน</label>";
                                             //$process = "เลือกก้อนเช็ค+เช็คพลอย+เช็คสีของพลอย"; 
@@ -56,7 +62,7 @@
                                   }
                                 echo $process;
                             ?> 
-                        ประจำวันที่ 
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ประจำวันที่ 
                         <?php 
                         if ($between_status==0) {
                             $current= date('Y-m-d');
@@ -69,6 +75,7 @@
                         }
                         ?>
                     </b></h3>
+                        <img class="pull-right" src="<?php echo base_url(); ?>dist/img/cien-logo.png" width="100">
                         </div>
                     </div>
                 </div>
@@ -82,7 +89,7 @@
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">   
-                      <table class="table table-bordered">
+                      <table class="table table-bordered font2">
                           <thead><tr>
                         <?php if($taskid!=10) { ?>      
                         <th>ชื่อ-สกุล</th>
@@ -102,7 +109,7 @@
                                   }
                               }
                         ?>
-                              <th>รวม</th>
+                              <th>รวม (จำนวนเม็ด)</th>
                               </tr></thead>
                           <tbody>
                         <?php 
@@ -132,7 +139,7 @@
                                         echo $collect_column[$j];
                                         $collect_column[$j] = "<td> </td>";
                                     }
-                                    echo "<th>".$sum_row."</th>";
+                                    echo "<th class='text-red'>".$sum_row."</th>";
                                     //$sum_total += $sum_row;
                                     $sum_row = 0;
                                     echo "<tr><td><a class='text-green' href='". site_url("kpi/viewworker/")."/".$table_array[$i]['workerid']."'>".$table_array[$i]['worker']."</a></td>";
@@ -160,16 +167,16 @@
                             for($j=0; $j<count($column_no); $j++) {
                                         echo $collect_column[$j];
                                     }
-                                    echo "<th>".$sum_row."</th>";
+                                    echo "<th class='text-red'>".$sum_row."</th>";
                                     echo "</tr>"; 
                         if ($taskid!=10) {    
                               ?>
                         
-                              <tr><th>รวม</th>
+                              <tr><th class='text-red'>รวม (จำนวนเม็ด)</th>
                               <?php for($j=0; $j<count($sum_col); $j++) { 
-                                        echo "<th>".$sum_col[$j]."</th>";
+                                        echo "<th class='text-red'>".$sum_col[$j]."</th>";
                                     }
-                                    echo "<th>".$sum_total."</th>";
+                                    echo "<th class='text-red'>".$sum_total."</th>";
                          }
                               ?>
                               </tr>
@@ -188,8 +195,8 @@
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                   <div class="box-body">   
-                      <table class="table table-bordered">     
-                        <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวน"; else echo "คะแนน"; ?></th></tr></thead>
+                      <table class="table table-bordered font2">     
+                        <thead><tr><th>ชื่อ-สกุล</th><th><?php if($point_status==0) echo "จำนวนเม็ด"; else echo "คะแนน"; ?></th></tr></thead>
                           <tbody>
                         <?php 
                         $count_row = 1;   
@@ -226,7 +233,7 @@
                         <div class="row">
                         <div class="col-xs-12">
                         <div class="box-header with-border">
-                            <h3 class="box-title">แสดง <?php echo count($dataset_seven); ?> วันล่าสุด</h3> &nbsp; &nbsp;&nbsp; &nbsp;
+                            <h3 class="box-title">แสดงยอดทั้งแผนก <?php echo count($dataset_seven); ?> วันล่าสุด</h3> &nbsp; &nbsp;&nbsp; &nbsp;
                             <input type="radio" name="empty" id="rawdata" value="0" <?php if($point_status==0) echo "checked"; ?>> <label class="text-green"> ข้อมูลดิบ (จำนวนเม็ด)</label>&nbsp; &nbsp;
             <!-- <input type="radio" name="empty" id="calculate" value="1" <?php if($point_status==1) echo "checked"; ?>> <label class="text-red" > คำนวณตามประเภทงาน (คะแนน)
 -->
@@ -237,7 +244,7 @@
                         <div class="row">
                         <div class="col-xs-12">
                         <div class="box-body chart-responsive">
-                            <div class="chart" id="graph_sevenday" style="height: 300px;"></div>
+                            <div class="chart" id="graph_sevenday" style="height: 250px;"></div>
                         </div>
                         </div>
                         </div>
@@ -299,7 +306,7 @@ $(document).ready(function()
         <?php if ($between_status==0) echo 'window.location.replace("'.site_url("kpi/viewstation_point")."/".$taskid.'");'; else echo '$("#form2").submit();'; ?>
     });
     
-    setTimeout(redirect, 10000);
+    setTimeout(redirect, 20000);
     
 });
     

@@ -47,7 +47,7 @@
         <div class="row">
 			<div class="col-xs-12">
                 <div class="panel panel-default">
-					<div class="panel-heading"></div>
+					<div class="panel-heading"><form action="<?php echo site_url("report/exportErrorQC_inventory_excel"); ?>" method="post"><input type="hidden" name="start" value="<?php echo $start; ?>"><input type="hidden" name="end" value="<?php echo $end; ?>"><button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span> Excel</button></form></div>
                     <div class="panel-body">
                             <table class="table table-bordered table-striped" id="tablebarcode" width="100%">
                                 <thead>

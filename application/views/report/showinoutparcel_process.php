@@ -31,7 +31,7 @@
                                         <th width="60" rowspan="2" style="text-align:center">วันที่เข้า</th>
                                         <th width="120" rowspan="2" style="text-align:center">เลขที่</th>
                                         <th width="80" rowspan="2" style="text-align:center">ชนิด</th>
-                                        <th width="100" rowspan="2" style="text-align:center">ประเภทงาน</th>
+                                        <th width="200" rowspan="2" style="text-align:center">ประเภทงาน / <span style="color:blue">Size เข้า</span> / <span style="color:green">Size ออก</span></th>
                                         <th colspan="2" style="text-align:center">ส่งเข้าโรงงาน</th>
                                         <th colspan="4" style="text-align:center">ออกจากโรงงาน</th>
                                         <th width="40" rowspan="2" style="text-align:center">เหลือในโรงงาน</th>

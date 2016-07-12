@@ -314,11 +314,11 @@ if ($colorgraph>0) {
 									<form class="form-inline" role="form" action="<?php echo site_url("report/viewErrorBetween"); ?>" method="POST" target="_blank">
 									<div class="form-group">
 										<label for="">เริ่ม: </label>
-										<input type="text" class="form-control" id="startdate" name="startdate" />
+										<input type="text" class="form-control" id="startdate_nopass" name="startdate_nopass" />
 									</div>
 									<div class="form-group">
 										<label for=""> สิ้นสุด :</label>
-										<input type="text" class="form-control" id="enddate" name="enddate" />
+										<input type="text" class="form-control" id="enddate_nopass" name="enddate_nopass" />
 									</div>
 										
 								</div>            <!-- /modal-body -->
@@ -483,6 +483,8 @@ $(document).ready(function()
 {
     get_datepicker("#startdate");
     get_datepicker("#enddate");
+    get_datepicker("#startdate_nopass");
+    get_datepicker("#enddate_nopass");
     get_datepicker("#startdate_process");
     get_datepicker("#enddate_process");
     
