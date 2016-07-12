@@ -54,7 +54,7 @@
 					
 					?>
 					<div class="box-header"><h4 class="box-title">กรุณาสแกน Barcode</h4></div>
-					<form method="post" action="<?php echo site_url('gemstone/sendgems_back_temp/'.$taskid); ?>">
+					<form method="post" name="frmBarcode" id="frmBarcode" action="<?php echo site_url('gemstone/sendgems_back_temp/'.$taskid); ?>">
                         
                     <?php $workername = ""; $worker_id = 0;
                             foreach($worker_array as $loop) { 
@@ -70,7 +70,7 @@
                                         <input type="hidden" name="workerid" value="<?php echo $worker_id; ?>" />
                                         <input type="text" class="form-control" name="barcode" id="barcode" value="" placeholder="Scan Barcode">
 										<p class="help-block"><?php echo form_error('barcode'); ?></p>	
-										<button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </button>
+										<button type="button" class="btn btn-success btn-lg" onclick="return check_barcode()"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </button>
                     </form>
                                 
                         <?php if($count == 1) { foreach($temp_array as $loop) { 
@@ -183,7 +183,20 @@
     $(document).ready(function()
     {
 		$("#barcode").focus();
-
+        
+        $('#barcode').keyup(function(e){ //enter next
+            if(e.keyCode == 13) {
+                var barcode =  document.getElementById("barcode").value;
+                var error_worker = <?php echo $error_worker; ?>;
+                if (barcode == "*OK*") {
+                    if (error_worker>0) {
+                        alert("ชื่อผู้คืนของไม่ตรงกับของที่มาคืน !!! \n\nกรุณาตรวจสอบรายการที่มีแสดงเป็นสีแดงด้านบน");
+                        return false;
+                    }
+                }
+                document.getElementById("frmBarcode").submit();
+            }
+        });
 		
     });
     
@@ -204,23 +217,36 @@ function del_confirm(val1, val2) {
 $(".alert").alert();
 window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
         
-        function chk_add_worker()
-		{
-			var worker_name=$('#worker_name').val();
-            var error_worker = <?php echo $error_worker; ?>;
-			if(worker_name==0){
-				alert('กรุณาสแกนผู้คืนของ');
-				$('#worker_name').focus();
-				return false;
-			}else if (error_worker>0) {
-                alert("ชื่อผู้คืนของไม่ตรงกับของที่มาคืน !!! \n\nกรุณาตรวจสอบรายการที่มีแสดงเป็นสีแดงด้านบน");
-                return false;
-            }else{
-                form.submitbtn.disabled = true;
-                form.submitbtn.value = "Please wait...";
-                return true;   
-            }
-		}
+function chk_add_worker()
+{
+    var worker_name=$('#worker_name').val();
+    var error_worker = <?php echo $error_worker; ?>;
+    if(worker_name==0){
+        alert('กรุณาสแกนผู้คืนของ');
+        $('#worker_name').focus();
+        return false;
+    }else if (error_worker>0) {
+        alert("ชื่อผู้คืนของไม่ตรงกับของที่มาคืน !!! \n\nกรุณาตรวจสอบรายการที่มีแสดงเป็นสีแดงด้านบน");
+        return false;
+    }else{
+        form.submitbtn.disabled = true;
+        form.submitbtn.value = "Please wait...";
+        return true;   
+    }
+}
+    
+function check_barcode()
+{
+    var barcode =  document.getElementById("barcode").value;
+    var error_worker = <?php echo $error_worker; ?>;
+    if (barcode == "*OK*") {
+        if (error_worker>0) {
+            alert("ชื่อผู้คืนของไม่ตรงกับของที่มาคืน !!! \n\nกรุณาตรวจสอบรายการที่มีแสดงเป็นสีแดงด้านบน");
+            return false;
+        }
+    }
+    document.getElementById("frmBarcode").submit();
+}
 </script>
 </body>
 </html>
