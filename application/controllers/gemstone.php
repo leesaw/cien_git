@@ -752,7 +752,7 @@ class Gemstone extends CI_Controller {
             }
             
             if (($task4 ==1) && ($pass!=1) && ($pass!=2)) {
-                $all = $this->gemstone_model->getAllBarcode($gemid);
+                $all = $this->gemstone_model->getAllBarcode_shlek($gemid);
 
                 foreach ($all as $loopall) {
                     if ($loopall->gemid==$barcodeid) continue;
@@ -764,6 +764,9 @@ class Gemstone extends CI_Controller {
                         $tempid++;
 
                         $datetime = date('Y-m-d H:i:s');
+                    
+                        //$taken_workerid = $this->gemstone_model->getBackWorker($barcodeid);
+                        //foreach($worker_query as $worker_loop) $taken_workerid = $worker_loop->worker;
 
                         $barcode = array(
                             'barcode' => $loopall->gemid,
@@ -772,6 +775,7 @@ class Gemstone extends CI_Controller {
                             'pass' => $pass2,
                             'dateadd' => $datetime,
                             'worker' => $workerid,
+                            'taken_workerid' => $loopall->worker,
                             'userid' => $this->session->userdata('sessid')
                         );
                         $result2 = $this->gemstone_model->addBarcodeTemp_back($barcode);

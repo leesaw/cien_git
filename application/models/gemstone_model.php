@@ -672,6 +672,16 @@ Class Gemstone_model extends CI_Model
 	return $query->result();
  }
     
+ function getAllBarcode_shlek($gemid)
+ {
+    $this->db->select('gemstone_barcode.id as gemid, worker');
+    $this->db->from('gemstone_task');
+    $this->db->join('gemstone_barcode','gemstone_barcode.id = gemstone_task.barcode','left');
+    $this->db->where('gemstone_barcode.gemstone_id', $gemid);
+    $query = $this->db->get();		
+	return $query->result();
+ }
+    
  function getRangeBarcode($gemid,$start,$end)
  {
     $this->db->select('gemstone_barcode.id as gemid, no, supplier.name as supname, gemstone_type.name as typename, lot, number, gemstone.dateadd as _dateadd, no, task3, task4, task5, task6, task7, task8, task9, task10, qc1, qc2, edit, pass, process_type.name as process_name, process_detail, gemstone.process_type as ptype');
