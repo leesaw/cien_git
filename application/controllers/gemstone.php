@@ -753,7 +753,7 @@ class Gemstone extends CI_Controller {
                             $tempid = $loop->tempid;
                         }
                         $tempid++;
-												
+
                         $datetime = date('Y-m-d H:i:s');
 
                         $worker_query = $this->gemstone_model->getBackWorker($barcodeid);
@@ -1070,12 +1070,47 @@ class Gemstone extends CI_Controller {
 
             $row_temp = $this->gemstone_model->checkBarcode_Temp_QC($barcodeid, $status);
 
+						// for sesto_status
+						$query_get_status = $this->gemstone_model->getBarcode($barcodeid);
+						foreach ($query_get_status as $loop) {
+								$sesto_status = $loop->sesto_status;
+								$gemstone_id = $loop->gid;
+								break;
+						}
+						if ($sesto_status == 1) {
+							$sesto_query = $this->gemstone_model->getAllBarcode($gemstone_id);
+							//$this->cleartemp();
+						}
             //$row_temp = 0;
 			if ($row>0)	{
                 if ($row_temp>0) {
                     $this->session->set_flashdata('showresult', 'fail2');
                     redirect(current_url());
                 }else{
+									if ($sesto_status == 1) {
+										$result = $this->gemstone_model->getTempID_QC();
+                    foreach ($result as $loop)
+                    {
+                        $tempid = $loop->tempid;
+                    }
+                    $tempid++;
+
+                    $datetime = date('Y-m-d H:i:s');
+
+										foreach($sesto_query as $loop_sesto) {
+	                    $barcode = array(
+	                        'barcode' => $loop_sesto->gemid,
+	                        'tempid' => $tempid,
+	                        'status' => $status,
+	                        'dateadd' => $datetime,
+	                        'userid' => $this->session->userdata('sessid')
+	                    );
+	                    $result2 = $this->gemstone_model->addBarcodeTemp_QC($barcode);
+											$tempid++;
+										}
+                    redirect(current_url());
+
+									}else{
                     // get max tempid and increment for new tempid
                     $result = $this->gemstone_model->getTempID_QC();
                     foreach ($result as $loop)
@@ -1095,6 +1130,7 @@ class Gemstone extends CI_Controller {
                     );
                     $result2 = $this->gemstone_model->addBarcodeTemp_QC($barcode);
                     redirect(current_url());
+									}
                 }
 			}else{
 				$this->session->set_flashdata('showresult', 'fail1');

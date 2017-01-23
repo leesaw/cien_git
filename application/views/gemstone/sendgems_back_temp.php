@@ -70,7 +70,7 @@
                                         <input type="hidden" name="workerid" value="<?php echo $worker_id; ?>" />
                                         <input type="text" class="form-control" name="barcode" id="barcode" value="" placeholder="Scan Barcode" autocomplete="off">
 										<p class="help-block"><?php echo form_error('barcode'); ?></p>
-										<a type="button" class="btn btn-success btn-lg" onclick="return check_barcode()"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </a>
+										<button type="submit" class="btn btn-success btn-lg" onclick="return check_barcode()"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </button>
                     </form>
 
                         <?php if($count == 1) { foreach($temp_array as $loop) {
@@ -184,19 +184,19 @@
     {
 		$("#barcode").focus();
 
-      $('#barcode').keyup(function(e){ //enter next
-          if(e.keyCode == 13) {
-              var barcode =  document.getElementById("barcode").value;
-              var error_worker = <?php echo $error_worker; ?>;
-              if (barcode == "*OK*") {
-                  if (error_worker>0) {
-                      alert("ชื่อผู้คืนของไม่ตรงกับของที่มาคืน !!! \n\nกรุณาตรวจสอบรายการที่มีแสดงเป็นสีแดงด้านบน");
-                      return false;
-                  }
-              }
-              document.getElementById("frmBarcode").submit();
-          }
-      });
+      // $('#barcode').keyup(function(e){ //enter next
+      //     if(e.keyCode == 13) {
+      //         var barcode =  document.getElementById("barcode").value;
+      //         var error_worker = <?php echo $error_worker; ?>;
+      //         if (barcode == "*OK*") {
+      //             if (error_worker>0) {
+      //                 alert("ชื่อผู้คืนของไม่ตรงกับของที่มาคืน !!! \n\nกรุณาตรวจสอบรายการที่มีแสดงเป็นสีแดงด้านบน");
+      //                 return false;
+      //             }
+      //         }
+      //         document.getElementById("frmBarcode").submit();
+      //     }
+      // });
 
     });
 
