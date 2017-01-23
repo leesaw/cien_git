@@ -9,7 +9,7 @@
 	<div class="wrapper">
 	<?php $this->load->view('menu'); ?>
     <?php $url = site_url("gemstone/deletetemp_task"); ?>
-	
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -40,12 +40,12 @@
             <li class="active">Scan Barcode</li>
         </ol>
     </section>
-	
+
 	<section class="content">
 		<div class="row">
             <div class="col-lg-8">
                 <div class="box box-primary">
-				<?php if ($this->session->flashdata('showresult') == 'success') echo '<div class="alert-message alert alert-success"> ระบบทำการเพิ่มข้อมูลเรียบร้อยแล้ว</div>'; 
+				<?php if ($this->session->flashdata('showresult') == 'success') echo '<div class="alert-message alert alert-success"> ระบบทำการเพิ่มข้อมูลเรียบร้อยแล้ว</div>';
 						  else if ($this->session->flashdata('showresult') == 'fail1') echo '<div class="alert-message alert alert-danger"> ไม่มี Barcode นี้ในระบบ</div>';
                           else if ($this->session->flashdata('showresult') == 'fail2') echo '<div class="alert-message alert alert-danger"> Barcode ซ้ำ</div>';
                           else if ($this->session->flashdata('showresult') == 'fail3') echo '<div class="alert-message alert alert-danger"> กรุณาสแกนผู้เบิกของ</div>';
@@ -64,12 +64,12 @@
 					<div class="box-header">
                         <h4 class="box-title">กรุณาสแกน Barcode</h4></div>
 					<form method="post" action="<?php echo site_url('gemstone/sendgems_task_temp/'.$taskid); ?>">
-                        
+
                     <?php $workername = ""; $worker_id = 0;
-                            foreach($worker_array as $loop) { 
-                              $worker_id = $loop->workid; 
+                            foreach($worker_array as $loop) {
+                              $worker_id = $loop->workid;
                               $workername = $loop->worker_id." ".$loop->firstname." ".$loop->lastname; } ?>
-                        
+
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-8">
@@ -77,27 +77,27 @@
                                         <label>Barcode *</label>
                                         <input type="hidden" name="taskid" value="<?php echo $taskid; ?>" />
                                         <input type="hidden" name="workerid" value="<?php echo $worker_id; ?>" />
-                                        <input type="text" class="form-control" name="barcode" id="barcode" value="" placeholder="Scan Barcode">
-										<p class="help-block"><?php echo form_error('barcode'); ?></p>	
+                                        <input type="text" class="form-control" name="barcode" id="barcode" value="" placeholder="Scan Barcode" autocomplete="off">
+										<p class="help-block"><?php echo form_error('barcode'); ?></p>
 										<button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </button>
                     </form>
-                        <?php if (($taskid == 4) && ($getall == 0)) { ?> 
+                        <?php if (($taskid == 4) && ($getall == 0)) { ?>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='<?php echo site_url('gemstone/sendgems_task_temp_shlek/'.$taskid.'/'.$worker_id); ?>'><button type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มทั้งชุด</b>  </button></a> <?php } ?>
                                     </div>
 							</div>
 						</div>
-                        
-                        
+
+
                         <?php if(($taskid!=10)&&($taskid!=0)) { ?>
                         <div class="row">
                             <div class="col-md-8">
                                     <div class="form-group has-error">
                                         <label for="inputError">ผู้รับของ *</label>
                                         <input type="text" class="form-control input-lg" name="worker_name" id="worker_name" value="<?php echo $workername; ?>" placeholder="ยังไม่พบข้อมูล" readonly>
-										<p class="help-block"><?php echo form_error('barcode'); ?></p>	
+										<p class="help-block"><?php echo form_error('barcode'); ?></p>
                                     </div>
 							</div>
-						</div>    
+						</div>
                         <?php } ?>
         <div class="row">
 			<div class="col-lg-12">
@@ -114,8 +114,8 @@
                                     </tr>
                                 </thead>
 								<tbody>
-								<?php if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop) { 
-                                    
+								<?php if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop) {
+
 								?>
 									<td><?php echo $i; ?></td>
 									<td><?php echo $loop->tbarcode."-".$loop->supname.$loop->lot."-".$loop->number."(#".$loop->no.")"." ".$loop->typename; ?></td>
@@ -129,16 +129,16 @@
 						</div>
 					</div>
 				</div>
-			</div>	
+			</div>
 		</div>
-                        
-                        
-                        
-                        
+
+
+
+
 					</div>
                     <div class="box-footer">
                         <a href="<?php echo site_url("gemstone/saveTemptoTask/".$taskid);  ?>" onClick="return chk_add_worker()"><button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button></a>
-                        &nbsp; &nbsp; &nbsp; &nbsp; 
+                        &nbsp; &nbsp; &nbsp; &nbsp;
                         <button type="button" class="btn btn-danger btn-lg" onClick="window.location.href='<?php echo site_url("gemstone/cleartemp/".$taskid); ?>'"><span class="glyphicon glyphicon-repeat"></span>&nbsp;<b> เริ่มต้นใหม่ทั้งหมด </b></button>
                     </div>
                 </div>
@@ -146,8 +146,8 @@
         </div>
         </section>
 		</div>
-    
-    
+
+
 	</div>
 
 
@@ -160,15 +160,15 @@
     {
 		$("#barcode").focus();
 
-		
+
     });
-    
+
 function del_confirm(val1, val2) {
 	bootbox.confirm("ต้องการลบข้อมูลที่เลือกไว้ใช่หรือไม่ ?", function(result) {
 				var currentForm = this;
 				var myurl = <?php echo json_encode($url); ?>;
             	if (result) {
-				
+
 					window.location.replace(myurl+"/"+val1+"/"+val2);
 				}
 

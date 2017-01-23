@@ -7,7 +7,7 @@
 <body class="skin-blue">
 	<div class="wrapper">
 	<?php $this->load->view('menu'); ?>
-	
+
     <?php
         if(is_array($barcode_array)) {
             foreach($barcode_array as $loop) {
@@ -24,10 +24,11 @@
                 $carat = $loop->carat;
                 $process_name = $loop->process_name;
                 $process_detail = $loop->process_detail;
-                
+								$sesto_status = $loop->sesto_status;
+
                 $phpdate = strtotime($loop->datepurchase);
                 $date = date( 'j M Y', $phpdate );
-                
+
                 $creatid = $loop->gemid;
             }
         }
@@ -42,7 +43,7 @@
             <li><a href="#"><i class="fa fa-dashboard"></i> Stone details</a></li>
         </ol>
     </section>
-	
+
 	<section class="content">
 		<div class="row">
             <div class="col-lg-8">
@@ -92,7 +93,7 @@
                                         <input type="text" class="form-control" name="sizeout" id="sizeout" value="<?php echo $size_out; ?>" readonly>
                                     </div>
 							</div>
-                        
+
                         </div>
                         <div class="row">
                             <div class="col-md-3">
@@ -107,21 +108,31 @@
                                         <input type="text" class="form-control" name="process_detail" id="process_detail" value="<?php echo $process_detail; ?>" readonly>
                                     </div>
 							</div>
+												<div class="col-md-3">
+													<?php if($sesto_status==1) { ?>
+														<div class="form-group has-error">
+															<br>
+																<label>
+																	งานเสสโต
+																</label>
+														</div>
+													<?php } ?>
+												</div>
                         </div>
                     </div>
                     <div class="box-footer">
                 <?php if ($gid > 0) { ?>
                     <button type="button" class="btn btn-lg btn-primary" onClick="sendPrinter()"><i class="fa fa-print"></i> &nbsp; Print<br><h5>พิมพ์ใบส่งโรงงาน</h5></button>
-                    &nbsp; &nbsp; &nbsp; &nbsp; 
+                    &nbsp; &nbsp; &nbsp; &nbsp;
                     <a href="<?php echo site_url("purchase/deleteparcel/".$gid); ?>"><button type="button" class="btn btn-lg btn-danger"> ลบข้อมูลนี้ </button></a>
                 <?php }else{ ?>
                     <button type="button" class="btn btn-lg btn-success" onClick="sendPrinter_inparcel()"><i class="fa fa-print"></i> &nbsp; พิมพ์ Barcode ทั้งหมด</button>
-                    &nbsp; &nbsp; &nbsp; &nbsp; 
+                    &nbsp; &nbsp; &nbsp; &nbsp;
                     <a href="<?php echo site_url("purchase/createbarcode"); ?>"><button type="button" class="btn btn-lg btn-danger"> ยกเลิก </button></a>
                 <?php } ?>
                     </div>
-                </div> 
-					
+                </div>
+
 				</div>
 			</section>
 		</div>
@@ -139,7 +150,7 @@ $(document).ready(function() {
 function sendPrinter() {
 	window.open("<?php echo site_url("purchase/printbarcode/".$gid."/".$barcode_print); ?>");
 }
-    
+
 function sendPrinter_inparcel() {
 	window.open("<?php echo site_url("purchase/printbarcode_inparcel/".$creatid); ?>");
 }

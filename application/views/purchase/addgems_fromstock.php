@@ -7,7 +7,7 @@
 <body class="skin-blue">
 	<div id="wrapper">
 	<?php $this->load->view('menu'); ?>
-	
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -18,7 +18,7 @@
             <li><a href="#"><i class="fa fa-dashboard"></i> Stone details</a></li>
         </ol>
     </section>
-	
+
 	<section class="content">
 		<div class="row">
             <div class="col-lg-8">
@@ -26,7 +26,7 @@
 				<?php if ($this->session->flashdata('showresult') == 'fail') {
 					    echo '<div class="box-heading"><div class="alert alert-danger"> Barcode ซ้ำกับที่มีอยู่ในระบบ</div>';
 						?> </div> <?php
-					  } 
+					  }
 				?>
 					<div class="box-header"><h4 class="box-title">* Please fill in all fields</h4> </div>
 					<form method="post" action="<?php echo site_url('purchase/savegems_fromstock'); ?>" onSubmit="return chk_add_gems()">
@@ -36,12 +36,12 @@
                                 $remain_amount=0;
                                 $remain_carat=0;
                                 if(is_array($stone_array)) {
-				                    foreach($stone_array as $loop){ 
-                            
+				                    foreach($stone_array as $loop){
+
                             ?>
                             <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Supplier *</label> 
+                                        <label>Supplier *</label>
                                         <input type="hidden" name="remain_amount" id="remain_amount" value="<?php echo $loop->remain; ?>">
                                         <input type="hidden" name="remain_carat" id="remain_carat" value="<?php echo $loop->remaincarat; ?>">
                                         <input type="hidden" name="stockid" value="<?php echo $stockid; ?>">
@@ -49,7 +49,7 @@
                                         <input type="text" class="form-control" name="supname" id="supname" value="<?php echo $loop->supname; ?>" readonly>
                                     </div>
 							</div>
-                            
+
 							<div class="col-md-3">
                                     <div class="form-group">
                                             <label>Lot</label>
@@ -98,12 +98,12 @@
 				                } } ?>
                       </ul>
                     </div><!-- /btn-group -->
-                    
+
                   </div>
-                                    
+
 							</div>
                         </div>
-                        <div class="row">    
+                        <div class="row">
                             <div class="col-md-4">
                                     <div class="form-group">
                                         <label>ประเภทงาน *</label> <button type="button" class="btn btn-primary btn-xs" onClick="add_processtype();"> <i class="fa fa-plus"></i> เพิ่มประเภทงาน</button>
@@ -122,11 +122,19 @@
 								        <p class="help-block"><?php echo form_error('process_detail'); ?></p>
                                     </div>
 							</div>
+							<div class="col-md-3">
+									<div class="checkbox">
+										<br>
+											<label>
+												<input type="checkbox" name="sesto_status" id="sesto_status" value="1"> งานเสสโต
+											</label>
+									</div>
+							</div>
                             <?php } } ?>
 						</div>
 					</div>
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary btn-lg">  <i class="fa fa-floppy-o"></i> &nbsp;&nbsp; <b>Save</b>  &nbsp; &nbsp; </button>&nbsp; &nbsp; &nbsp; &nbsp; 
+                        <button type="submit" class="btn btn-primary btn-lg">  <i class="fa fa-floppy-o"></i> &nbsp;&nbsp; <b>Save</b>  &nbsp; &nbsp; </button>&nbsp; &nbsp; &nbsp; &nbsp;
                         <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='<?php echo site_url("purchase/addstock"); ?>'"> <i class="fa fa-reply"></i> &nbsp;&nbsp; <b>Back</b> </button>
                     </div>
                         </form>
@@ -149,10 +157,10 @@
 
         $(".alert").alert();
         window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
-        
+
         function chk_add_gems()
 		{
-            
+
             var remain_amount = parseInt($('#remain_amount').val());
             var remain_carat = parseFloat($('#remain_carat').val());
             remain_carat = remain_carat.toFixed(2);
@@ -164,21 +172,21 @@
 				$('#amount').focus();
 				return false;
 			}else{
-                if (isNaN(amount)) 
+                if (isNaN(amount))
                 {
                     alert("กรุณาใส่เฉพาะตัวเลข");
                     $('#amount').focus();
                     return false;
                 }
             }
-            
+
             var carat=$('#carat').val();
 			if(carat==0){
 				alert('กรุณาป้อนกะรัต');
 				$('#carat').focus();
 				return false;
 			}else{
-                if (isNaN(carat)) 
+                if (isNaN(carat))
                 {
                     alert("กรุณาใส่เฉพาะตัวเลข");
                     $('#carat').focus();
@@ -204,16 +212,16 @@
             */
 			if(!ok) {return false;}
 		}
-        
-        function addsizeout(val1) 
+
+        function addsizeout(val1)
         {
             var id = 'size'+val1;
             document.getElementById('sizeout').value = document.getElementById(id).title;;
         }
-        
+
         function add_supplier() {
-            bootbox.prompt("ป้อนชื่อ Supplier ใหม่", function(result) {       
-                if (result != null && result !="") {                                                                        
+            bootbox.prompt("ป้อนชื่อ Supplier ใหม่", function(result) {
+                if (result != null && result !="") {
                     var name = result;
                     $.ajax({
                             'url' : '<?php echo site_url('suppliers/addNewSupplier'); ?>',
@@ -222,17 +230,17 @@
                             'success' : function(data){
                                 window.location.reload();
                             }
-                        }); 
+                        });
 
                 }else if (result =="") {
                     alert('ไม่สามารถเพิ่มข้อมูลได้');
                 }
             });
         }
-        
+
         function add_gemtype() {
-            bootbox.prompt("ป้อนชื่อ Type ใหม่", function(result) {       
-                if (result != null && result !="") {                                                                        
+            bootbox.prompt("ป้อนชื่อ Type ใหม่", function(result) {
+                if (result != null && result !="") {
                     var name = result;
                     $.ajax({
                             'url' : '<?php echo site_url('gemstone/addNewGemtype'); ?>',
@@ -241,17 +249,17 @@
                             'success' : function(data){
                                 window.location.reload();
                             }
-                        }); 
+                        });
 
                 }else if (result =="") {
                     alert('ไม่สามารถเพิ่มข้อมูลได้');
                 }
             });
         }
-        
+
         function add_processtype() {
-            bootbox.prompt("ป้อนชื่อประเภทงานใหม่", function(result) {       
-                if (result != null && result !="") {                                                                        
+            bootbox.prompt("ป้อนชื่อประเภทงานใหม่", function(result) {
+                if (result != null && result !="") {
                     var name = result;
                     $.ajax({
                             'url' : '<?php echo site_url('gemstone/addNewProcesstype'); ?>',
@@ -260,7 +268,7 @@
                             'success' : function(data){
                                 window.location.reload();
                             }
-                        }); 
+                        });
 
                 }else if (result =="") {
                     alert('ไม่สามารถเพิ่มข้อมูลได้');
