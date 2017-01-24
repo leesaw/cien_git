@@ -1,4 +1,5 @@
 <?php
+
 Class User extends CI_Model
 {
  function login($username, $password)
@@ -20,7 +21,7 @@ Class User extends CI_Model
      return false;
    }
  }
- 
+
 function checkpass($id, $password)
  {
    $this -> db -> select('username');
@@ -40,47 +41,47 @@ function checkpass($id, $password)
      return false;
    }
  }
- 
+
  function getUsers()
  {
 	$this->db->select("id, username, firstname, lastname, status");
 	$this->db->order_by("id", "asc");
-	$this->db->from('users');	
+	$this->db->from('users');
 	$this->db->where('status >', 0);
-	$query = $this->db->get();		
+	$query = $this->db->get();
 	return $query->result();
  }
- 
+
  function getOneUser($id=NULL)
  {
 	$this->db->select("id, username, firstname, lastname, status");
 	$this->db->order_by("id", "asc");
-	$this->db->from('users');			
-	$this->db->where('id', $id);	
-	$query = $this->db->get();		
+	$this->db->from('users');
+	$this->db->where('id', $id);
+	$query = $this->db->get();
 	return $query->result();
  }
- 
+
  function addUser($user=NULL)
- {		
+ {
 	$this->db->insert('users', $user);
-	return $this->db->insert_id();			
+	return $this->db->insert_id();
  }
- 
+
  function delUser($id=NULL)
  {
 	$this->db->where('id', $id);
-	$this->db->delete('users'); 
+	$this->db->delete('users');
  }
- 
+
  function editUser($user=NULL)
  {
 	$this->db->where('id', $user['id']);
 	unset($user['id']);
-	$query = $this->db->update('users', $user); 	
+	$query = $this->db->update('users', $user);
 	return $query;
  }
- 
+
  function banUser($id=NULL)
  {
 	$this->db->where('id', $id);
@@ -88,10 +89,9 @@ function checkpass($id, $password)
 				'username' => "",
 				'status' => 0
 			);
-	$query = $this->db->update('users', $user); 	
+	$query = $this->db->update('users', $user);
 	return $query;
  }
 
 }
 ?>
-

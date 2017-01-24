@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class VerifyLogin extends CI_Controller {
+class Verifylogin extends CI_Controller {
 
  function __construct()
  {
@@ -20,7 +20,7 @@ class VerifyLogin extends CI_Controller {
    if($this->form_validation->run() == FALSE)
    {
      //Field validation failed.&nbsp; User redirected to login page
-	 
+
 		$data['base'] = $this->config->item('base_url');
 		$data['title'] = "Cien|Gemstone Tracking System - Login";
 		$this->load->view('login_view',$data);
@@ -53,7 +53,7 @@ class VerifyLogin extends CI_Controller {
 		 'sesslastname' => $row->lastname,
 		 'sessstatus' => $row->status
        );
-    
+
        $this->session->set_userdata($sess_array);
      }
      return TRUE;
@@ -63,13 +63,13 @@ class VerifyLogin extends CI_Controller {
 			$this->form_validation->set_message('check_database', '');
             return FALSE;
    }
-   else 
+   else
    {
      $this->form_validation->set_message('check_database', '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><i class="icon fa fa-ban"></i><b>ไม่สามารถเข้าสู่ระบบได้ !</b></div>');
      return false;
    }
  }
- 
+
  function required_username()
     {
         if( ! $this->input->post('username'))
@@ -77,7 +77,7 @@ class VerifyLogin extends CI_Controller {
             $this->form_validation->set_message('required_username', '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><b><i class="icon fa fa-ban"></i> กรุณาป้อน Username!</b></div>');
             return FALSE;
         }
-		
+
         return TRUE;
     }
  function required_password()
@@ -87,8 +87,7 @@ class VerifyLogin extends CI_Controller {
             $this->form_validation->set_message('required_password', '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><b><i class="icon fa fa-ban"></i> กรุณาป้อน Password!</b></div>');
             return FALSE;
         }
-		
+
         return TRUE;
     }
 }
-?>

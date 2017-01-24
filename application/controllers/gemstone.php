@@ -328,6 +328,7 @@ class Gemstone extends CI_Controller {
             $nogood = $this->gemstone_model->checkBarcode_nogood($barcodeid);
 
 						// for sesto_status
+						$sesto_status = 0;
             foreach ($query as $loop) {
                 $sesto_status = $loop->sesto_status;
 								$gemstone_id = $loop->gid;
@@ -385,6 +386,7 @@ class Gemstone extends CI_Controller {
                                 if ($pretask>0) {
 																		if ($sesto_status == 1) {
 																			$result = $this->gemstone_model->getTempID();
+																			$tempid = 0;
 	                                    foreach ($result as $loop)
 	                                    {
 	                                        $tempid = $loop->tempid;
@@ -411,6 +413,7 @@ class Gemstone extends CI_Controller {
 																		}else{
 	                                    // get max tempid and increment for new tempid
 	                                    $result = $this->gemstone_model->getTempID();
+																			$tempid = 0;
 	                                    foreach ($result as $loop)
 	                                    {
 	                                        $tempid = $loop->tempid;
@@ -679,6 +682,7 @@ class Gemstone extends CI_Controller {
             }
 
 						// for sesto_status
+						$sesto_status = 0;
 						$query_get_status = $this->gemstone_model->getBarcode($barcodeid);
             foreach ($query_get_status as $loop) {
                 $sesto_status = $loop->sesto_status;
@@ -719,6 +723,7 @@ class Gemstone extends CI_Controller {
                     if (($center > 0)&&($status>0)) {
 											if ($sesto_status == 1) {
 												$result = $this->gemstone_model->getTempID_back();
+												$tempid = 0;
                         foreach ($result as $loop)
                         {
                             $tempid = $loop->tempid;
@@ -748,6 +753,7 @@ class Gemstone extends CI_Controller {
 											}else{
                         // get max tempid and increment for new tempid
                         $result = $this->gemstone_model->getTempID_back();
+												$tempid = 0;
                         foreach ($result as $loop)
                         {
                             $tempid = $loop->tempid;

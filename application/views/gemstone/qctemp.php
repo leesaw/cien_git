@@ -9,7 +9,7 @@
 	<div class="wrapper">
 	<?php $this->load->view('menu'); ?>
     <?php $url = site_url("gemstone/deletetemp_qc"); ?>
-	
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -30,33 +30,33 @@
             <li class="active">Scan Barcode</li>
         </ol>
     </section>
-	
+
 	<section class="content">
 		<div class="row">
             <div class="col-lg-8">
                 <div class="box box-primary">
-				<?php if ($this->session->flashdata('showresult') == 'success') echo '<div class="alert-message alert alert-success"> ระบบทำการเพิ่มข้อมูลเรียบร้อยแล้ว</div>'; 
+				<?php if ($this->session->flashdata('showresult') == 'success') echo '<div class="alert-message alert alert-success"> ระบบทำการเพิ่มข้อมูลเรียบร้อยแล้ว</div>';
 						  else if ($this->session->flashdata('showresult') == 'fail1') echo '<div class="alert-message alert alert-danger"> ไม่มี Barcode นี้ในระบบ</div>';
                           else if ($this->session->flashdata('showresult') == 'fail2') echo '<div class="alert-message alert alert-danger"> Barcode ซ้ำ</div>';
                           else if ($this->session->flashdata('showresult') == 'fail3') echo '<div class="alert-message alert alert-danger"> กรุณาสแกนผู้เบิกของ</div>';
-					
+
 					?>
 					<div class="box-header">
                         <h4 class="box-title">กรุณาสแกน Barcode</h4></div>
-					<form method="post" action="<?php echo site_url('gemstone/qctemp/'.$taskid); ?>">                        
+					<form method="post" action="<?php echo site_url('gemstone/qctemp/'.$taskid); ?>">
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-8">
                                     <div class="form-group">
                                         <label>Barcode *</label>
-                                        <input type="text" class="form-control" name="barcode" id="barcode" value="" placeholder="Scan Barcode">
-										<p class="help-block"><?php echo form_error('barcode'); ?></p>	
+                                        <input type="text" class="form-control" name="barcode" id="barcode" value="" placeholder="Scan Barcode" autocomplete="off">
+										<p class="help-block"><?php echo form_error('barcode'); ?></p>
 										<button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </button>
                     </form>
                                     </div>
 							</div>
-						</div>   
-                        
+						</div>
+
         <div class="row">
 			<div class="col-lg-12">
                 <div class="panel panel-default">
@@ -72,8 +72,8 @@
                                     </tr>
                                 </thead>
 								<tbody>
-								<?php if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop) { 
-                                    
+								<?php if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop) {
+
 								?>
 									<td><?php echo $i; ?></td>
 									<td><?php echo $loop->tbarcode."-".$loop->supname.$loop->lot."-".$loop->number."(#".$loop->no.")"." ".$loop->typename; ?></td>
@@ -87,7 +87,7 @@
 						</div>
 					</div>
 				</div>
-			</div>	
+			</div>
 		</div>
                 <?php if ($taskid==1) { ?>
                     <form method="post" action="<?php echo site_url('gemstone/saveTemptoQC/'.$taskid); ?>" onSubmit="return chk_double(this)">
@@ -112,8 +112,8 @@
                                 <input type="text" class="form-control" name="detail" id="detail" value="<?php echo set_value('lot'); ?>">
                             </div>
                         </div>
-                    </div>    
-                <?php }else if ($taskid==3) { ?>  
+                    </div>
+                <?php }else if ($taskid==3) { ?>
                     <div class="row">
                         <div class="col-md-5">
                                     <div class="form-group">
@@ -138,8 +138,8 @@
                                 <input type="text" class="form-control" name="detail" id="detail" value="<?php echo set_value('lot'); ?>">
                             </div>
                         </div>
-                    </div> 
-                <?php }else if (($taskid==4) || ($taskid==5)) { ?>  
+                    </div>
+                <?php }else if (($taskid==4) || ($taskid==5)) { ?>
                     <div class="row">
                         <div class="col-md-5">
                                     <div class="form-group">
@@ -148,13 +148,13 @@
                                         <input type="text" class="form-control" name="detail" id="detail" value="">
                                     </div>
 				        </div>
-                    </div> 
+                    </div>
                 <?php } ?>
 					</div>
                     <div class="box-footer">
                         <button type="submit" name="submitbtn" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button>
                         </form>
-                        &nbsp; &nbsp; &nbsp; &nbsp; 
+                        &nbsp; &nbsp; &nbsp; &nbsp;
                         <button type="button" class="btn btn-danger btn-lg" onClick="window.location.href='<?php echo site_url("gemstone/cleartemp_QC/".$taskid); ?>'"><span class="glyphicon glyphicon-repeat"></span>&nbsp;<b> เริ่มต้นใหม่ทั้งหมด </b></button>
                     </div>
                 </div>
@@ -162,8 +162,8 @@
         </div>
         </section>
 		</div>
-    
-    
+
+
 	</div>
 
 
@@ -176,22 +176,22 @@
     {
 		$("#barcode").focus();
 
-		
+
     });
-    
+
 function del_confirm(val1,val2) {
 	bootbox.confirm("ต้องการลบข้อมูลที่เลือกไว้ใช่หรือไม่ ?", function(result) {
 				var currentForm = this;
 				var myurl = <?php echo json_encode($url); ?>;
             	if (result) {
-				
+
 					window.location.replace(myurl+"/"+val1+"/"+val2);
 				}
 
 		});
 
 }
-    
+
 function chk_error(form)
 {
     var error=$('#error').val();
@@ -201,10 +201,10 @@ function chk_error(form)
         return false;
     }else{
         form.submitbtn.disabled = true;
-        return true;   
+        return true;
     }
 }
-    
+
 function chk_double(form) // Submit button clicked
   {
 
