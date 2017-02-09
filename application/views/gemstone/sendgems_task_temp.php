@@ -137,7 +137,7 @@
 
 					</div>
                     <div class="box-footer">
-                        <a href="<?php echo site_url("gemstone/saveTemptoTask/".$taskid);  ?>" onClick="return chk_add_worker()"><button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button></a>
+                        <a href="<?php echo site_url("gemstone/saveTemptoTask/".$taskid);  ?>" onClick="return chk_add_worker()"><button type="button" name="savebtn" id="savebtn" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button></a>
                         &nbsp; &nbsp; &nbsp; &nbsp;
                         <button type="button" class="btn btn-danger btn-lg" onClick="window.location.href='<?php echo site_url("gemstone/cleartemp/".$taskid); ?>'"><span class="glyphicon glyphicon-repeat"></span>&nbsp;<b> เริ่มต้นใหม่ทั้งหมด </b></button>
                     </div>
@@ -158,9 +158,9 @@
 <script type="text/javascript">
     $(document).ready(function()
     {
-		$("#barcode").focus();
+			$("#barcode").focus();
 
-
+			document.getElementById("savebtn").disabled = false;
     });
 
 function del_confirm(val1, val2) {
@@ -188,6 +188,7 @@ window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
 				$('#worker_name').focus();
 				return false;
 			}
+			document.getElementById("savebtn").disabled = true;
 		}
 
 </script>

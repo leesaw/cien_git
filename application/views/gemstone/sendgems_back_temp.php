@@ -161,7 +161,7 @@
 
 					</div>
                     <div class="box-footer">
-                        <a href="<?php echo site_url("gemstone/saveTemptoBack/".$taskid);  ?>" onClick="return chk_add_worker()"><button type="button" name="submitbtn" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button></a>
+                        <a href="<?php echo site_url("gemstone/saveTemptoBack/".$taskid);  ?>" onClick="return chk_add_worker()"><button type="button" name="submitbtn" id="savebtn" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; <b>ยืนยันรายการทั้งหมด</b>  </button></a>
                         &nbsp; &nbsp; &nbsp; &nbsp;
                         <button type="button" class="btn btn-danger btn-lg" onClick="window.location.href='<?php echo site_url("gemstone/cleartemp_back/".$taskid); ?>'"><span class="glyphicon glyphicon-repeat"></span>&nbsp;<b> เริ่มต้นใหม่ทั้งหมด </b></button>
                     </div>
@@ -183,7 +183,7 @@
     $(document).ready(function()
     {
 		$("#barcode").focus();
-
+		document.getElementById("savebtn").disabled = false;
       // $('#barcode').keyup(function(e){ //enter next
       //     if(e.keyCode == 13) {
       //         var barcode =  document.getElementById("barcode").value;
@@ -231,6 +231,7 @@ function chk_add_worker()
     }else{
         form.submitbtn.disabled = true;
         form.submitbtn.value = "Please wait...";
+				document.getElementById("savebtn").disabled = true;
         return true;
     }
 }
