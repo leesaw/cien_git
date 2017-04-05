@@ -7,7 +7,7 @@ function getAllstaff_station($status, $start, $end)
   $start = $start. " 00:00:00";
   $end = $end." 23:59:59";
 
-  $this->db->select("orker.id as workerid, firstname, lastname, COUNT(*) as sum1, (COUNT(*)*factor) as sum2");
+  $this->db->select("worker.id as workerid, firstname, lastname, COUNT(*) as sum1, (COUNT(*)*factor) as sum2");
   $this->db->from('gemstone_back');
   $this->db->join('gemstone_barcode', 'gemstone_barcode.id=gemstone_back.barcode','left');
   $this->db->join('gemstone', 'gemstone.id=gemstone_barcode.gemstone_id','left');

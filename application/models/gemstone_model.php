@@ -220,6 +220,18 @@ Class Gemstone_model extends CI_Model
 	return $query->num_rows();
  }
 
+ function check_sesto_status($barcode)
+ {
+    $this->db->select("gemstone.id as gid, sesto_status");
+	$this->db->from('gemstone_barcode');
+    $this->db->join('gemstone','gemstone.id=gemstone_barcode.gemstone_id','left');
+	$this->db->where('gemstone_barcode.id', $barcode);
+  $this->db->where('sesto_status', 1);
+    $this->db->where('disable',0);
+	$query = $this->db->get();
+	return $query->result();
+ }
+
  function checkBarcode_center($id)
  {
     $this->db->select('id');
@@ -362,10 +374,10 @@ Class Gemstone_model extends CI_Model
 
  function getTempID_back()
  {
-	$this->db->select("tempid");
-	$this->db->order_by("tempid", "desc");
+	$this->db->select("MAX(tempid) as tempid");
+	// $this->db->order_by("tempid", "desc");
 	$this->db->from('gemstone_back_temp');
-	$this->db->limit(1);
+	// $this->db->limit(1);
 	$query = $this->db->get();
 	return $query->result();
  }

@@ -662,7 +662,8 @@ class Gemstone extends CI_Controller {
                 return $this->cleartemp_back();
             }
 
-			$row = $this->gemstone_model->checkBarcode($barcodeid);
+						// barcode id , gemstone id , sesto_status
+						$row = $this->gemstone_model->checkBarcode($barcodeid);
             $row_temp = $this->gemstone_model->checkBarcode_Temp_back($barcodeid, $status);
             $center = $this->gemstone_model->checkBarcode_center($barcodeid);
 
@@ -683,17 +684,7 @@ class Gemstone extends CI_Controller {
 
 						// for sesto_status
 						$sesto_status = 0;
-						$query_get_status = $this->gemstone_model->getBarcode($barcodeid);
-            foreach ($query_get_status as $loop) {
-                $sesto_status = $loop->sesto_status;
-								$gemstone_id = $loop->gid;
-								break;
-            }
-						if ($sesto_status == 1) {
-            	$sesto_query = $this->gemstone_model->getAllBarcode($gemstone_id);
-							//$this->cleartemp();
-						}
-
+						// $query_get_status = $this->gemstone_model->getBarcode($barcodeid);
 
 
             $this->load->model('worker_model','',TRUE);
@@ -721,6 +712,13 @@ class Gemstone extends CI_Controller {
                     redirect(current_url());
                 }else{
                     if (($center > 0)&&($status>0)) {
+											$row_sesto = $this->gemstone_model->check_sesto_status($barcodeid);
+											foreach ($row_sesto as $loop) {
+													$sesto_status = $loop->sesto_status;
+													$gemstone_id = $loop->gid;
+													break;
+											}
+
 											if ($sesto_status == 1) {
 												$result = $this->gemstone_model->getTempID_back();
 												$tempid = 0;
@@ -735,6 +733,7 @@ class Gemstone extends CI_Controller {
                         $worker_query = $this->gemstone_model->getBackWorker($barcodeid);
                         foreach($worker_query as $worker_loop) $taken_workerid = $worker_loop->worker;
 
+												$sesto_query = $this->gemstone_model->getAllBarcode($gemstone_id);
 												foreach($sesto_query as $loop_sesto) {
 	                        $barcode = array(
 	                            'barcode' => $loop_sesto->gemid,

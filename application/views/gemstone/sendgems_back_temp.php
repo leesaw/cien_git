@@ -115,39 +115,37 @@
 								<tbody>
 								<?php
                                     $error_worker = 0;
-                                    if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop_index => $loop) { if ($loop->taken_workerid != $loop->worker) { $error_worker++;
+                                    if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop) { if ($loop->taken_workerid != $loop->worker) { $error_worker++;
 
 								?>
+								<tr>
 									<td><?php echo $i; ?></td>
 									<td><?php echo "<b class='text-red'><u>".$loop->tbarcode."</u></b>-".$loop->supname.$loop->lot."-".$loop->number."(#".$loop->no.")"." ".$loop->typename; ?></td>
                                     <td><?php
-                                    if ($loop->taken_workerid != $loop->worker)
                                         echo "<b class='text-red'><u>".$loop->firstname." ".$loop->lastname."</u></b>";
-                                    else
-                                        echo $loop->firstname." ".$loop->lastname; ?>
+																				?>
                                     </td>
 									<td width="50">
 									<button type="button" class="btnDelete btn btn-danger btn-xs" onclick="del_confirm(<?php echo $loop->tempid; ?>,<?php echo $taskid; ?>)" data-title="Delete" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล"><span class="glyphicon glyphicon-remove"></span></button>
 									</td>
 									</tr>
-								<?php $i++; unset($temp_array[$loop_index]); } } }?>
+								<?php $i++; //unset($temp_array[$loop_index]);
+							} } }?>
 
-                                <?php if(isset($temp_array)) { foreach($temp_array as $loop) {
+                                <?php if(isset($temp_array)) { foreach($temp_array as $loop) { if ($loop->taken_workerid == $loop->worker) {
 
 								?>
+								<tr>
 									<td><?php echo $i; ?></td>
 									<td><?php echo $loop->tbarcode."-".$loop->supname.$loop->lot."-".$loop->number."(#".$loop->no.")"." ".$loop->typename; ?></td>
                                     <td><?php
-                                    if ($loop->taken_workerid != $loop->worker)
-                                        echo "<b class='text-red'>".$loop->firstname." ".$loop->lastname."</b>";
-                                    else
                                         echo $loop->firstname." ".$loop->lastname; ?>
                                     </td>
 									<td width="50">
 									<button type="button" class="btnDelete btn btn-danger btn-xs" onclick="del_confirm(<?php echo $loop->tempid; ?>,<?php echo $taskid; ?>)" data-title="Delete" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล"><span class="glyphicon glyphicon-remove"></span></button>
 									</td>
 									</tr>
-								<?php $i++; } }?>
+								<?php $i++; } } }?>
 								</tbody>
 							</table>
 						</div>
