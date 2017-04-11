@@ -13,9 +13,9 @@
 <body class="skin-blue">
 	<div class="wrapper">
 	<?php $this->load->view('menu'); ?>
-	
-	
-	
+
+
+
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -31,9 +31,9 @@
         <!-- Main content -->
           	<section class="content">
 
-            
-<?php 
-    
+
+<?php
+
     $dataset_seven = array();
     foreach($sevenday as $loop) {
         //echo $loop['date']."/".$loop['in']."/".$loop['outgood']."/".$loop['outfail']."<br>";
@@ -47,13 +47,13 @@
 
     $sum = 0;
     $count = 0;
-    foreach($gem_array as $loop) { 
+    foreach($gem_array as $loop) {
         $dataset_type[] = array($loop->typename, $loop->count, $loop->typeid);
         $count++;
         $sum += $loop->count;
     }
 
-    foreach($station_array as $loop) { 
+    foreach($station_array as $loop) {
         switch ($loop->number) {
             case 5: $station = "บล็อกรูปร่าง"; break;
             case 3: $station = "หน้ากระดาน"; break;
@@ -160,7 +160,7 @@ if ($colorgraph>0) {
                 </div>
             <div class="row">
             <div class="col-xs-12">
-            
+
                 <div class="box box-solid box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">ของส่วนกลาง</h3>
@@ -183,10 +183,10 @@ if ($colorgraph>0) {
                                 <td><b>ส่งกลับจากโคราชแล้ว</b></td>
                             </tr>
                             <tr>
-                <?php 
+                <?php
 
                     $row_array = array();
-                    foreach($center_array as $loop) { 
+                    foreach($center_array as $loop) {
                         $row_array[$loop->number] = $loop->count;
                     }
 
@@ -194,17 +194,17 @@ if ($colorgraph>0) {
                 ?>
                         <td class="text-red text-center"><a href="<?php echo site_url("report/allBarcode_center_task/".$i); ?>"><b><?php echo $row_array[$i]; ?></b></a></td>
                 <?php
-                    }        
+                    }
                 ?>
                             </tr>
                         </table>
                     </div>
-                  </div> 
+                  </div>
                         </div></div></div><!-- /.row -->
                 </div>
             <div class="row">
             <?php if ($colorgraph > 0) { ?>
-            
+
             <div class="col-md-3">
                 <div class="box box-primary" id="bar-color">
                 <div class="box-header with-border">
@@ -212,16 +212,22 @@ if ($colorgraph>0) {
 
                 <?php
                     $newline = 0;
-                    foreach($gem_array as $loop) { 
+                    foreach($gem_array as $loop) {
                         //echo '&nbsp;&nbsp;&nbsp;<a href="'. site_url("main/index/".$loop->typeid).'#bar-color"><span>'.$loop->typename.'</span></a>&nbsp;&nbsp;&nbsp;|';
-                        if ($colorgraph==$loop->typeid) { 
+                        if ($colorgraph==$loop->typeid) {
                             $colorname = $loop->typename;
                             echo "<option value='".site_url("main/index/".$loop->typeid."#bar-color")."' selected>".$loop->typename."</option>";
-                        } else echo "<option value='".site_url("main/index/".$loop->typeid."#bar-color")."'>".$loop->typename."</option>";
+                        } else {
+													// if ($newline==0) {
+													// 	$colorname = $loop->typename;
+													// 	$colorgraph = $loop->typeid;
+													// }
+													echo "<option value='".site_url("main/index/".$loop->typeid."#bar-color")."'>".$loop->typename."</option>";
+												}
                         $newline++;
                         //if ($newline % 3 == 0) echo "<br>";
                     }
-                                  
+
                 ?></select><br>
                   <h3 class="box-title">แสดงประเภทงานสี <?php echo $colorname; ?></h3>
                 </div><!-- /.box-header -->
@@ -237,15 +243,15 @@ if ($colorgraph>0) {
             <div class="progress-bar progress-bar-blue" style="width: <?php echo $dataset_color[$i][1]*100/$sumcolor; ?>%"></div>
         </div>
     </div><!-- /.progress-group -->
-<?php           
+<?php
     }
-?>                      
+?>
                 </div><!-- /.box-body -->
               </div>
-                </div> 
-                        
+                </div>
+
             </div>  <!-- /div row -->
-            
+
             <?php } ?>
                 <div class="col-md-9">
                     <div class="box box-success">
@@ -261,16 +267,16 @@ if ($colorgraph>0) {
                             <a class="btn bg-purple" href="<?php echo site_url("report/allBarcode_return"); ?>"><i class="fa fa-table"></i> แสดงวัตถุดิบไม่เหมาะสม</a> &nbsp;&nbsp;
                             <a class="btn bg-navy" href="<?php echo site_url("report/allBarcode_return_ok"); ?>"><i class="fa fa-rotate-left"></i> แสดงคืนวัตถุดิบ</a>
                         </div>
-                        
+
                         <!-- datepicker modal for QC pass -->
 						<div class="modal fade" id="myModal_pass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_pass" aria-hidden="true">
-						
+
 						  <div class="modal-dialog modal-md">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">	                 	
-										<strong>เลือกช่วงวันที่ต้องการ</strong> 
+									<h4 class="modal-title">
+										<strong>เลือกช่วงวันที่ต้องการ</strong>
 									</h4>
 								</div>            <!-- /modal-header -->
 								<div class="modal-body">
@@ -283,31 +289,31 @@ if ($colorgraph>0) {
 										<label for=""> สิ้นสุด :</label>
 										<input type="text" class="form-control" id="enddate" name="enddate" />
 									</div>
-										
+
 								</div>            <!-- /modal-body -->
-							
+
 								<div class="modal-footer">
                                     <a class="btn btn-success pull-left" href="<?php echo site_url("report/viewQCpassBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a>
-										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
+										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>
 										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
-								</div> 	
-								</form>								
+								</div>
+								</form>
 							</div>
 						</div>
 					</div>
-						
+
                     </div>
                     <!-- close modal -->
-                        
+
                         <!-- datepicker modal for error -->
 						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						
+
 						  <div class="modal-dialog modal-md">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">	                 	
-										<strong>เลือกช่วงวันที่ต้องการ</strong> 
+									<h4 class="modal-title">
+										<strong>เลือกช่วงวันที่ต้องการ</strong>
 									</h4>
 								</div>            <!-- /modal-header -->
 								<div class="modal-body">
@@ -320,31 +326,31 @@ if ($colorgraph>0) {
 										<label for=""> สิ้นสุด :</label>
 										<input type="text" class="form-control" id="enddate_nopass" name="enddate_nopass" />
 									</div>
-										
+
 								</div>            <!-- /modal-body -->
-							
+
 								<div class="modal-footer">
                                     <a class="btn btn-success pull-left" href="<?php echo site_url("report/viewErrorBetween/1"); ?>" target="_blank"><span class="glyphicon glyphicon-play"></span> แสดงทั้งหมด</a>
-										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
+										<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>
 										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
-								</div> 	
-								</form>								
+								</div>
+								</form>
 							</div>
 						</div>
 					</div>
-						
+
                     </div>
                     <!-- close modal -->
-                    
+
                     <!-- datepicker modal for process color material -->
 						<div class="modal fade" id="myModal_process" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_process" aria-hidden="true">
-						
+
 						  <div class="modal-dialog modal-md">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">	                 	
-										<strong>เลือกข้อมูลที่ต้องการ</strong> 
+									<h4 class="modal-title">
+										<strong>เลือกข้อมูลที่ต้องการ</strong>
 									</h4>
 								</div>            <!-- /modal-header -->
 								<div class="modal-body">
@@ -363,7 +369,7 @@ if ($colorgraph>0) {
 										<select name="gemtype_process" id="gemtype_process" class="form-control">
                                             <option value='0'>ทั้งหมด</option>
                                         <?php
-                                            foreach($type_array as $loop) { 
+                                            foreach($type_array as $loop) {
                                                 echo "<option value='".$loop->id."'>".$loop->name."</option>";
                                             }
                                         ?></select>
@@ -373,36 +379,36 @@ if ($colorgraph>0) {
 										<select name="processtype_process" id="processtype_process" class="form-control">
                                             <option value='0'>ทั้งหมด</option>
                                         <?php
-                                            foreach($process_array as $loop) { 
+                                            foreach($process_array as $loop) {
                                                 echo "<option value='".$loop->id."'>".$loop->name."</option>";
                                             }
                                         ?></select>
 									</div>
-										
+
 								</div>            <!-- /modal-body -->
-							
+
 								<div class="modal-footer">
-                                   		<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>			
+                                   		<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ตกลง</button>
 										<button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> ปิด</button>
-								</div> 	
-								</form>								
+								</div>
+								</form>
 							</div>
 						</div>
 					</div>
-						
+
                     </div>
                     <!-- close modal -->
 
-                
+
                     </div>
                 </div>
                 </div>
 
             </div>  <!-- div body -->
         </section>
-          
-          
-          
+
+
+
       </div>
 	</div>
 
@@ -423,7 +429,7 @@ if ($colorgraph>0) {
       $(function () {
         "use strict";
 
-          
+
         //BAR CHART color type
         if ($('#bar-type').length > 0)
         var morris2 = Morris.Bar({
@@ -445,7 +451,7 @@ if ($colorgraph>0) {
             //alert("OK"+row.b);
             //console.log(i, row);
         });
-          
+
         //BAR CHART 7days
         if ($('#bar-seven').length > 0)
         var morris2 = Morris.Bar({
@@ -468,17 +474,17 @@ if ($colorgraph>0) {
           parseTime: false,
           xLabelAngle: 30
         });
-          
-        $('#factory').on('click', function(){            
+
+        $('#factory').on('click', function(){
             window.location.replace("<?php echo site_url("main/index"); ?>");
         });
 
-        $('#purchasing').on('click', function(){            
+        $('#purchasing').on('click', function(){
             window.location.replace("<?php echo site_url("main/dashboard_purchasing"); ?>");
         });
-          
+
     });
-    
+
 $(document).ready(function()
 {
     get_datepicker("#startdate");
@@ -487,16 +493,16 @@ $(document).ready(function()
     get_datepicker("#enddate_nopass");
     get_datepicker("#startdate_process");
     get_datepicker("#enddate_process");
-    
-    $('#fancyboxall').fancybox({ 
+
+    $('#fancyboxall').fancybox({
     'width': '60%',
-    'height': '60%', 
+    'height': '60%',
     'autoScale':false,
-    'transitionIn':'none', 
-    'transitionOut':'none', 
-    'type':'iframe'}); 
+    'transitionIn':'none',
+    'transitionOut':'none',
+    'type':'iframe'});
 });
-    
+
 
 function get_datepicker(id)
 {

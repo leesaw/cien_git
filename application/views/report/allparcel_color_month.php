@@ -10,7 +10,7 @@
 	<div class="wrapper">
 	<?php $this->load->view('menu'); ?>
     <?php $url = site_url("gemstone/deletegem"); ?>
-	
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -23,18 +23,18 @@
                 $month = date( 'F Y', $month );
                 echo " เดือน ".$month;
             }
-            ?> 
+            ?>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> แสดงชุดวัตถุดิบตามสี</a></li>
         </ol>
     </section>
-	
+
 	<section class="content">
 		<div class="row">
             <div class="col-lg-12">
                 <div class="box box-primary">
-                        
+
         <div class="box-body">
         <div class="row">
             <div class="col-md-2">
@@ -50,13 +50,13 @@
                                                     echo ">".$loop->name."</option>";
 										 } } ?>
                             </select>
-                        
+
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-group">
                     <label>เลือกเดือน</label>
-                    <input type="text" class="form-control pull-right" name="month" id="datepicker" value="<?php if (isset($selectmonth)) echo $selectmonth; ?>"/>
+                    <input type="text" class="form-control pull-right" name="month" id="datepicker" value="<?php if (isset($selectmonth)) echo $selectmonth; ?>" autocomplete="off" readonly/>
                 </div>
             </div>
             <div class="col-md-3">
@@ -72,7 +72,7 @@
                 </div>
             </div>
             </form>
-        </div>       
+        </div>
         <div class="row">
 			<div class="col-lg-12">
                 <div class="panel panel-default">
@@ -94,11 +94,11 @@
                                     <tr><th width="60" style="text-align:center">เม็ด</th><th width="60" style="text-align:center">กะรัต</th></tr>
                                 </thead>
 								<tbody>
-								<?php if(isset($parcel_array)) { foreach($parcel_array as $loop) { 
+								<?php if(isset($parcel_array)) { foreach($parcel_array as $loop) {
                                     $phpdate = strtotime($loop->dateadd);
                                     $date = date( 'd/m/Y', $phpdate );
                                     $datehidden = date('Y/m/d', $phpdate);
-                                    
+
 								?>
                                     <tr><td><span class="hide"><?php echo $datehidden; ?></span><?php echo $date; ?></td>
                                     <td><?php echo $loop->supname.$loop->lot."-".$loop->number; ?></td>
@@ -111,7 +111,7 @@
                                     <td><?php echo $loop->process_name." ".$loop->process_detail; ?></td>
 									<td width="50">
                                     <a href="<?php echo site_url("report/showdetail_parcel/".$loop->gemid); ?>" class="btn btn-success btn-xs" data-title="View" data-toggle="tooltip" data-target="#view" data-placement="top" rel="tooltip" title="View"><span class="glyphicon glyphicon-search"></span></a>
-                                        
+
 									</td>
 									</tr>
 								<?php } }?>
@@ -119,20 +119,20 @@
 							</table>
 					</div>
 				</div>
-			</div>	
+			</div>
 		</div>
-                        
-                        
-                        
-                        
+
+
+
+
 					</div>
                 </div>
             </div>
         </div>
         </section>
 		</div>
-    
-    
+
+
 	</div>
 
 
@@ -145,7 +145,7 @@
         <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
       <div class="modal-body">
-          <iframe src="/user/dashboard" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>  
+          <iframe src="/user/dashboard" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -166,11 +166,12 @@
 <script src="<?php echo base_url(); ?>plugins/fancybox/jquery.fancybox.js"></script>
 <script type="text/javascript">
 $(function() {
-    $("#datepicker").datepicker( {
-        format: "mm-yyyy",
-        viewMode: "months", 
-        minViewMode: "months"
-    });
+	get_datepicker_month("#datepicker");
+    // $("#datepicker").datepicker( {
+    //     format: "mm-yyyy",
+    //     viewMode: "months",
+    //     minViewMode: "months"
+    // });
 });
 $(document).ready(function()
 {
@@ -188,22 +189,22 @@ $(document).ready(function()
               { "bSearchable": false },
             ]
     } );
-    
-    $('#fancyboxall').fancybox({ 
+
+    $('#fancyboxall').fancybox({
     'width': '85%',
-    'height': '100%', 
+    'height': '100%',
     'autoScale':false,
-    'transitionIn':'none', 
-    'transitionOut':'none', 
-    'type':'iframe'}); 
+    'transitionIn':'none',
+    'transitionOut':'none',
+    'type':'iframe'});
 });
-    
+
 function del_confirm(val1) {
 	bootbox.confirm("ต้องการลบข้อมูลที่เลือกไว้ใช่หรือไม่ ?", function(result) {
 				var currentForm = this;
 				var myurl = <?php echo json_encode($url); ?>;
             	if (result) {
-				
+
 					window.location.replace(myurl+"/"+val1);
 				}
 
@@ -211,6 +212,12 @@ function del_confirm(val1) {
 
 }
 
+function get_datepicker_month(id)
+{
+    $(id).datepicker({ language:'th-th',format: "mm-yyyy", viewMode: "months",
+    minViewMode: "months" }).on('changeDate', function(ev){
+    $(this).datepicker('hide'); });
+}
 
 $(".alert").alert();
 window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
@@ -219,7 +226,7 @@ $('.testModal').on('click', function(e) {
     e.preventDefault();
     var url = $(this).attr('href');
     $(".modal-body").html('<iframe width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true" src="'+url+'"></iframe>');
-}); 
+});
 </script>
 </body>
 </html>
