@@ -44,8 +44,9 @@
 	<section class="content">
 		<div class="row">
             <div class="col-lg-8">
-                <div class="box box-primary">
-				<?php if ($this->session->flashdata('showresult') == 'success') echo '<div class="alert-message alert alert-success"> ระบบทำการเพิ่มข้อมูลเรียบร้อยแล้ว</div>';
+                <div class="box box-primary"><div id="alert_block"></div>
+
+				<!-- <?php if ($this->session->flashdata('showresult') == 'success') echo '<div class="alert-message alert alert-success"> ระบบทำการเพิ่มข้อมูลเรียบร้อยแล้ว</div>';
 						  else if ($this->session->flashdata('showresult') == 'fail1') echo '<div class="alert-message alert alert-danger"> ไม่มี Barcode นี้ในระบบ</div>';
                           else if ($this->session->flashdata('showresult') == 'fail2') echo '<div class="alert-message alert alert-danger"> Barcode ซ้ำ</div>';
                           else if ($this->session->flashdata('showresult') == 'fail3') echo '<div class="alert-message alert alert-danger"> กรุณาสแกนผู้เบิกของ</div>';
@@ -60,10 +61,10 @@
                           else if ($this->session->flashdata('showresult') == 'fail_seq8') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 7 กลับติดก้นแชล็ก</div>';
                           else if ($this->session->flashdata('showresult') == 'fail_seq9') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 8 บล็อกก้น</div>';
                           else if ($this->session->flashdata('showresult') == 'fail_seq13') echo '<div class="alert-message alert alert-danger"> Barcode นี้ ไม่ได้ผ่าน 9 เจียก้น</div>';
-					?>
+					?> -->
 					<div class="box-header">
                         <h4 class="box-title">กรุณาสแกน Barcode</h4></div>
-					<form method="post" action="<?php echo site_url('gemstone/sendgems_task_temp/'.$taskid); ?>">
+
 
                     <?php $workername = ""; $worker_id = 0;
                             foreach($worker_array as $loop) {
@@ -75,12 +76,12 @@
                             <div class="col-md-8">
                                     <div class="form-group">
                                         <label>Barcode *</label>
-                                        <input type="hidden" name="taskid" value="<?php echo $taskid; ?>" />
-                                        <input type="hidden" name="workerid" value="<?php echo $worker_id; ?>" />
+                                        <input type="hidden" name="taskid" id="taskid" value="<?php echo $taskid; ?>" />
+                                        <input type="hidden" name="workerid" id="workerid" value="<?php echo $worker_id; ?>" />
                                         <input type="text" class="form-control" name="barcode" id="barcode" value="" placeholder="Scan Barcode" autocomplete="off">
 										<p class="help-block"><?php echo form_error('barcode'); ?></p>
-										<button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </button>
-                    </form>
+										<button type="button" class="btn btn-success btn-lg" onclick="return check_barcode()"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </button>
+
                         <?php if (($taskid == 4) && ($getall == 0)) { ?>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='<?php echo site_url('gemstone/sendgems_task_temp_shlek/'.$taskid.'/'.$worker_id); ?>'><button type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มทั้งชุด</b>  </button></a> <?php } ?>
                                     </div>
@@ -102,7 +103,7 @@
         <div class="row">
 			<div class="col-lg-12">
                 <div class="panel panel-default">
-					<div class="panel-heading"><h3>รวมทั้งหมด <?php echo $count; ?> รายการ</h3></div>
+					<div class="panel-heading" id="count_show"><h3>รวมทั้งหมด <?php echo $count; ?> รายการ</h3></div>
                     <div class="panel-body">
                         <div class="table-responsive">
                             <table class="table table-striped row-border table-hover" id="tablebarcode" width="100%">
@@ -114,7 +115,7 @@
                                     </tr>
                                 </thead>
 								<tbody>
-								<?php if(isset($temp_array)) { $i = 1; foreach($temp_array as $loop) {
+								<?php $i = 1; if(isset($temp_array)) { foreach($temp_array as $loop) {
 
 								?>
 									<td><?php echo $i; ?></td>
@@ -156,11 +157,24 @@
 <script src="<?php echo base_url(); ?>plugins/datatables/dataTables.bootstrap.js"></script>
 <script src="<?php echo base_url(); ?>plugins/bootbox.min.js"></script>
 <script type="text/javascript">
+var count_list = <?php echo $i; ?>;
     $(document).ready(function()
     {
 			$("#barcode").focus();
 
 			document.getElementById("savebtn").disabled = false;
+
+			$('#barcode').keyup(function(e){ //enter next
+        if(e.keyCode == 13) {
+          var barcode = $.trim($(this).val());
+          if(barcode != "")
+					{
+		        check_barcode();
+					}
+		      $(this).val('');
+
+				}
+			});
     });
 
 function del_confirm(val1, val2) {
@@ -177,20 +191,81 @@ function del_confirm(val1, val2) {
 }
 
 
-$(".alert").alert();
-window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
+// $(".alert").alert();
+// window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
 
         function chk_add_worker()
 		{
 			var worker_name=$('#worker_name').val();
 			if(worker_name==0){
 				alert('กรุณาสแกนผู้เบิกของ');
-				$('#worker_name').focus();
+				$('#barcode').focus();
 				return false;
 			}
 			document.getElementById("savebtn").disabled = true;
 		}
 
+function check_barcode()
+{
+  var barcode =  document.getElementById("barcode").value;
+	var taskid =  document.getElementById("taskid").value;
+	var workerid =  document.getElementById("workerid").value;
+
+  if (barcode != "") {
+		$.ajax({
+			type : "POST",
+			url : "<?php echo site_url('gemstone/sendgems_task_temp_ajax'); ?>" ,
+			data : {barcode: barcode, taskid: taskid, workerid: workerid, count_list: count_list},
+			dataType: 'json',
+			success : function(data) {
+				if(data.alert == 0)
+				{
+	          var element = data.barcode;
+	          $('table > tbody').append(element);
+	          document.getElementById("count_show").innerHTML = "<h3>รวมทั้งหมด "+data.count+" รายการ</h3>";
+						// document.getElementById("alert_block").innerHTML = '<div class="alert-message alert alert-success"> ระบบทำการเพิ่มข้อมูลเรียบร้อยแล้ว</div>';
+						// window.setTimeout(function() { $(".alert").alert('close'); }, 2000);
+	      }else if(data.alert == 1){
+					switch(parseInt(data.error_no)) {
+						case 11: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> ไม่มี Barcode นี้ในระบบ</div>"; break;
+						case 22: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode ซ้ำ</div>"; break;
+						case 33: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> กรุณาสแกนผู้เบิกของ</div>"; break;
+						case 44: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ยังไม่ได้รับคืน</div>"; break;
+						case 55: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ออกจากโรงงานแล้ว</div>"; break;
+						case 66: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ไม่ใช่วัตถุดิบไม่เหมาะสม</div>"; break;
+						// not sequence error
+						case 3: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ ไม่ได้ผ่าน 4 บล็อกรูปร่าง</div>"; break;
+						case 5: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ ไม่ได้ผ่าน 3 ติดแชล็ก</div>"; break;
+						case 6: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ ไม่ได้ผ่าน 5 กดหน้ากระดาน</div>"; break;
+						case 7: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ ไม่ได้ผ่าน QC หน้า</div>"; break;
+						case 8: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ ไม่ได้ผ่าน 7 กลับติดก้นแชล็ก</div>"; break;
+						case 9: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ ไม่ได้ผ่าน 8 บล็อกก้น</div>"; break;
+						case 12: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ ไม่ได้ผ่าน 6 เจียหน้า</div>"; break;
+						case 13: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ ไม่ได้ผ่าน 9 เจียก้น</div>"; break;
+
+					}
+					window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
+				}else if(data.alert == 2) {
+					document.getElementById("worker_name").value = data.worker;
+					document.getElementById("workerid").value = data.worker_id;
+				}else if(data.alert == 3) {
+					window.location.replace("<?php echo site_url("gemstone/saveTemptoTask/".$taskid); ?>");
+				}else if(data.alert == 4) {
+					window.location.replace("<?php echo site_url("gemstone/cleartemp/".$taskid); ?>");
+				}
+
+			},
+          error: function (textStatus, errorThrown) {
+          alert("เกิดความผิดพลาด !!!");
+
+      }
+		});
+  }
+
+	document.getElementById("barcode").value = "";
+	$("#barcode").focus();
+  // document.getElementById("frmBarcode").submit();
+}
 </script>
 </body>
 </html>

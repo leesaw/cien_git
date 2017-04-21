@@ -45,16 +45,9 @@
 	<section class="content">
 		<div class="row">
             <div class="col-lg-8">
-                <div class="box box-primary">
-				<?php if ($this->session->flashdata('showresult') == 'success') echo '<div class="alert-message alert alert-success"> ระบบทำการเพิ่มข้อมูลเรียบร้อยแล้ว</div>';
-						  else if ($this->session->flashdata('showresult') == 'fail1') echo '<div class="alert-message alert alert-danger"> ไม่มี Barcode นี้ในระบบ</div>';
-                          else if ($this->session->flashdata('showresult') == 'fail2') echo '<div class="alert-message alert alert-danger"> Barcode ซ้ำ</div>';
-                          else if ($this->session->flashdata('showresult') == 'fail3') echo '<div class="alert-message alert alert-danger"> กรุณาสแกนผู้คืนของ</div>';
-                          else if ($this->session->flashdata('showresult') == 'fail4') echo '<div class="alert-message alert alert-danger"> Barcode นี้ยังไม่ได้เบิก</div>';
-
-					?>
+                <div class="box box-primary"><div id="alert_block"></div>
 					<div class="box-header"><h4 class="box-title">กรุณาสแกน Barcode</h4></div>
-					<form method="post" name="frmBarcode" id="frmBarcode" action="<?php echo site_url('gemstone/sendgems_back_temp/'.$taskid); ?>">
+
 
                     <?php $workername = ""; $worker_id = 0;
                             foreach($worker_array as $loop) {
@@ -66,12 +59,12 @@
                             <div class="col-md-8">
                                     <div class="form-group">
                                         <label>Barcode *</label>
-                                        <input type="hidden" name="taskid" value="<?php //echo $taskid; ?>" />
-                                        <input type="hidden" name="workerid" value="<?php echo $worker_id; ?>" />
+                                        <input type="hidden" name="taskid" id="taskid" value="<?php // echo $taskid; ?>" />
+                                        <input type="hidden" name="workerid" id="workerid" value="<?php echo $worker_id; ?>" />
                                         <input type="text" class="form-control" name="barcode" id="barcode" value="" placeholder="Scan Barcode" autocomplete="off">
 										<p class="help-block"><?php echo form_error('barcode'); ?></p>
-										<button type="submit" class="btn btn-success btn-lg" onclick="return check_barcode()"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </button>
-                    </form>
+										<button type="button" class="btn btn-success btn-lg" onclick="return check_barcode()"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </button>
+
 
                         <?php if($count == 1) { foreach($temp_array as $loop) {
                                     $task4 = $loop->task4;
@@ -100,7 +93,7 @@
         <div class="row">
 			<div class="col-lg-12">
                 <div class="panel panel-default">
-					<div class="panel-heading"><h3>รวมทั้งหมด <?php echo $count; ?> รายการ</h3></div>
+					<div class="panel-heading" id="count_show"><h3>รวมทั้งหมด <?php echo $count; ?> รายการ</h3></div>
                     <div class="panel-body">
                         <div class="table-responsive">
                             <table class="table table-striped row-border table-hover" id="tablebarcode" width="100%">
@@ -147,6 +140,7 @@
 									</tr>
 								<?php $i++; } } }?>
 								</tbody>
+								<input type="hidden" name="error_worker" id="error_worker" value="<?php echo $error_worker; ?>" />
 							</table>
 						</div>
 					</div>
@@ -178,23 +172,22 @@
 <script src="<?php echo base_url(); ?>plugins/datatables/dataTables.bootstrap.js"></script>
 <script src="<?php echo base_url(); ?>plugins/bootbox.min.js"></script>
 <script type="text/javascript">
+var count_list = <?php echo $i; ?>;
     $(document).ready(function()
     {
 		$("#barcode").focus();
 		document.getElementById("savebtn").disabled = false;
-      // $('#barcode').keyup(function(e){ //enter next
-      //     if(e.keyCode == 13) {
-      //         var barcode =  document.getElementById("barcode").value;
-      //         var error_worker = <?php echo $error_worker; ?>;
-      //         if (barcode == "*OK*") {
-      //             if (error_worker>0) {
-      //                 alert("ชื่อผู้คืนของไม่ตรงกับของที่มาคืน !!! \n\nกรุณาตรวจสอบรายการที่มีแสดงเป็นสีแดงด้านบน");
-      //                 return false;
-      //             }
-      //         }
-      //         document.getElementById("frmBarcode").submit();
-      //     }
-      // });
+		$('#barcode').keyup(function(e){ //enter next
+			if(e.keyCode == 13) {
+				var barcode = $.trim($(this).val());
+				if(barcode != "")
+				{
+					check_barcode();
+				}
+				$(this).val('');
+
+			}
+		});
 
     });
 
@@ -212,19 +205,17 @@ function del_confirm(val1, val2) {
 }
 
 
-$(".alert").alert();
-window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
-
 function chk_add_worker()
 {
     var worker_name=$('#worker_name').val();
-    var error_worker = <?php echo $error_worker; ?>;
+    var error_worker = document.getElementById("error_worker").value;
     if(worker_name==0){
         alert('กรุณาสแกนผู้คืนของ');
-        $('#worker_name').focus();
+        $('#barcode').focus();
         return false;
     }else if (error_worker>0) {
         alert("ชื่อผู้คืนของไม่ตรงกับของที่มาคืน !!! \n\nกรุณาตรวจสอบรายการที่มีแสดงเป็นสีแดงด้านบน");
+				$('#barcode').focus();
         return false;
     }else{
         form.submitbtn.disabled = true;
@@ -232,19 +223,64 @@ function chk_add_worker()
 				document.getElementById("savebtn").disabled = true;
         return true;
     }
+
 }
 
 function check_barcode()
 {
     var barcode =  document.getElementById("barcode").value;
-    var error_worker = <?php echo $error_worker; ?>;
+    var error_worker = document.getElementById("error_worker").value;
     if (barcode == "*OK*") {
         if (error_worker>0) {
             alert("ชื่อผู้คืนของไม่ตรงกับของที่มาคืน !!! \n\nกรุณาตรวจสอบรายการที่มีแสดงเป็นสีแดงด้านบน");
             return false;
         }
     }
-    document.getElementById("frmBarcode").submit();
+		var taskid =  <?php echo $taskid ?>;
+		var workerid =  document.getElementById("workerid").value;
+
+	  if (barcode != "") {
+			$.ajax({
+				type : "POST",
+				url : "<?php echo site_url('gemstone/sendgems_back_temp_ajax'); ?>" ,
+				data : {barcode: barcode, taskid: taskid, workerid: workerid, count_list: count_list, error_worker: error_worker},
+				dataType: 'json',
+				success : function(data) {
+					if(data.alert == 0)
+					{
+						console.log("ok");
+		          var element = data.barcode;
+		          $('table > tbody').append(element);
+		          document.getElementById("count_show").innerHTML = "<h3>รวมทั้งหมด "+data.count+" รายการ</h3>";
+							// document.getElementById("alert_block").innerHTML = '<div class="alert-message alert alert-success"> ระบบทำการเพิ่มข้อมูลเรียบร้อยแล้ว</div>';
+							// window.setTimeout(function() { $(".alert").alert('close'); }, 2000);
+							document.getElementById("error_worker").value = data.error_worker;
+		      }else if(data.alert == 1){
+						switch(parseInt(data.error_no)) {
+							case 11: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> ไม่มี Barcode นี้ในระบบ</div>"; break;
+							case 22: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode ซ้ำ</div>"; break;
+							case 33: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> กรุณาสแกนผู้เบิกของ</div>"; break;
+							case 44: document.getElementById("alert_block").innerHTML = "<div class='alert-message alert alert-danger'> Barcode นี้ยังไม่ได้เบิก</div>"; break;
+						}
+						window.setTimeout(function() { $(".alert").alert('close'); }, 4000);
+					}else if(data.alert == 2) {
+						location.reload();
+					}else if(data.alert == 3) {
+						window.location.replace("<?php echo site_url("gemstone/saveTemptoBack/".$taskid); ?>");
+					}else if(data.alert == 4) {
+						window.location.replace("<?php echo site_url("gemstone/cleartemp_back/".$taskid); ?>");
+					}
+
+				},
+					error: function (textStatus, errorThrown) {
+					alert("เกิดความผิดพลาด !!!");
+
+	      }
+			});
+	  }
+
+		document.getElementById("barcode").value = "";
+		$("#barcode").focus();
 }
 </script>
 </body>

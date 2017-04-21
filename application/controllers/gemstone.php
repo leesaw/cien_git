@@ -472,6 +472,429 @@ class Gemstone extends CI_Controller {
 		$this->load->view("gemstone/sendgems_task_temp", $data);
 	}
 
+function sendgems_task_temp_ajax()
+{
+	$status = $this->input->post('taskid');
+	$barcodeid= ($this->input->post('barcode'));
+	$barcodeid = ltrim($barcodeid, '0');
+	$workerid= ($this->input->post('workerid'));
+	$count_list= ($this->input->post('count_list'));
+	$alert = 0;
+	$error_no = 0;
+	$barcode_detail = "";
+	$temp_id = 0;
+	$count_detail = $count_list;
+	$worker_detail = "";
+
+
+	if ($barcodeid =="*OK*") {
+		if ($workerid > 0 || $status==10 || $status==0) {
+				// return $this->saveTemptoTask();
+				$alert = 3;
+		}else{
+			$alert = 1;
+			$error_no = 33;
+		}
+	}else if ($barcodeid =="*RESET*") {
+			// return $this->cleartemp();
+			$alert = 4;
+	}
+
+	$row = $this->gemstone_model->checkBarcode($barcodeid);
+	$query = $this->gemstone_model->getBarcode($barcodeid);
+	$center = $this->gemstone_model->checkBarcode_center($barcodeid);
+	$insystem = $this->gemstone_model->checkBarcode_out($barcodeid);
+	$nogood = $this->gemstone_model->checkBarcode_nogood($barcodeid);
+
+	// for sesto_status
+	$sesto_status = 0;
+	foreach ($query as $loop) {
+			$sesto_status = $loop->sesto_status;
+			$gemstone_id = $loop->gid;
+			break;
+	}
+	if ($sesto_status == 1) {
+		$sesto_query = $this->gemstone_model->getAllBarcode($gemstone_id);
+		//$this->cleartemp();
+	}
+
+	$row_temp = $this->gemstone_model->checkBarcode_Temp($barcodeid, $status);
+
+	$this->load->model('worker_model','',TRUE);
+	$row_worker = $this->worker_model->checkBarcode_Worker($barcodeid);
+	if ($row_worker>0) {
+			$result = $this->worker_model->getWorker($barcodeid);
+			foreach ($result as $loop)
+			{
+					$workerid = $loop->id;
+					$worker_id = $loop->worker_id;
+					$worker_fname = $loop->firstname;
+					$worker_lname = $loop->lastname;
+			}
+			$worker_array = array(
+							'worker' => $workerid,
+							'status' => $status,
+							'userid' => $this->session->userdata('sessid')
+					);
+			//$data['getall'] = 1;
+			$result2 = $this->gemstone_model->editTaskWorkerTemp($worker_array);
+			$worker_detail = $worker_id." ".$worker_fname." ".$worker_lname;
+			$alert = 2;
+	}
+
+	// $row_temp = 0;
+	if ($row>0)	{
+
+		if ($row_temp>0) {
+			$alert = 1;
+			$error_no = 22;
+		}else{
+				if ($center ==0) {
+						if ($insystem >0) {
+								if (($status==0)&&($nogood==0)) {
+									$alert = 1;
+									$error_no = 66;
+								}else{
+										// check previous task
+										$this->load->model('config_model','',TRUE);
+										$query = $this->config_model->getConfig('LOCK_SEQ_TASK');
+										foreach($query as $loop) { $config_value = $loop->value; }
+
+										if ($config_value==1) {
+												$pretask = $this->gemstone_model->checkPreTask_status($barcodeid, $status);
+										}else{
+												$pretask = 1;
+										}
+
+										if ($pretask>0) {
+												if ($sesto_status == 1) {
+													$result = $this->gemstone_model->getTempID();
+													$tempid = 0;
+													foreach ($result as $loop)
+													{
+															$tempid = $loop->tempid;
+													}
+													$tempid++;
+
+													$datetime = date('Y-m-d H:i:s');
+
+
+													$id_start = $tempid;
+													foreach($sesto_query as $loop_sesto) {
+														$barcode = array(
+																'barcode' => $loop_sesto->gemid,
+																'tempid' => $tempid,
+																'status' => $status,
+																'dateadd' => $datetime,
+																'worker' => $workerid,
+																'userid' => $this->session->userdata('sessid')
+														);
+														$result2 = $this->gemstone_model->addBarcodeTemp($barcode);
+														$tempid++;
+													}
+													$id_end = $tempid;
+													$count_detail = $this->gemstone_model->getTempCount($status,$this->session->userdata('sessid'));
+													$where = "status = ".$status." and userid = ".$this->session->userdata('sessid')." and tempid >= ".$id_start." and tempid < ".$id_end;
+													$query = $this->gemstone_model->getTaskTemp_where($where);
+													foreach($query as $loop) {
+														$barcode_detail .= '<tr><td>'.$count_list.'</td><td>'.$loop->tbarcode.'-'.$loop->supname.$loop->lot.'-'.$loop->number.'(#'.$loop->no.') '.$loop->typename.'</td>
+														<td><button type="button" class="btnDelete btn btn-danger btn-xs" onclick="del_confirm('.$loop->tempid.','.$status.')" data-title="Delete"
+														data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล"><span class="glyphicon glyphicon-remove"></span></button></td></tr>';
+														$count_list++;
+													}
+
+
+												}else{
+													// get max tempid and increment for new tempid
+													$result = $this->gemstone_model->getTempID();
+													$tempid = 0;
+													foreach ($result as $loop)
+													{
+															$tempid = $loop->tempid;
+													}
+													$tempid++;
+
+													$datetime = date('Y-m-d H:i:s');
+
+													$barcode = array(
+															'barcode' => $barcodeid,
+															'tempid' => $tempid,
+															'status' => $status,
+															'dateadd' => $datetime,
+															'worker' => $workerid,
+															'userid' => $this->session->userdata('sessid')
+													);
+													$result2 = $this->gemstone_model->addBarcodeTemp($barcode);
+
+													$count_detail = $this->gemstone_model->getTempCount($status,$this->session->userdata('sessid'));
+													$where = "status = ".$status." and userid = ".$this->session->userdata('sessid')." and tempid = ".$tempid;
+													$query = $this->gemstone_model->getTaskTemp_where($where);
+													foreach($query as $loop) {
+														$barcode_detail .= '<tr><td>'.$count_list.'</td><td>'.$loop->tbarcode.'-'.$loop->supname.$loop->lot.'-'.$loop->number.'(#'.$loop->no.') '.$loop->typename.'</td>
+														<td><button type="button" class="btnDelete btn btn-danger btn-xs" onclick="del_confirm('.$loop->tempid.','.$status.')" data-title="Delete"
+														data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล"><span class="glyphicon glyphicon-remove"></span></button></td></tr>';
+													}
+													// redirect(current_url());
+												}
+										}else{
+												// $this->session->set_flashdata('showresult', 'fail_seq'.$status);
+												// redirect(current_url());
+												$alert = 1;
+												$error_no = $status;
+										}
+								}
+						}else{
+							$alert = 1;
+							$error_no = 55;
+						}
+				}else{
+					$alert = 1;
+					$error_no = 44;
+				}
+			}
+		}else if ($alert == 0) {
+			$alert = 1;
+			$error_no = 11;
+		}
+
+
+	// $data['count'] = $this->gemstone_model->getTempCount($status,$this->session->userdata('sessid'));
+	// $query = $this->gemstone_model->getTaskTemp($status,$this->session->userdata('sessid'));
+	// if($query){
+	// 	$data['temp_array'] =  $query;
+	// }else{
+	// 	$data['temp_array'] = array();
+	// }
+	// 		$query = $this->gemstone_model->getWorkerTemp($status,$this->session->userdata('sessid'));
+	// if($query){
+	// 	$data['worker_array'] =  $query;
+	// }else{
+	// 	$data['worker_array'] = array();
+	// }
+	// $data['title'] = "Cien|Gemstone Tracking System - Scan Barcode";
+	// $data['taskid'] = $status;
+	// $data['getall'] = 0;
+
+	$return = array("alert" => $alert, "error_no" => $error_no, "barcode" => $barcode_detail, "count" => $count_detail, "worker" => $worker_detail, "worker_id" => $workerid);
+  echo json_encode($return);
+  exit();
+}
+
+function sendgems_back_temp_ajax()
+{
+	$status = $this->input->post('taskid');
+	$taskid = $status;
+	$barcodeid= ($this->input->post('barcode'));
+	$barcodeid = ltrim($barcodeid, '0');
+	$workerid= ($this->input->post('workerid'));
+	$count_list= ($this->input->post('count_list'));
+	$alert = 0;
+	$error_no = 0;
+	$barcode_detail = "";
+	$temp_id = 0;
+	$count_detail = $count_list;
+	$worker_detail = "";
+	$error_worker = ($this->input->post('error_worker'));
+
+	if ($status !=10) {
+			$pass = $status;
+			//$status = 0;
+	}else{
+			//$data['taskid'] = $status;
+			$pass = 1;
+	}
+
+	if ($barcodeid =="*OK*") {
+		if ($workerid > 0 || $status==10 || $status==0) {
+				// return $this->saveTemptoBack();
+				$alert = 3;
+		}else{
+			$alert = 1;
+			$error_no = 33;
+		}
+	}else if ($barcodeid =="*RESET*") {
+			// return $this->cleartemp_back();
+			$alert = 4;
+	}
+
+	// barcode id , gemstone id , sesto_status
+	$row = $this->gemstone_model->checkBarcode($barcodeid);
+	$row_temp = $this->gemstone_model->checkBarcode_Temp_back($barcodeid, $status);
+	$center = $this->gemstone_model->checkBarcode_center($barcodeid);
+
+	$query = $this->gemstone_model->checkTask_status($barcodeid);
+
+	foreach ($query as $loop) {
+			if ($loop->task3 == 1) $status = 3;
+			else if ($loop->task4 == 1) $status = 4;
+			else if ($loop->task5 == 1) $status = 5;
+			else if ($loop->task6 == 1) $status = 6;
+			else if ($loop->task7 == 1) $status = 7;
+			else if ($loop->task8 == 1) $status = 8;
+			else if ($loop->task9 == 1) $status = 9;
+			else if ($loop->task10 == 1) $status = 10;
+			else if ($loop->qc1 == 1) $status = 12;
+			else if ($loop->qc2 == 1) $status = 13;
+	}
+
+	// for sesto_status
+	$sesto_status = 0;
+	// $query_get_status = $this->gemstone_model->getBarcode($barcodeid);
+
+
+	$this->load->model('worker_model','',TRUE);
+	$row_worker = $this->worker_model->checkBarcode_Worker($barcodeid);
+	if ($row_worker>0) {
+			$result = $this->worker_model->getWorker($barcodeid);
+			foreach ($result as $loop)
+			{
+					$workerid = $loop->id;
+					$worker_id = $loop->worker_id;
+					$worker_fname = $loop->firstname;
+					$worker_lname = $loop->lastname;
+			}
+			$worker_array = array(
+							'worker' => $workerid,
+							'status' => $status,
+							'pass' => $pass,
+							'userid' => $this->session->userdata('sessid')
+					);
+			$result2 = $this->gemstone_model->editBackWorkerTemp($worker_array);
+			$worker_detail = $worker_id." ".$worker_fname." ".$worker_lname;
+			$alert = 2;
+	}
+
+				//$row_temp = 0;
+	if ($row>0)	{
+		if ($row_temp>0) {
+			$alert = 1;
+			$error_no = 22;
+		}else{
+				if (($center > 0)&&($status>0)) {
+					$row_sesto = $this->gemstone_model->check_sesto_status($barcodeid);
+					foreach ($row_sesto as $loop) {
+							$sesto_status = $loop->sesto_status;
+							$gemstone_id = $loop->gid;
+							break;
+					}
+
+					if ($sesto_status == 1) {
+						$result = $this->gemstone_model->getTempID_back();
+						$tempid = 0;
+						foreach ($result as $loop)
+						{
+								$tempid = $loop->tempid;
+								break;
+						}
+						$tempid++;
+
+						$id_start = $tempid;
+						$datetime = date('Y-m-d H:i:s');
+
+						if ($status != 10) {
+							$worker_query = $this->gemstone_model->getBackWorker($barcodeid);
+							foreach($worker_query as $worker_loop) $taken_workerid = $worker_loop->worker;
+						}else{
+							$taken_workerid = 0;
+						}
+
+						$sesto_query = $this->gemstone_model->getAllBarcode($gemstone_id);
+						foreach($sesto_query as $loop_sesto) {
+							$barcode = array(
+									'barcode' => $loop_sesto->gemid,
+									'tempid' => $tempid,
+									'status' => $status,
+									'dateadd' => $datetime,
+									'worker' => $workerid,
+									'taken_workerid' => $taken_workerid,
+									'pass' => $pass,
+									'userid' => $this->session->userdata('sessid')
+							);
+							$result2 = $this->gemstone_model->addBarcodeTemp_back($barcode);
+							$tempid++;
+						}
+						$id_end = $tempid;
+						$count_detail = $this->gemstone_model->getTempCount_back($status,$this->session->userdata('sessid'), $pass);
+
+						if ($status==10) $where = "status = ".$status;
+					  else $where = "status != 10";
+						$where .= " and userid = ".$this->session->userdata('sessid')." and gemstone_back_temp.pass = '".$pass."' and tempid >= ".$id_start." and tempid < ".$id_end;
+						$query = $this->gemstone_model->getBackTemp_where($where);
+						foreach($query as $loop) {
+							$red_txt_open = "";
+							$red_txt_close = "";
+							$worker_show = "";
+							if ($status != 10) { $worker_show = $loop->firstname.' '.$loop->lastname; }
+							if ($loop->taken_workerid != $loop->worker) { $red_txt_open = '<b class="text-red"><u>'; $red_txt_close = '</u></b>'; $error_worker++; }
+							$barcode_detail .= '<tr><td>'.$count_list.'</td><td>'.$red_txt_open.$loop->tbarcode.$red_txt_close.'-'.$loop->supname.$loop->lot.'-'.$loop->number.'(#'.$loop->no.') '.$loop->typename.'</td>
+							<td>'.$red_txt_open.$worker_show.$red_txt_close.'</td><td><button type="button" class="btnDelete btn btn-danger btn-xs" onclick="del_confirm('.$loop->tempid.','.$taskid.')"
+							data-title="Delete" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล"><span class="glyphicon glyphicon-remove"></span></button></td></tr>';
+
+							$count_list++;
+						}
+					}else{
+						// get max tempid and increment for new tempid
+						$result = $this->gemstone_model->getTempID_back();
+						$tempid = 0;
+						foreach ($result as $loop)
+						{
+								$tempid = $loop->tempid;
+								break;
+						}
+						$tempid++;
+
+						$datetime = date('Y-m-d H:i:s');
+
+						if ($status != 10) {
+							$worker_query = $this->gemstone_model->getBackWorker($barcodeid);
+							foreach($worker_query as $worker_loop) $taken_workerid = $worker_loop->worker;
+						}else{
+							$taken_workerid = 0;
+						}
+
+						$barcode = array(
+								'barcode' => $barcodeid,
+								'tempid' => $tempid,
+								'status' => $status,
+								'dateadd' => $datetime,
+								'worker' => $workerid,
+								'taken_workerid' => $taken_workerid,
+								'pass' => $pass,
+								'userid' => $this->session->userdata('sessid')
+						);
+						$result2 = $this->gemstone_model->addBarcodeTemp_back($barcode);
+
+						$count_detail = $this->gemstone_model->getTempCount_back($status,$this->session->userdata('sessid'), $pass);
+
+						if ($status==10) $where = "status = ".$status;
+					  else $where = "status != 10";
+						$where .= " and userid = ".$this->session->userdata('sessid')." and tempid = ".$tempid;
+						$query = $this->gemstone_model->getBackTemp_where($where);
+						foreach($query as $loop) {
+							$red_txt_open = "";
+							$red_txt_close = "";
+							$worker_show = "";
+							if ($status != 10) { $worker_show = $loop->firstname.' '.$loop->lastname; }
+							if ($loop->taken_workerid != $loop->worker) { $red_txt_open = '<b class="text-red"><u>'; $red_txt_close = '</u></b>'; $error_worker++; }
+							$barcode_detail .= '<tr><td>'.$count_list.'</td><td>'.$red_txt_open.$loop->tbarcode.$red_txt_close.'-'.$loop->supname.$loop->lot.'-'.$loop->number.'(#'.$loop->no.') '.$loop->typename.'</td>
+							<td>'.$red_txt_open.$worker_show.$red_txt_close.'</td><td><button type="button" class="btnDelete btn btn-danger btn-xs" onclick="del_confirm('.$loop->tempid.','.$taskid.')"
+							data-title="Delete" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" title="ลบข้อมูล"><span class="glyphicon glyphicon-remove"></span></button></td></tr>';
+						}
+					}
+				}else{
+					$alert = 1;
+					$error_no = 44;
+				}
+		}
+	}else if ($alert == 0){
+		$alert = 1;
+		$error_no = 11;
+	}
+	$return = array("alert" => $alert, "error_no" => $error_no, "barcode" => $barcode_detail, "count" => $count_detail, "worker" => $worker_detail, "worker_id" => $workerid, "error_worker" => $error_worker);
+  echo json_encode($return);
+  exit();
+}
+
     function sendgems_task_temp_shlek()
     {
         $status = $this->uri->segment(3);
@@ -806,6 +1229,8 @@ class Gemstone extends CI_Controller {
         $data['getall'] = 0;
 		$this->load->view("gemstone/sendgems_back_temp", $data);
 	}
+
+
 
     function sendgems_back_temp_shlek()
     {
