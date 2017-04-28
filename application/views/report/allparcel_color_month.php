@@ -176,6 +176,7 @@ $(function() {
 $(document).ready(function()
 {
     $("#tablebarcode").dataTable( {
+
         "aoColumns": [
               null,
               null,
@@ -187,7 +188,7 @@ $(document).ready(function()
               null,
               null,
               { "bSearchable": false },
-            ]
+            ],
     } );
 
     $('#fancyboxall').fancybox({

@@ -83,7 +83,11 @@
 										<button type="button" class="btn btn-success btn-lg" onclick="return check_barcode()"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มรายการ</b>  </button>
 
                         <?php if (($taskid == 4) && ($getall == 0)) { ?>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='<?php echo site_url('gemstone/sendgems_task_temp_shlek/'.$taskid.'/'.$worker_id); ?>'><button type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มทั้งชุด</b>  </button></a> <?php } ?>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																<!-- <a href='<?php echo site_url('gemstone/sendgems_task_temp_shlek/'.$taskid.'/'.$worker_id); ?>'> -->
+																	<button type="button" class="btn btn-warning btn-lg" onclick="shlek_submit();"><span class="glyphicon glyphicon-barcode"></span> <b> &nbsp; เพิ่มทั้งชุด</b>  </button>
+																<!-- </a> -->
+																<?php } ?>
                                     </div>
 							</div>
 						</div>
@@ -204,6 +208,16 @@ function del_confirm(val1, val2) {
 			}
 			document.getElementById("savebtn").disabled = true;
 		}
+
+function shlek_submit()
+{
+	var taskid =  document.getElementById("taskid").value;
+	var workerid =  document.getElementById("workerid").value;
+	var url = "<?php echo site_url("gemstone/sendgems_task_temp_shlek"); ?>";
+
+	window.location.replace(url+"/"+taskid+"/"+workerid);
+
+}
 
 function check_barcode()
 {
